@@ -1,0 +1,26 @@
+﻿*note* Everything underlined regards next semester
+
+
+Coding Expectations:
+        From Vinh: ~5000 lines each at least (most of it will be frameworks)
+        Django for setting up web application backend, Tailwind will be used for style. DaisyUI can be used on top of Tailwind for wrappers
+        PostGRES
+        For prototype, harness Pandas. In the future, create our own custom library?
+        Ensure the database is not front-facing
+        Will is open to working with HTML
+Testing Expectations:
+        Test before merge, CI/CD will be running on every commit
+        Have at least 2 people looking at each commit / peer review reasons
+        Unit/Feature tests before each commit
+        If anything fails, all three people must inspect what went wrong
+        COMMITS: explain exactly what's being added
+Documentation Expectations:
+        For each function, function description, description of parameters, output
+        Formal language( AT SIGN parameter)
+        Strive for professionalism, pretend like people will see it
+        
+Timeline:
+Nov 15 - Initial Prototype
+        Set up the server, finish setting up the repo (Will), actions/docker (Jake), clean data default visualizations (Ethan)
+December 3 - True Prototype
+        Create user profiles + login capabilities (requires user table) (Jake), revisit UI (All)
