@@ -1,26 +1,54 @@
-﻿*note* Everything underlined regards next semester
-
-
 Coding Expectations:
-        From Vinh: ~5000 lines each at least (most of it will be frameworks)
-        Django for setting up web application backend, Tailwind will be used for style. DaisyUI can be used on top of Tailwind for wrappers
-        PostGRES
-        For prototype, harness Pandas. In the future, create our own custom library?
-        Ensure the database is not front-facing
-        Will is open to working with HTML
-Testing Expectations:
-        Test before merge, CI/CD will be running on every commit
-        Have at least 2 people looking at each commit / peer review reasons
-        Unit/Feature tests before each commit
-        If anything fails, all three people must inspect what went wrong
-        COMMITS: explain exactly what's being added
+        - ~5000 minimum lines per person
+        - Stack: Ubuntu Server v24.04.3, 
+                Python v3.14.0, 
+                Django v5.2.7, 
+                Gunicorn v23.0.0, 
+                PostgreSQL v18.0, 
+                Node.js v22.21.0, 
+                Vue v3.5.22, 
+                Tailwind v4.1, 
+                DaisyUI v5.3.8
+
+                Client
+                  │
+                  ▼
+          ┌─────────────────┐
+          │ (reverse proxy) │
+          └────────┬────────┘
+                   │  (:8080)
+                   ▼
+          ┌─────────────────┐
+          │    Gunicorn     │
+          └────────┬────────┘
+                   │
+                   ▼
+                Django
+                   │
+                   ▼
+                PostgreSQL
+
+        - Refer to the styleguide for tool-specific expectations
+        
+        Note: Pandas will be used as the primary visualisation tool until replaced. A front-facing database is disallowed.
+
 Documentation Expectations:
-        For each function, function description, description of parameters, output
-        Formal language( AT SIGN parameter)
-        Strive for professionalism, pretend like people will see it
+        - Every function must be documented
+        - Function documentation must include a use-case description, parameters description, and outputs description
+        - Function documentation must be formally typed
+        - Strive for professionalism
+
+Testing Expectations:
+        - Branches are required to pass a full-feature test prior to pull request
+        - Every pull request must be reviewed by at least two contributors
+        - If any feature breaks post merge, every contributor must inspect the failure and contribute to its resolution
+        - Every commit must be of the form: <infinitive> <context> to <reason>. e.g., Add feature to component to support non-functional requirement #123. If the reason statement is reasonably long, transition the statement to the description box.
         
 Timeline:
-Nov 15 - Initial Prototype
-        Set up the server, finish setting up the repo (Will), actions/docker (Jake), clean data default visualizations (Ethan)
-December 3 - True Prototype
-        Create user profiles + login capabilities (requires user table) (Jake), revisit UI (All)
+- Nov. 15 - Prototype v0
+        Setup Ubuntu Server (Will), setup monorepo for all main tool usage (Will), integrate actions/docker (Jake), implement data cleaning solution (Ethan), implement default visualizations with Pandas (Ethan). 
+
+- Dec. 3 - Prototype v1
+        Implement user-profile related features (login/logout/create-account/delete-account) on front/back-end (Jake), revisit UI/UX (Jake)
+
+        Note: Lead contributors for each task are listed. Contributors will contribute to each task as needed.
