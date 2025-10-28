@@ -1,0 +1,19 @@
+name: Development Server Docker Build CI
+
+on:
+  push:
+    branches: [ "development" ]
+  pull_request:
+    branches: [ "development" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build the server Docker image
+      run: docker compose build
+      working-directory: server
