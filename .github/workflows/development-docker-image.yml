@@ -1,10 +1,10 @@
-name: Development Server Docker Build CI
+name: Server Docker Build CI
 
 on:
   push:
-    branches: [ "development" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "development" ]
+    branches: [ "main" ]
 
 jobs:
 
