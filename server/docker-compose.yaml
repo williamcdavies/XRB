@@ -1,0 +1,15 @@
+services:
+ django-web:
+   build: .
+   container_name: xrb-django-docker
+   ports:
+     - "8000:8000"
+   environment:
+     DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+     DEBUG: ${DEBUG}
+     DJANGO_LOGLEVEL: ${DJANGO_LOGLEVEL}
+     DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS}
+   env_file:
+     - .env
+volumes:
+   postgres_data:
