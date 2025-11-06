@@ -22,12 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", default=False)
+DEBUG = os.environ.get("DJANGO_DEBUG", default=False)
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", default="127.0.0.1").split(",")
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", default="127.0.0.1").split(",")
 
 
 # Application definition
@@ -76,12 +76,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": os.environ.get("ENGINE", default="django.db.backends.postgresql"),
-        "NAME": os.environ.get("NAME"),
-        "USER": os.environ.get("USER"),
-        "PASSWORD": os.environ.get("PASSWORD"),
-        "HOST": os.environ.get("NAME", default="127.0.0.1"),
-        "PORT": os.environ.get("NAME", default="5432")
+        "ENGINE": os.environ.get("POSTGRESQL_ENGINE", default="django.db.backends.postgresql"),
+        "NAME": os.environ.get("POSTGRESQL_NAME"),
+        "USER": os.environ.get("POSTGRESQL_USER"),
+        "PASSWORD": os.environ.get("POSTGRESQL_PASSWORD"),
+        "HOST": os.environ.get("POSTGRESQL_HOST", default="127.0.0.1"),
+        "PORT": os.environ.get("POSTGRESQL_PORT", default="5432")
     }
 }
 
