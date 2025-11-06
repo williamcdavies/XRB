@@ -1,4 +1,4 @@
-name: Server Docker Build CI
+name: Docker Compose Build Server
 
 on:
   push:
@@ -7,13 +7,11 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
-    - name: Build the server Docker image
+    - name: Docker Compose Build
       run: docker compose build
       working-directory: server
+      
