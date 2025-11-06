@@ -18,8 +18,8 @@ ENV PYTHONUNBUFFERED=1
 # Upgrade pip
 RUN pip install --upgrade pip 
  
-# Copy the Django project  and install dependencies
-COPY requirements.txt  /app/
+# Copy the Django project and install dependencies
+COPY requirements.txt /app/
  
 # run this command to install all dependencies 
 RUN pip install --no-cache-dir -r requirements.txt
