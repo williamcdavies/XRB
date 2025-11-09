@@ -1,5 +1,5 @@
 # Use the official Python runtime image
-FROM python:3.14.0-slim
+FROM python:3.11.2-slim
  
 # Create the app directory
 RUN mkdir /app
@@ -14,6 +14,11 @@ ENV PYTHONDONTWRITEBYTECODE=1
 
 ## Prevents Python from buffering stdout and stderr
 ENV PYTHONUNBUFFERED=1 
+
+# Install system dependencies
+RUN apt-get update && \
+    apt-get install -y gcc libpq-dev build-essential && \
+    rm -rf /var/lib/apt/lists/*
  
 # Upgrade pip
 RUN pip install --upgrade pip 
