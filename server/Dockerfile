@@ -13,14 +13,6 @@ WORKDIR /app
 #       This option has no effect on the stdin stream.
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1 
-
-# Enables psycobg[binary] to install with Python3.11.2
-RUN apt-get update && \
-    apt-get install -y \
-        gcc \
-        libpq-dev \
-        build-essential && \
-    rm -rf /var/lib/apt/lists/*
  
 #
 RUN pip install --upgrade pip 
