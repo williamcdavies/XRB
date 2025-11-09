@@ -1,34 +1,26 @@
-# Use the official Python runtime image
-FROM python:3.14.0-slim
+# Python installation packaged with Debian12
+FROM python:3.11.2-slim
  
-# Create the app directory
-RUN mkdir /app
- 
-# Set the working directory inside the container
 WORKDIR /app
  
-# Set environment variables
-
-## Prevents Python from writing pyc files to disk
-ENV PYTHONDONTWRITEBYTECODE=1
-
-## Prevents Python from buffering stdout and stderr
-ENV PYTHONUNBUFFERED=1 
+# Set environment variables (from https://docs.python.org/3/using/cmdline.html)
+# - PYTHONDONTWRITEBYTECODE:
+#     - If this is set to a non-empty string, Python won't try to write .pyc files on the import of 
+#       source modules. 
+# - PYTHONUNBUFFERED:
+#     - If this is set to a non-empty string, force the stdout and stderr streams to be unbuffered. 
+#       This option has no effect on the stdin stream.
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
  
-# Upgrade pip
 RUN pip install --upgrade pip 
  
-# Copy the Django project and install dependencies
 COPY requirements.txt /app/
+RUN pip install --no-cache-dir -r /app/requirements.txt
  
-# run this command to install all dependencies 
-RUN pip install --no-cache-dir -r requirements.txt
- 
-# Copy the Django project to the container
 COPY . /app/
+RUN chmod +x /app/entrypoint.sh
  
-# Expose the Django port
 EXPOSE 8080
- 
-# Run Django’s development server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8080"]
+
+ENTRYPOINT ["/app/entrypoint.sh"]
