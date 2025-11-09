@@ -10,9 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+from dotenv  import load_dotenv
 from pathlib import Path
 
 import os
+
+# Reads variables from a .env file and sets them in os.environ 
+# (from https://pypi.org/project/python-dotenv/)
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -76,12 +81,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": os.environ.get("POSTGRES_ENGINE", default="django.db.backends.postgresql"),
-        "NAME": os.environ.get("POSTGRES_DB"),
-        "USER": os.environ.get("POSTGRES_USER"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
-        "HOST": os.environ.get("POSTGRES_HOST", default="postgres"),
-        "PORT": os.environ.get("POSTGRES_PORT", default="5432")
+        "ENGINE": os.environ.get("POSTGRES_ENGINE", "django.db.backends.postgresql"),
+        "NAME": os.environ.get("POSTGRES_DB", "mydatabase"),
+        "USER": os.environ.get("POSTGRES_USER", "mydatabaseuser"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "mypassword"),
+        "HOST": os.environ.get("POSTGRES_HOST", "postgres"),
+        "PORT": os.environ.get("POSTGRES_PORT", "5432")
     }
 }
 
