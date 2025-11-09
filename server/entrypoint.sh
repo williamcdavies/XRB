@@ -7,13 +7,13 @@
 # - errexit:
 #     - Tells a noninteractive shell to execute the ERR trap and then exit. This flag is disabled when reading 
 #       profiles.
-# - tracex:
+# - xtrace:
 #     - Prints commands and their arguments as they run.
 set -o errexit
-set -o tracex
+set -o xtrace
 
 # (from https://docs.djangoproject.com/en/4.2/ref/django-admin/#migrate)
 python manage.py migrate
 
 # (from https://docs.djangoproject.com/en/4.2/ref/django-admin/#runserver)
-python manage.py runserver 0.0.0.0:8080"
+python manage.py runserver 0.0.0.0:8080
