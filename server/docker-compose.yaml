@@ -14,7 +14,7 @@ services:
   postgres:
     healthcheck:
       test: ["CMD-SHELL", "export $(cat /etc/environment) && pg_isready -U $POSTGRES_USER"]
-      interval: 1s
+      interval: 10s
     image: postgres:15
     env_file:
       - .env
