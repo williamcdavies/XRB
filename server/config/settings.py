@@ -10,14 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
-from dotenv  import load_dotenv
 from pathlib import Path
 
 import os
-
-# Reads variables from a .env file and sets them in os.environ 
-# (from https://pypi.org/project/python-dotenv/)
-load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
