@@ -16,7 +16,7 @@ ENV PYTHONUNBUFFERED=1
 
 # Enables psycobg[binary] to install with Python3.11.2
 RUN apt-get update && \
-    apt-get install -y \ 
+    apt-get install -y \
         gcc \
         libpq-dev \
         build-essential && \
