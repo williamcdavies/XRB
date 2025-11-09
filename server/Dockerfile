@@ -11,8 +11,8 @@ WORKDIR /app
 # - PYTHONUNBUFFERED:
 #     - If this is set to a non-empty string, force the stdout and stderr streams to be unbuffered. 
 #       This option has no effect on the stdin stream.
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1 
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
  
 #
 RUN pip install --upgrade pip 
