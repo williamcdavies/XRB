@@ -18,4 +18,3 @@ jobs:
     - name: Docker Compose Build
       run: docker compose build
       working-directory: server
-      
