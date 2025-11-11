@@ -14,7 +14,7 @@ def cleanup(filename):
     df['gamma'] = 1.7
     df['time'] = 0.0
 
-    df.to_csv('lrlx_data_BH_CLEAN.csv', index=False)
+    df.to_csv('clean_data/lrlx_data_BH_CLEAN.csv', index=False)
     return df
 
 df = cleanup('lrlx_data_BHs.csv')

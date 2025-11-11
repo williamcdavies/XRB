@@ -9,7 +9,7 @@ def cleanup(filename):
     df = df.replace('-9000', float('inf'))
     df = df.replace('unknown', 'N/A')
 
-    df.to_csv('xrb_properties_CLEAN.csv', index=False)
+    df.to_csv('clean_data/xrb_properties_CLEAN.csv', index=False)
     return df
 
 df = cleanup('xrb_properties.csv')
