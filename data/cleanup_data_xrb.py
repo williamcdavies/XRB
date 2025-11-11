@@ -1,13 +1,13 @@
 import pandas as pd
 
 #data cleanup:
-#adding alpha, nu, E_1meausred, E_2measured, gamma, and time columns with default vaules 
-#to allow for conversion between X-ray energy bands and radio frequencies and to allow
-#for time evolution plots
+#replacing '-9000' entries with the float representation of infinity,
+#'unknown' entries with 'N/A'
 def cleanup(filename):
     df = pd.read_csv(filename, dtype=str)  # everything will be strings, conversion will be done during visualization
 
-   
+    df = df.replace('-9000', float('inf'))
+    df = df.replace('unknown', 'N/A')
 
     df.to_csv('xrb_properties_CLEAN.csv', index=False)
     return df
