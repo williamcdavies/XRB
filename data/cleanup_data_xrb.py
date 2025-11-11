@@ -7,15 +7,10 @@ import pandas as pd
 def cleanup(filename):
     df = pd.read_csv(filename, dtype=str)  # everything will be strings, conversion will be done during visualization
 
-    df['alpha'] = 0
-    df['nu'] = 5e9
-    df['E_1measured'] = 1e3
-    df['E_2measured'] = 1e4
-    df['gamma'] = 1.7
-    df['time'] = 0.0
+   
 
-    df.to_csv('lrlx_data_BH_CLEAN.csv', index=False)
+    df.to_csv('xrb_properties_CLEAN.csv', index=False)
     return df
 
-df = cleanup('lrlx_data_BHs.csv')
+df = cleanup('xrb_properties.csv')
 
