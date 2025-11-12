@@ -1,7 +1,7 @@
 import pandas as pd
 
 #cleanup:
-#adding alpha, nu, E_1meausred, E_2measured, gamma, and time columns with default vaules 
+#adding alpha, nu, E_1measured, E_2measured, gamma, and time columns with default values 
 #to allow for conversion between X-ray energy bands and radio frequencies and to allow
 #for time evolution plots
 #additionally, 0.0s are replaced before the time column is added to differentiate between deliberate 0.0
