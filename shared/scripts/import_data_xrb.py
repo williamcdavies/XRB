@@ -28,7 +28,7 @@ with open("shared/data/clean_data/xrb_properties_CLEAN.csv", mode="r", newline="
         insert_row = (name, distance, dist_err, rl, incl, incl_err, hard_slope, hard_slope_err, spec_type, porb, mass)
         data_to_insert.append(insert_row)
     
-    with psycopg.connect(f"host=localhost dbname=xrb user={os.getenv("POSTGRES_USER")} password={os.getenv("POSTGRES_PASSWORD")}") as conn:
+    with psycopg.connect(f"host=localhost dbname=xrb user={os.getenv('POSTGRES_USER')} password={os.getenv('POSTGRES_PASSWORD')}") as conn:
         with conn.cursor() as cur:
             cur.executemany("""
                 INSERT INTO xrb_properties (name, distance, distance_err, rl, incl, incl_err, hard_line_slope, hard_line_slope_err, spec_type, p_orb, mass)
