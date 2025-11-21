@@ -3,7 +3,7 @@ import csv
 import os
 
 def check_null_or_inf(val):
-    return val if (val != "inf" and val != "NULL") else None
+    return val if (val != "inf" and val != "NULL" and "<" not in val and ">" not in val) else None
 
 with open("shared/data/clean_data/xrb_properties_CLEAN.csv", mode="r", newline="") as xrb_csv:
     csv_reader = csv.reader(xrb_csv)
@@ -27,10 +27,11 @@ with open("shared/data/clean_data/xrb_properties_CLEAN.csv", mode="r", newline="
         
         insert_row = (name, distance, dist_err, rl, incl, incl_err, hard_slope, hard_slope_err, spec_type, porb, mass)
         data_to_insert.append(insert_row)
+        print(insert_row)
     
-    with psycopg.connect(f"host=localhost dbname=xrb user={os.getenv('POSTGRES_USER')} password={os.getenv('POSTGRES_PASSWORD')}") as conn:
-        with conn.cursor() as cur:
-            cur.executemany("""
-                INSERT INTO xrb_properties (name, distance, distance_err, rl, incl, incl_err, hard_line_slope, hard_line_slope_err, spec_type, p_orb, mass)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-            """, data_to_insert)
+    # with psycopg.connect(f"host=localhost dbname=xrb user={os.getenv('POSTGRES_USER')} password={os.getenv('POSTGRES_PASSWORD')}") as conn:
+    #     with conn.cursor() as cur:
+    #         cur.executemany("""
+    #             INSERT INTO xrb_properties (name, distance, distance_err, rl, incl, incl_err, hard_line_slope, hard_line_slope_err, spec_type, p_orb, mass)
+    #             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    #         """, data_to_insert)
