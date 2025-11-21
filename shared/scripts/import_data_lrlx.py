@@ -36,6 +36,6 @@ with open("shared/data/clean_data/lrlx_data_BH_CLEAN.csv", mode="r", newline="")
     with psycopg.connect(f"host=localhost dbname=xrb user={os.getenv('POSTGRES_USER')} password={os.getenv('POSTGRES_PASSWORD')}") as conn:
         with conn.cursor() as cur:
             cur.executemany("""
-                INSERT INTO xrb_properties (name, class, lr, lr_ler, lr_uer, lx, lx_ler, lx_uer, uplim, alpha, nu, e1_measured, e2_measured, gamma, time, ref)
+                INSERT INTO lrlx_data (name, class, lr, lr_ler, lr_uer, lx, lx_ler, lx_uer, uplim, alpha, nu, e1_measured, e2_measured, gamma, time, ref)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """, data_to_insert)
