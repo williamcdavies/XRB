@@ -1,4 +1,7 @@
 from django.db import models
+from sqlmodel import Field, SQLModel
+from sqlalchemy import Column, Integer
+from typing import ClassVar
 
 # Create your models here.
 
