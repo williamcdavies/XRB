@@ -1,65 +1,14 @@
 from django.db import models
-from sqlmodel import Field, SQLModel
-from sqlalchemy import Column, Integer
-from typing import ClassVar
 
-# Create your models here.
-
-class XRBTable(SQLModel, table=True):
-    __tablename__ = "xrb_table"
-    __table_args__ = {"schema": "public"}
-
-    name: str = Field(
-        default=None,
-        sa_column=Column("Name", String)
-    )
-
-    dist: float = Field(
-        default=None,
-        sa_column=Column("Distance", Float)
-    )
-
-    distErr: float = Field(
-        default=None,
-        sa_column=Column("Distance Error", Float)
-    )
-
-    rl: str = Field(
-        default=None,
-        sa_column=Column("RL/RQ Flag", String)
-    )
-    
-    incl: float = Field(
-        default=None,
-        sa_column=Column("Inclination", Float)
-    )
-
-    incl_err: float = Field(
-        default=None,
-        sa_column=Column("Inclination Error", Float)
-    )
-
-    hardline_slope: float = Field(
-        default=None,
-        sa_column=Column("Emission Variance (EV)", Float)
-    )
-
-    hardline_slope_err: float = Field(
-        default=None,
-        sa_column=Column("EV Error", Float)
-    )
-
-    spec_type: str = Field(
-        default=None,
-        sa_column=Column("Star Type", String)
-    )
-
-    porb: float = Field(
-        default=None,
-        sa_column=Column("Orbital Period", Float)
-    )
-
-    mass: float = Field(
-        default=None,
-        sa_column=Column("Mass", Float)
-    )
+class XRBTable(models.Model):
+    name = models.CharField(max_length=255, null=True)
+    dist = models.FloatField(null=True)
+    distErr = models.FloatField(null=True)
+    rl = models.CharField(max_length=50, null=True)
+    incl = models.FloatField(null=True)
+    incl_err = models.FloatField(null=True)
+    hardline_slope = models.FloatField(null=True)
+    hardline_slope_err = models.FloatField(null=True)
+    spec_type = models.CharField(max_length=100, null=True)
+    porb = models.FloatField(null=True)
+    mass = models.FloatField(null=True)
