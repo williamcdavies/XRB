@@ -2,6 +2,9 @@ from django.db import models
 
 
 class XRB(models.Model):
+    class Meta:
+        db_table = "xrb_properties"
+
     name = models.CharField(
         max_length=256,
         primary_key=True
@@ -58,9 +61,6 @@ class XRB(models.Model):
         null=True,
         blank=True
     )
-
-    class Meta:
-        db_table = "xrb_properties"
 
     def __str__(self):
         return self.name
