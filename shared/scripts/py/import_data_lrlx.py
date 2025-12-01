@@ -14,7 +14,7 @@ with open("shared/data/clean_data/lrlx_data_BH_CLEAN.csv", mode="r", newline="")
     for row in csv_reader:
         
         name = check_none(row[0])
-        lrlx_class = check_none(row[1])
+        classification = check_none(row[1])
         lr = check_none(row[2])
         lr_ler = check_none(row[3])
         lr_uer = check_none(row[4])
@@ -30,7 +30,7 @@ with open("shared/data/clean_data/lrlx_data_BH_CLEAN.csv", mode="r", newline="")
         time = check_none(row[14])
         ref = check_none(row[15])
         
-        insert_row = (name, lrlx_class, lr, lr_ler, lr_uer, lx, lx_ler, lx_uer, uplink, alpha, nu, e1_measured, e2_measured, gamma, time, ref)
+        insert_row = (name, classification, lr, lr_ler, lr_uer, lx, lx_ler, lx_uer, uplink, alpha, nu, e1_measured, e2_measured, gamma, time, ref)
         data_to_insert.append(insert_row)
     
     with psycopg.connect(f"host=localhost dbname=xrb user={os.getenv('POSTGRES_USER')} password={os.getenv('POSTGRES_PASSWORD')}") as conn:
