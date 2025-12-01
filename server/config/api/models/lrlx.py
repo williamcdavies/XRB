@@ -10,6 +10,7 @@ class LRLX(models.Model):
     )
 
     # `db_column="class"` is required for naming conflict avoidance.
+    # field shall be renamed to `classification` in future database patch.
     lrlx_class = models.CharField(
         db_column="class"
     )
@@ -39,6 +40,7 @@ class LRLX(models.Model):
     )
 
     # `db_column="uplim"` is required for naming conflict avoidance.
+    # field shall be renamed to `uplink` in future database patch.
     uplink = models.CharField(
         db_column="uplim"
     )
