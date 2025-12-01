@@ -2,69 +2,67 @@ from django.db import models
 
 
 class XRBTable(models.Model):
-    # id: AutoField primary key is created automatically
 
     name = models.CharField(
         max_length=255,
         null=True,
         blank=True,
-        db_column="Name",         # matches existing Postgres column
+        db_column="Name",       
     )
 
     dist = models.FloatField(
         null=True,
         blank=True,
-        db_column="Distance",
+        db_column="Dist",
     )
 
     distErr = models.FloatField(
         null=True,
         blank=True,
-        db_column="Distance Error",
+        db_column="DistErr",
     )
 
     rl = models.CharField(
         max_length=50,
         null=True,
         blank=True,
-        db_column="RL/RQ Flag",
+        db_column="RL",
     )
 
     incl = models.FloatField(
         null=True,
         blank=True,
-        db_column="Inclination",
+        db_column="Incl",
     )
 
     incl_err = models.FloatField(
         null=True,
         blank=True,
-        db_column="Inclination Error",
+        db_column="InclErr",
     )
 
     hardline_slope = models.FloatField(
         null=True,
         blank=True,
-        db_column="Emission Variance (EV)",
-    )
+        db_column="HardlineSlope"
 
     hardline_slope_err = models.FloatField(
         null=True,
         blank=True,
-        db_column="EV Error",
+        db_column="HardlineSlopeErr",
     )
 
     spec_type = models.CharField(
         max_length=100,
         null=True,
         blank=True,
-        db_column="Star Type",
+        db_column="SpecType",
     )
 
     porb = models.FloatField(
         null=True,
         blank=True,
-        db_column="Orbital Period",
+        db_column="Porb",
     )
 
     mass = models.FloatField(

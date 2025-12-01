@@ -1,4 +1,4 @@
-Name,Dist,DistErr,RL,Incl,InclErr,HardlineSlope,HardlineSLopeErr,SpecType,Porb,Mass
+Name,Dist,DistErr,RL,Incl,InclErr,HardlineSlope,HardlineSlopeErr,SpecType,Porb,Mass
 4U 1543-47,7.5,0.5,RL,20.5,1.5,1.308,0.003,A2V,26.79377,9.4
 GX 339-4,8.4,0.9,RL,50,10,1.272,0.003,>GIV,42.14,>6
 GRO J1655-40,3.2,0.2,RQ,70,1,0.971,0.001,F6IV,62.920,6.0
