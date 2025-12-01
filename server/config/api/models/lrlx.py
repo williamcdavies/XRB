@@ -9,7 +9,7 @@ class LRLX(models.Model):
 
     )
 
-    # replaced `class` with `lrlx_class` since `class` is a reserved keyword.
+    # `db_column="class"` is required for naming conflict avoidance.
     lrlx_class = models.CharField(
         db_column="class"
     )
@@ -38,11 +38,12 @@ class LRLX(models.Model):
         
     )
 
-    uplim = models.CharField(
-        
+    # `db_column="uplim"` is required for naming conflict avoidance.
+    uplink = models.CharField(
+        db_column="uplim"
     )
 
-    alpha = models.ChaFloatFieldrField(
+    alpha = models.FloatField(
         
     )
 
