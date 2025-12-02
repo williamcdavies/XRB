@@ -1,4 +1,4 @@
-from server.config.api.models import lrlx
+from api.models import lrlx
 from rest_framework           import serializers
 
 

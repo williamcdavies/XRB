@@ -1,4 +1,4 @@
-from server.config.api.models import xrb
+from api.models import xrb
 from rest_framework           import serializers
 
 
