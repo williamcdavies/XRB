@@ -1,59 +1,32 @@
 <template>
-  <div>
-    <div v-if="loading">Loading...</div>
-    <div v-else-if="error">Error: {{ error }}</div>
-    <div v-else>
-      <!-- Display your data here -->
-      <ul>
-        <li v-for="xrb in xrbs" :key="xrb.name">
-          {{ xrb }}
-        </li>
-      </ul>
-    </div>
+  <div id="app">
+    <nav>
+      <router-link to="/">Home</router-link>
+      <router-link to="/xrb">XRB Data</router-link>
+    </nav>
+    <router-view />
   </div>
 </template>
 
-<script>
-import axios from 'axios'
-
+<script lang="ts">
 export default {
-  data() {
-    return {
-      xrbs: [],
-      loading: false,
-      error: null
-    }
-  },
-
-  methods: {
-    async fetchXRBs() {
-      this.loading = true
-        this.error = null
-        
-        try {
-          const response = await axios.get('http://localhost:8000/api/xrb/')
-          this.xrbs = response.data
-          console.log('XRBs fetched:', this.xrbs)
-        } catch (err) {
-          this.error = err.message
-          console.error('Error fetching XRBs:', err)
-        } finally {
-          this.loading = false
-        }
-    }
-  },
-
-  mounted() {
-    console.log("mounted!")
-    this.fetchXRBs()
-  }
+  name: 'App'
 }
 </script>
 
 <style>
-body{
-  margin: 0;
-  padding: 0;
-  background-color: #202020!important;
+nav {
+  padding: 20px;
+  background-color: #333;
+}
+
+nav a {
+  color: white;
+  margin-right: 20px;
+  text-decoration: none;
+}
+
+nav a:hover {
+  text-decoration: underline;
 }
 </style>
