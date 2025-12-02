@@ -1,7 +1,8 @@
 // src/router.ts
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import Home from './Home.vue'
-import XRB from './XRBTable.vue'
+import XRBTable from './XRBTable.vue'
+import XRBPlot from './XRBPlot.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -10,9 +11,14 @@ const routes: Array<RouteRecordRaw> = [
     component: Home
   },
   {
-    path: '/xrb',
-    name: 'XRB',
-    component: XRB
+    path: '/xrbtable',
+    name: 'XRB Table',
+    component: XRBTable
+  },
+  {
+    path: '/xrbplot',
+    name: 'XRB Plot',
+    component: XRBPlot
   }
 ]
 
