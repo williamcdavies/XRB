@@ -1,5 +1,5 @@
-from api.models     import LRLX
-from rest_framework import serializers
+from modules.api.models import LRLX
+from rest_framework     import serializers
 
 
 class LRLXSerializer(serializers.HyperlinkedModelSerializer):

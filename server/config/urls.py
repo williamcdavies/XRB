@@ -18,8 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from api.views.xrb import XRBViewset
-from api.views.lrlx import LRLXViewset
+from modules.api.views.xrb import XRBViewset
+from modules.api.views.lrlx import LRLXViewset
 
 # Create a router and register viewsets
 router = DefaultRouter()

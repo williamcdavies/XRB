@@ -1,5 +1,5 @@
-from api.models     import XRB
-from rest_framework import serializers
+from modules.api.models import XRB
+from rest_framework     import serializers
 
 
 class XRBSerializer(serializers.HyperlinkedModelSerializer):
