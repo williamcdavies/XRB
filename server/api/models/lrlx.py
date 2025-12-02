@@ -6,71 +6,91 @@ class LRLX(models.Model):
         db_table = "lrlx_data"
     
     name = models.CharField(
-
+        max_length=256
     )
 
     # `db_column="class"` prevents naming conflict with serializer.
     # db_column shall be renamed to `classification` in future database patch.
     classification = models.CharField(
+        max_length=256,
+        null=True,
+        blank=True,
         db_column="class"
     )
 
     lr = models.FloatField(
-        
+        null=True,
+        blank=True
     )
 
     lr_ler = models.FloatField(
-        
+        null=True,
+        blank=True
     )
 
     lr_uer = models.FloatField(
-        
+        null=True,
+        blank=True
     )
 
     lx = models.FloatField(
-        
+        null=True,
+        blank=True
     )
 
     lx_ler = models.FloatField(
-        
+        null=True,
+        blank=True
     )
 
     lx_uer = models.FloatField(
-        
+        null=True,
+        blank=True
     )
 
     # `db_column="uplim"` prevents naming conflict with serializer.
     # db_column shall be renamed to `uplink` in future database patch.
     uplink = models.CharField(
+        max_length=256,
+        null=True,
+        blank=True,
         db_column="uplim"
     )
 
     alpha = models.FloatField(
-        
+        null=True,
+        blank=True
     )
 
     nu = models.FloatField(
-        
+        null=True,
+        blank=True
     )
 
     e1_measured = models.FloatField(
-        
+        null=True,
+        blank=True
     )
 
     e2_measured = models.FloatField(
-        
+        null=True,
+        blank=True
     )
 
     gamma = models.FloatField(
-        
+        null=True,
+        blank=True
     )
 
     time = models.FloatField(
-        
+        null=True,
+        blank=True
     )
 
     ref = models.CharField(
-        
+        max_length=256,
+        null=True,
+        blank=True
     )
 
     id = models.BigAutoField(
