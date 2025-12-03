@@ -6,11 +6,16 @@ defineOptions({
 })
 
 const createAccount = ref(false)
-const password = defineModel()
-const passwordConfirm = defineModel('')
+const email = ref('')
+const password = ref('')
+const passwordConfirm = ref('')
 const passwordMismatch = computed(() => {
   return password.value !== passwordConfirm.value && passwordConfirm.value !== '';
 })
+
+function login() {
+  alert(email + " " + password)
+}
 </script>
 
 <template>
@@ -24,7 +29,7 @@ const passwordMismatch = computed(() => {
             <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
           </g>
         </svg>
-        <input type="email" placeholder="example@example.com" required />
+        <input v-model="email" type="email" placeholder="example@example.com" required />
       </label>
       <div class="validator-hint hidden">Enter valid email address</div>
     </div>
@@ -81,7 +86,7 @@ const passwordMismatch = computed(() => {
             <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
           </g>
         </svg>
-        <input type="email" placeholder="example@example.com" required />
+        <input v-model="email" type="email" placeholder="example@example.com" required />
       </label>
       <div class="validator-hint hidden">Enter valid email address</div>
     </div>
@@ -95,7 +100,7 @@ const passwordMismatch = computed(() => {
             <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"></circle>
           </g>
         </svg>
-        <input type="password" required placeholder="Password" minlength="8"
+        <input v-model="password" type="password" required placeholder="Password" minlength="8"
           pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
           title="Must be more than 8 characters, including number, lowercase letter, uppercase letter" />
       </label>
@@ -105,7 +110,7 @@ const passwordMismatch = computed(() => {
       </p>
     </div>
 
-    <button class="btn btn-info w-full mb-5">Submit</button>
+    <button class="btn btn-info w-full mb-5" @click="login">Submit</button>
 
     <div class="flex flex-col outline-2 p-3 rounded-2xl w-full items-center">
       <p class="italic mb-2">Need to create an account?</p>
