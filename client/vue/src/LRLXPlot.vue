@@ -3,8 +3,9 @@
         <VueSpinner size="20" color="white" />
     </div>
     <div v-else-if="error">Error: {{ error }}</div>
-    <div v-else id="lrlx-plot">
-        <apexchart width="800px" type="scatter" :options="chartOptions" :series="series"></apexchart>
+    <div v-else>
+        <apexchart id="scatterplot" width="800px" type="scatter" :options="chartOptions" :series="series"></apexchart>
+        <button @click="savePlot">Save to PDF</button>
     </div>
 </template>
 
@@ -14,6 +15,7 @@ import VueApexCharts from "vue3-apexcharts";
 import {
     VueSpinner,
 } from 'vue3-spinners';
+import html2pdf from 'js-html2pdf';
 
 export default {
     components: {
@@ -27,6 +29,7 @@ export default {
             loading: false,
             error: null,
             series: [],
+            chartImage: null,
             chartOptions: {
                 chart: {
                     type: 'scatter',
@@ -36,7 +39,7 @@ export default {
                         offsetX: 0,
                         offsetY: 0,
                         tools: {
-                            download: true,
+                            download: false,
                             selection: true,
                             zoom: true,
                             zoomin: true,
@@ -48,6 +51,9 @@ export default {
                 },
                 title: {
                     text: 'Radio vs X-ray Luminosity',
+                    style: {
+                        fontSize: '24px'
+                    }
                 },
                 xaxis: {
                     type: 'numeric',
@@ -108,10 +114,10 @@ export default {
                 return acc
             }, {})
 
-            this.series = Object.entries(groupedLRLXs).map(function ([name, lrlxArray]) {
+            this.series = Object.entries(groupedLRLXs).map(([name, lrlxArray], index) => {
                 return {
                     name: name,
-                    hidden: true,
+                    hidden: index != 0,
                     data: lrlxArray.map(function (lrlx) {
                         return [Math.log10(lrlx.lr), Math.log10(lrlx.lx)]
                     })
@@ -129,10 +135,29 @@ export default {
                 this.updateSeries()
             } catch (err) {
                 this.error = err.message
+                alert('Error fetching LRLX data!')
                 console.error('Error fetching LRLXs:', err)
             } finally {
                 this.loading = false
             }
+        },
+
+        async savePlot() {
+            // Get the element to print
+            var element = document.getElementById("scatterplot");
+
+            // Define optional configuration
+            var options = {
+                filename: 'xrb-plot.pdf',
+                jsPDF: {orientation: "landscape"}
+            };
+
+            // Create instance of html2pdf class
+            var exporter = new html2pdf(element, options);
+
+            exporter.getPdf(true).then((pdf) => {
+                console.log('pdf file downloaded');
+            });
         }
     },
 
