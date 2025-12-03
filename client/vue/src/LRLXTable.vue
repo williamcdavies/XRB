@@ -78,7 +78,7 @@ export default {
       this.error = null
 
       try {
-        const response = await axios.get('http://localhost:8000/api/lrlx/')
+        const response = await axios.get('http://localhost:8080/api/lrlx/')
         this.lrlxs = response.data
         console.log('LRLXs fetched:', this.xrbs)
       } catch (err) {
