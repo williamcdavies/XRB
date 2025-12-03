@@ -110,6 +110,10 @@ table {
   color: #ffffff;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 
 thead {
