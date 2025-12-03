@@ -4,8 +4,8 @@
       <VueSpinner size="20" color="white"/>
     </div>
     <div v-else-if="error">Error: {{ error }}</div>
-    <div v-else>
-      <table>
+    <div v-else class="rounded-box border overflow-auto transform rotate-180">
+      <table class="table table-zebra transform rotate-180">
         <thead>
           <tr>
             <th>name</th>
@@ -95,70 +95,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-body{
-  margin: 0;
-  padding: 0;
-  background-color: #202020!important;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: #2a2a2a;
-  color: #ffffff;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-
-  display: block;
-  overflow-x: auto;
-  white-space: nowrap;
-}
-
-thead {
-  background-color: #1a1a1a;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-th {
-  padding: 16px 12px;
-  text-align: center;
-  font-weight: 600;
-  font-size: 12px;
-  letter-spacing: 0.5px;
-  border-bottom: 2px solid #4a4a4a;
-  color: #e0e0e0;
-}
-
-td {
-  padding: 14px 12px;
-  border-bottom: 1px solid #3a3a3a;
-  font-size: 14px;
-}
-
-/* Zebra striping */
-tbody tr:nth-child(odd) {
-  background-color: #2a2a2a;
-}
-
-tbody tr:nth-child(even) {
-  background-color: #333333;
-}
-
-/* Handle null/empty values */
-td:empty::after {
-  content: '—';
-  color: #666;
-}
-
-/* Loading and error states */
-div {
-  color: #e0e0e0;
-  padding: 20px;
-  text-align: center;
-  font-size: 18px;
-}
-</style>
