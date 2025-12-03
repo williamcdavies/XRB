@@ -2,8 +2,8 @@
   <div id="app">
     <nav>
       <router-link to="/">Home</router-link>
-      <router-link to="/xrbtable">XRB Table</router-link>
       <router-link to="/xrbplot">XRB Plot</router-link>
+      <router-link to="/xrbtable">XRB Table</router-link>
       <router-link to="/lrlxtable">LRLX Table</router-link>
     </nav>
     <router-view />
