@@ -97,10 +97,10 @@ export default {
 </script>
 
 <style scoped>
-body {
+body{
   margin: 0;
   padding: 0;
-  background-color: #202020 !important;
+  background-color: #202020!important;
 }
 
 table {
