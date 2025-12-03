@@ -11,7 +11,7 @@
   "dependencies": {
     "apexcharts": "^5.3.6",
     "axios": "^1.13.2",
-    "js-html2pdf": "^1.1.4",
+    "jspdf": "^3.0.4",
     "vue": "^3.5.24",
     "vue-router": "^4.6.3",
     "vue3-apexcharts": "^1.10.0",

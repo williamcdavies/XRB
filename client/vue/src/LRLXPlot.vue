@@ -4,7 +4,7 @@
     </div>
     <div v-else-if="error">Error: {{ error }}</div>
     <div v-else>
-        <apexchart id="scatterplot" width="800px" type="scatter" :options="chartOptions" :series="series"></apexchart>
+        <apexchart ref="scatterplot" id="scatterplot" width="800px" type="scatter" :options="chartOptions" :series="series"></apexchart>
         <button @click="savePlot">Save to PDF</button>
     </div>
 </template>
@@ -15,7 +15,7 @@ import VueApexCharts from "vue3-apexcharts";
 import {
     VueSpinner,
 } from 'vue3-spinners';
-import html2pdf from 'js-html2pdf';
+import { jsPDF } from 'jspdf';
 
 export default {
     components: {
@@ -143,21 +143,27 @@ export default {
         },
 
         async savePlot() {
-            // Get the element to print
-            var element = document.getElementById("scatterplot");
+            const { imgURI } = await this.$refs.scatterplot.dataURI()
 
-            // Define optional configuration
-            var options = {
-                filename: 'xrb-plot.pdf',
-                jsPDF: {orientation: "landscape"}
-            };
+            // create an image element to get dimensions
+            const img = new Image()
+            img.src = imgURI
 
-            // Create instance of html2pdf class
-            var exporter = new html2pdf(element, options);
+            // load base64
+            await new Promise((resolve) => {
+                img.onload = resolve
+            })
+            const width = img.width
+            const height = img.height
 
-            exporter.getPdf(true).then((pdf) => {
-                console.log('pdf file downloaded');
-            });
+            // create PDF doc matching image size
+            const doc = new jsPDF({
+                orientation: "landscape",
+                unit: 'px',
+                format: [width, height]
+            })
+            doc.addImage(imgURI, "PNG", 20, 20, width - 40, height - 40)
+            doc.save("lrlx-plot.pdf")
         }
     },
 
