@@ -1,3 +1,9 @@
+<script lang="ts" setup>
+defineOptions({
+  name: 'App',
+});
+</script>
+
 <template>
   <div class="flex flex-col w-full">
     <div class="flex navbar bg-black">
@@ -25,9 +31,3 @@
   </div>
 
 </template>
-
-<script lang="ts">
-export default {
-  name: 'App'
-}
-</script>
