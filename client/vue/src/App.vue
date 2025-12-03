@@ -58,7 +58,7 @@ async function logout() {
         Table</router-link>
       <div class="flex-grow"></div>
       <div v-if="isLoggedIn">
-        <button class="btn btn-error" @click="logout">Logout</button>
+        <button class="btn btn-error mr-5" @click="logout">Logout</button>
       </div>
     </div>
     <div class="flex grow justify-center">
