@@ -1,8 +1,9 @@
 // src/router.ts
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import Home from './Home.vue'
-import XRBTable from './XRBTable.vue'
 import XRBPlot from './XRBPlot.vue'
+import LRLXPlot from './LRLXPlot.vue'
+import XRBTable from './XRBTable.vue'
 import LRLXTable from './LRLXTable.vue'
 
 const routes: Array<RouteRecordRaw> = [
@@ -12,14 +13,19 @@ const routes: Array<RouteRecordRaw> = [
     component: Home
   },
   {
-    path: '/xrbtable',
-    name: 'XRB Table',
-    component: XRBTable
-  },
-  {
     path: '/xrbplot',
     name: 'XRB Plot',
     component: XRBPlot
+  },
+  {
+    path: '/lrlxplot',
+    name: 'LRLX Plot',
+    component: LRLXPlot
+  },
+  {
+    path: '/xrbtable',
+    name: 'XRB Table',
+    component: XRBTable
   },
   {
     path: '/lrlxtable',

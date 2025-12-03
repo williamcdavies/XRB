@@ -1,5 +1,7 @@
 <template>
-    <div v-if="loading"><VueSpinner size="20" color="white" /></div>
+    <div v-if="loading">
+        <VueSpinner size="20" color="white" />
+    </div>
     <div v-else-if="error">Error: {{ error }}</div>
     <div v-else id="xrb-plot">
         <apexchart width="800px" type="scatter" :options="chartOptions" :series="series"></apexchart>
@@ -10,7 +12,7 @@
 import axios from 'axios'
 import VueApexCharts from "vue3-apexcharts";
 import {
-  VueSpinner,
+    VueSpinner,
 } from 'vue3-spinners';
 
 export default {
@@ -22,8 +24,8 @@ export default {
     data() {
         return {
             xrbs: [],
-      loading: false,
-      error: null,
+            loading: false,
+            error: null,
             series: [{
                 name: "SAMPLE A",
                 data: [
@@ -64,16 +66,16 @@ export default {
         async fetchXRBs() {
             this.loading = true
             this.error = null
-            
+
             try {
-            const response = await axios.get('http://localhost:8080/api/xrb/')
-            this.xrbs = response.data
-            console.log('XRBs fetched:', this.xrbs)
+                const response = await axios.get('http://localhost:8080/api/xrb/')
+                this.xrbs = response.data
+                console.log('XRBs fetched:', this.xrbs)
             } catch (err) {
-            this.error = err.message
-            console.error('Error fetching XRBs:', err)
+                this.error = err.message
+                console.error('Error fetching XRBs:', err)
             } finally {
-            this.loading = false
+                this.loading = false
             }
         }
     },
@@ -92,9 +94,9 @@ body {
 }
 
 div {
-  padding: 20px;
-  text-align: center;
-  font-size: 18px;
+    padding: 20px;
+    text-align: center;
+    font-size: 18px;
 }
 
 #xrb-plot {
