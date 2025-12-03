@@ -1,11 +1,11 @@
 <template>
-  <div>
-    <div v-if="loading">
-      <VueSpinner size="20" color="white"/>
-    </div>
-    <div v-else-if="error">Error: {{ error }}</div>
-    <div v-else class="rounded-box border overflow-auto transform rotate-180">
-      <table class="table table-zebra transform rotate-180">
+  <div v-if="loading">
+    <VueSpinner size="20" color="white" />
+  </div>
+  <div v-else-if="error">Error: {{ error }}</div>
+  <div v-else class="flex overflow-x-auto grow">
+    <div class="m-10 rounded-box border">
+      <table class="table table-zebra">
         <thead>
           <tr>
             <th>name</th>
