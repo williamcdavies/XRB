@@ -15,28 +15,44 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/xrbplot',
     name: 'XRB Plot',
-    component: XRBPlot
+    component: XRBPlot,
+    meta: { requiresAuth: true }
   },
   {
     path: '/lrlxplot',
     name: 'LRLX Plot',
-    component: LRLXPlot
+    component: LRLXPlot,
+    meta: { requiresAuth: true }
   },
   {
     path: '/xrbtable',
     name: 'XRB Table',
-    component: XRBTable
+    component: XRBTable,
+    meta: { requiresAuth: true }
   },
   {
     path: '/lrlxtable',
     name: 'LRLX Table',
-    component: LRLXTable
+    component: LRLXTable,
+    meta: { requiresAuth: true }
   }
 ]
 
 const router = createRouter({
   history: createWebHistory(),
   routes
+})
+
+// authentication guard
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('token')
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+
+  if (requiresAuth && !token) {
+    next('/')
+  } else {
+    next()
+  }
 })
 
 export default router
