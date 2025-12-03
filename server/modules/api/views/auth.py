@@ -11,7 +11,6 @@ from rest_framework import status
 def register(request):
     username = request.data.get('username')
     password = request.data.get('password')
-    email = request.data.get('email')
     
     if not username or not password:
         return Response(
@@ -25,7 +24,7 @@ def register(request):
             status=status.HTTP_400_BAD_REQUEST
         )
     
-    user = User.objects.create_user(username=username, password=password, email=email)
+    user = User.objects.create_user(username=username, password=password)
     token = Token.objects.create(user=user)
     
     return Response({
