@@ -68,7 +68,6 @@ export default {
       try {
         const response = await axios.get('http://localhost:8080/api/xrb/')
         this.xrbs = response.data
-        console.log('XRBs fetched:', this.xrbs)
       } catch (err) {
         this.error = err.message
         console.error('Error fetching XRBs:', err)
