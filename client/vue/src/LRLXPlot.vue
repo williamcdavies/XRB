@@ -3,9 +3,13 @@
         <VueSpinner size="20" color="white" />
     </div>
     <div v-else-if="error">Error: {{ error }}</div>
-    <div v-else>
-        <apexchart ref="scatterplot" id="scatterplot" width="800px" type="scatter" :options="chartOptions" :series="series"></apexchart>
-        <button @click="savePlot">Save to PDF</button>
+    <div v-else class="w-full flex flex-col items-center">
+        <div class="w-1/2 mt-5">
+            <apexchart ref="scatterplot" id="scatterplot" type="scatter" :options="chartOptions" :series="series">
+            </apexchart>
+        </div>
+
+        <button @click="savePlot" class="btn btn-primary">Save to PDF</button>
     </div>
 </template>
 
@@ -172,17 +176,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-body {
-    margin: 0;
-    padding: 0;
-    background-color: #202020 !important;
-}
-
-div {
-    padding: 20px;
-    text-align: center;
-    font-size: 18px;
-}
-</style>

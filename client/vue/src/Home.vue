@@ -1,6 +1,6 @@
 <template>
-    <div id="app">
-        <h1>Home</h1>
+    <div id="home" class="flex justify-center items-center p-25">
+        <p class="text-5xl italic">Welcome to the UNR XRB website homepage!</p>
     </div>
 </template>
 
@@ -9,17 +9,3 @@ export default {
   name: 'Home',
 }
 </script>
-
-<style>
-body {
-  margin: 0;
-  padding: 0;
-  background-color: #202020;
-}
-
-button {
-  padding: 10px 20px;
-  margin: 10px;
-  cursor: pointer;
-}
-</style>

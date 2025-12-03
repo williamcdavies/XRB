@@ -1,10 +1,10 @@
 <template>
-  <div>
-    <div v-if="loading">
-      <VueSpinner size="20" color="white"/>
-    </div>
-    <div v-else-if="error">Error: {{ error }}</div>
-    <div v-else class="rounded-box border">
+  <div v-if="loading">
+    <VueSpinner size="20" color="white" />
+  </div>
+  <div v-else-if="error">Error: {{ error }}</div>
+  <div v-else>
+    <div class="m-10 rounded-box border">
       <table class="table table-zebra">
         <thead>
           <tr>
@@ -64,17 +64,17 @@ export default {
     async fetchXRBs() {
       this.loading = true
       this.error = null
-        
-        try {
-          const response = await axios.get('http://localhost:8080/api/xrb/')
-          this.xrbs = response.data
-          console.log('XRBs fetched:', this.xrbs)
-        } catch (err) {
-          this.error = err.message
-          console.error('Error fetching XRBs:', err)
-        } finally {
-          this.loading = false
-        }
+
+      try {
+        const response = await axios.get('http://localhost:8080/api/xrb/')
+        this.xrbs = response.data
+        console.log('XRBs fetched:', this.xrbs)
+      } catch (err) {
+        this.error = err.message
+        console.error('Error fetching XRBs:', err)
+      } finally {
+        this.loading = false
+      }
     }
   },
 
