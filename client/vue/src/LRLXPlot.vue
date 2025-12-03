@@ -30,6 +30,21 @@ export default {
             chartOptions: {
                 chart: {
                     type: 'scatter',
+                    background: '#ffffff',
+                    toolbar: {
+                        show: true,
+                        offsetX: 0,
+                        offsetY: 0,
+                        tools: {
+                            download: true,
+                            selection: true,
+                            zoom: true,
+                            zoomin: true,
+                            zoomout: true,
+                            pan: true,
+                        },
+                        autoSelected: 'none'
+                    },
                 },
                 title: {
                     text: 'Radio vs X-ray Luminosity',
@@ -40,6 +55,12 @@ export default {
                     title: {
                         text: 'log(LR) [erg/s]',
                     },
+                    crosshairs: {
+                        show: false
+                    },
+                    tooltip: {
+                        enabled: false
+                    }
                 },
                 yaxis: {
                     type: 'numeric',
@@ -47,7 +68,28 @@ export default {
                     title: {
                         text: 'log(LX) [erg/s]',
                     },
+                    crosshairs: {
+                        show: false
+                    },
+                    tooltip: {
+                        enabled: false
+                    }
                 },
+                tooltip: {
+                    enabled: true,
+                    custom: ({ seriesIndex, dataPointIndex, w }) => {
+                        // Use w.config.series to access the series data
+                        const point = w.config.series[seriesIndex].data[dataPointIndex]
+
+                        return `
+                        <div style="padding: 10px; background: #333; border-radius: 4px;">
+                            <strong>${w.config.series[seriesIndex].name}</strong><br/>
+                            log(LR): ${point[0]}<br/>
+                            log(LX): ${point[1]}
+                        </div>
+                        `
+                    }
+                }
             },
         }
     },
@@ -60,9 +102,9 @@ export default {
                 if (!acc[name]) {
                     acc[name] = []
                 }
-                
+
                 acc[name].push(lrlx)
-                
+
                 return acc
             }, {})
 
@@ -111,9 +153,5 @@ div {
     padding: 20px;
     text-align: center;
     font-size: 18px;
-}
-
-#lrlx-plot {
-    background-color: #ffffff;
 }
 </style>
