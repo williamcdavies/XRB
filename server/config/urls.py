@@ -21,6 +21,8 @@ from rest_framework.routers import DefaultRouter
 
 from modules.api.views.xrb import XRBViewset
 from modules.api.views.lrlx import LRLXViewset
+from modules.api.views.auth import register, logout
+from rest_framework.authtoken.views import obtain_auth_token
 
 # Create a router and register viewsets
 router = DefaultRouter()
@@ -30,4 +32,7 @@ router.register(r'lrlx', LRLXViewset, basename='lrlx')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('api/login/', obtain_auth_token, name='login'),
+    path('api/register/', register, name='register'),
+    path('api/logout/', logout, name='logout'),
 ]
