@@ -33,39 +33,20 @@ export default {
                 },
                 title: {
                     text: 'Radio vs X-ray Luminosity',
-                    style: {
-                        color: '#e0e0e0'
-                    }
                 },
                 xaxis: {
                     type: 'numeric',
                     decimalsInFloat: 4,
                     title: {
                         text: 'log(LR) [erg/s]',
-                        style: {
-                            color: '#e0e0e0'
-                        }
                     },
-                    labels: {
-                        style: {
-                            colors: '#e0e0e0'
-                        }
-                    }
                 },
                 yaxis: {
                     type: 'numeric',
                     decimalsInFloat: 4,
                     title: {
                         text: 'log(LX) [erg/s]',
-                        style: {
-                            color: '#e0e0e0'
-                        }
                     },
-                    labels: {
-                        style: {
-                            colors: '#e0e0e0'
-                        }
-                    }
                 },
             },
         }
@@ -88,6 +69,7 @@ export default {
             this.series = Object.entries(groupedLRLXs).map(function ([name, lrlxArray]) {
                 return {
                     name: name,
+                    hidden: true,
                     data: lrlxArray.map(function (lrlx) {
                         return [Math.log10(lrlx.lr), Math.log10(lrlx.lx)]
                     })
