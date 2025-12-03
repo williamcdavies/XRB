@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="loading">
-      <VueSpinner size="20" color="white" />
+      <VueSpinner size="20" color="white"/>
     </div>
     <div v-else-if="error">Error: {{ error }}</div>
     <div v-else>

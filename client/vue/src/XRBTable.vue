@@ -1,22 +1,24 @@
 <template>
   <div>
-    <div v-if="loading"><VueSpinner size="20" color="white" /></div>
+    <div v-if="loading">
+      <VueSpinner size="20" color="white"/>
+    </div>
     <div v-else-if="error">Error: {{ error }}</div>
     <div v-else>
       <table>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Distance</th>
-            <th>Distance Error</th>
-            <th>RL</th>
-            <th>Incl</th>
-            <th>Incl Error</th>
-            <th>Hardline Slope</th>
-            <th>Hardline Slope Error</th>
-            <th>Spec Type</th>
-            <th>P Orbital</th>
-            <th>Mass</th>
+            <th>name</th>
+            <th>distance</th>
+            <th>distance_err</th>
+            <th>rl</th>
+            <th>incl</th>
+            <th>incl_err</th>
+            <th>hard_line_slope</th>
+            <th>hard_line_slope_err</th>
+            <th>spec_type</th>
+            <th>p_orb</th>
+            <th>mass</th>
           </tr>
         </thead>
         <tbody>
@@ -61,7 +63,7 @@ export default {
   methods: {
     async fetchXRBs() {
       this.loading = true
-        this.error = null
+      this.error = null
         
         try {
           const response = await axios.get('http://localhost:8080/api/xrb/')
