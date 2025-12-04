@@ -1,10 +1,10 @@
 // src/router.ts
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
-import Home from './Home.vue'
-import XRBPlot from './XRBPlot.vue'
-import LRLXPlot from './LRLXPlot.vue'
-import XRBTable from './XRBTable.vue'
-import LRLXTable from './LRLXTable.vue'
+import Home from './pages/Home.vue'
+import XRBPlot from './pages/XRBPlot.vue'
+import LRLXPlot from './pages/LRLXPlot.vue'
+import XRBTable from './pages/XRBTable.vue'
+import LRLXTable from './pages/LRLXTable.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {

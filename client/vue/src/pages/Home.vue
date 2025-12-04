@@ -3,6 +3,7 @@ import { computed, ref, defineProps } from 'vue';
 import axios from 'axios';
 
 const createAccount = ref(false)
+const email = ref('')
 const username = ref('')
 const password = ref('')
 const passwordConfirm = ref('')
@@ -45,10 +46,12 @@ async function login() {
 async function register() {
   try {
     const response = await axios.post('http://localhost:8080/api/register/', {
+      email: email.value,
       username: username.value,
       password: password.value
     })
-    
+
+    localStorage.setItem('email', email.value)
     localStorage.setItem('token', response.data.token)
     localStorage.setItem('username', username.value)
 
@@ -69,8 +72,19 @@ async function register() {
     <div v-if="isLoggedIn">
       <p class="text-5xl">Welcome, <span class="font-bold">{{ loggedInUser }}</span>!</p>
     </div>
-    <div v-else-if="createAccount" class="flex flex-col items-center p-5 bg-black rounded-3xl">
-      <p class="text-3xl font-bold mb-3">Create Account</p>
+    <div v-else-if="createAccount" class="flex flex-col items-center p-5 bg-white">
+      <p class="text-3xl font-bold mb-3">REGISTER</p>
+      <div>
+        <label class="input">
+          <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none" stroke="currentColor">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </g>
+          </svg>
+          <input v-model="email" type="text" placeholder="Email" required />
+        </label>
+      </div>
       <div>
         <label class="input">
           <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -118,12 +132,12 @@ async function register() {
         </p>
       </div>
 
-      <button class="btn btn-success w-full mb-5" @click="register">Create Account</button>
-
-      <div class="flex flex-col outline-2 p-3 rounded-2xl w-full items-center">
+      <button class="btn btn-success w-full mb-5" @click="register">REGISTER</button>
+<!-- 
+      <div class="flex flex-col outline-2 p-3 rounded-2xl w-full items-center"> -->
         <p class="italic mb-2">Already have an account?</p>
         <button class="btn btn-error w-full" @click="createAccount = false">Login</button>
-      </div>
+      <!-- </div> -->
     </div>
     <div v-else class="flex flex-col items-center p-5 bg-black rounded-3xl">
       <p class="text-3xl font-bold mb-3">Login</p>
