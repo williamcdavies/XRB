@@ -66,7 +66,7 @@ export default {
       this.error = null
 
       try {
-        const response = await axios.get('http://localhost:8080/api/xrb/')
+        const response = await axios.get('https://xrb.unr.dev/api/xrb/')
         this.xrbs = response.data
       } catch (err) {
         this.error = err.message

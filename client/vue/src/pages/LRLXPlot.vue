@@ -134,7 +134,7 @@ export default {
             this.error = null
 
             try {
-                const response = await axios.get('http://localhost:8080/api/lrlx/')
+                const response = await axios.get('https://xrb.unr.dev/api/lrlx/')
                 this.lrlxs = response.data
                 this.updateSeries()
             } catch (err) {

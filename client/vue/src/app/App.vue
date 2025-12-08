@@ -22,7 +22,7 @@ function checkAuthStatus() {
 
 async function logout() {
   try {
-    await axios.post('http://localhost:8080/api/logout/')
+    await axios.post('https://xrb.unr.dev/api/logout/')
     location.reload()
   } catch (error) {
     console.error('Logout error:', error)

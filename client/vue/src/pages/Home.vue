@@ -24,7 +24,7 @@ const props = defineProps({
 
 async function login() {
   try {
-    const response = await axios.post('http://localhost:8080/api/login/', {
+    const response = await axios.post('https://xrb.unr.dev/api/login/', {
       username: username.value,
       password: password.value
     })
@@ -45,7 +45,7 @@ async function login() {
 
 async function register() {
   try {
-    const response = await axios.post('http://localhost:8080/api/register/', {
+    const response = await axios.post('https://xrb.unr.dev/api/register/', {
       email: email.value,
       username: username.value,
       password: password.value
