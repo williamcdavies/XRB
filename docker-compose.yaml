@@ -2,8 +2,8 @@ services:
   vue:
     build:
       context: client
-    depends_on: 
-      django:
+    depends_on:
+      postgres:
         condition: service_healthy
     container_name: xrb-vue
     ports:
@@ -15,9 +15,6 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    healthcheck:
-      start_period: 30s
-      test: ["CMD", "curl", "--fail", "http://localhost:8000/api"]
     container_name: xrb-django
     env_file:
       - .env
