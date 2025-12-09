@@ -19,7 +19,7 @@ services:
     container_name: xrb-django
     env_file:
       - .env
-    network_mode: "service.nginx"
+    network_mode: "service:nginx"
 
   postgres:
     env_file:
