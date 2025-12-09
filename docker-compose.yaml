@@ -3,8 +3,7 @@ services:
     build:
       context: client
     depends_on: 
-      postgres:
-        condition: service_healthy
+      - django
     container_name: xrb-vue
     ports:
       - "8080:8080"
