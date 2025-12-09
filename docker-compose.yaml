@@ -1,15 +1,25 @@
 services:
+  vue:
+    build:
+      context: client
+    depends_on: 
+      postgres:
+        condition: service_healthy
+    container_name: xrb-vue
+    ports:
+      - "8080:8080"
 
-  django-web:
-    build: .
+  django:
+    build:
+      context: server
     depends_on:
       postgres:
         condition: service_healthy
-    entrypoint: ["/app/entrypoint.sh"]
+    container_name: xrb-django
     env_file:
       - .env
     ports:
-      - "8080:8080"
+      - "8000:8000"
 
   postgres:
     env_file:
@@ -17,7 +27,8 @@ services:
     healthcheck:
       start_period: 30s
       test: ["CMD-SHELL", "pg_isready -d $POSTGRES_DB -U $POSTGRES_USER -h localhost -p $POSTGRES_PORT"]
-    image: postgres:15
+    image: postgres:15-alpine
+    container_name: xrb-postgres
     ports:
       - "5432:5432"
     volumes:
