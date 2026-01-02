@@ -1,11 +1,10 @@
 import pandas as pd
 
-#cleanup:
-#adding alpha, nu, E_1measured, E_2measured, gamma, and time columns with default values 
-#to allow for conversion between X-ray energy bands and radio frequencies and to allow
-#for time evolution plots
-#additionally, 0.0s are replaced before the time column is added to differentiate between deliberate 0.0
-#and unknown values. inf will be our typical placeholder here
+# data cleanup:
+# adding alpha, nu, E_1measured, E_2measured, gamma, and time columns with default values to allow 
+# for conversion between X-ray energy bands and radio frequencies and to allow for time evolution plots
+# additionally, 0.0s are replaced before the time column is added to differentiate between deliberate 
+# 0.0 and unknown values. inf will be our typical placeholder here
 def cleanup(filename):
     #read in the original file exactly
     df = pd.read_csv(
