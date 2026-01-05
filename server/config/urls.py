@@ -25,8 +25,8 @@ from rest_framework.routers         import DefaultRouter
 
 # Create default router and register viewsets
 router = DefaultRouter()
-router.register(r'xrb', XRBViewset, basename='xrb')
 router.register(r'lrlx', LRLXViewset, basename='lrlx')
+router.register(r'xrb', XRBViewset, basename='xrb')
 
 
 urlpatterns = [
