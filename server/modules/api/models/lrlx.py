@@ -9,13 +9,10 @@ class LRLX(models.Model):
         max_length=256
     )
 
-    # `db_column="class"` prevents naming conflict with serializer.
-    # db_column shall be renamed to `classification` in future database patch.
     classification = models.CharField(
         max_length=256,
         null=True,
-        blank=True,
-        db_column="class"
+        blank=True
     )
 
     lr = models.FloatField(
@@ -48,13 +45,10 @@ class LRLX(models.Model):
         blank=True
     )
 
-    # `db_column="uplim"` prevents naming conflict with serializer.
-    # db_column shall be renamed to `uplink` in future database patch.
     uplink = models.CharField(
         max_length=256,
         null=True,
-        blank=True,
-        db_column="uplim"
+        blank=True
     )
 
     alpha = models.FloatField(
