@@ -9,7 +9,7 @@
 
 <!-- Ref: https://daisyui.com/components/navbar/ -->
 <template>
-  <div class="navbar h-24 px-16">
+  <div class="absolute navbar h-24 px-16">
     <div class="flex-1">
       <a class="btn btn-ghost text-xl">XRB</a>
     </div>
