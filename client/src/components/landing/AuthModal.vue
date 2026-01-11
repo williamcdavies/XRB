@@ -14,7 +14,7 @@
 <template>
     <Transition name="pop">
         <div v-if="visible" @click="emit('close')" class="fixed inset-0 flex items-center justify-center">
-            <div @click.stop class="min-h-[36rem] max-h-[36rem] min-w-[48rem] max-w-[48rem] flex flex-row bg-[#212121] rounded-xl overflow-hidden">
+            <div @click.stop class="min-h-[36rem] max-h-[36rem] min-w-[48rem] max-w-[48rem] flex flex-row bg-[#181818] rounded-xl overflow-hidden">
                 <div class="w-1/2"></div>
                 <div class="w-1/2">
                     <img src="../../assets/images/steve-johnson-unsplash.jpg" class="h-full w-full object-cover">

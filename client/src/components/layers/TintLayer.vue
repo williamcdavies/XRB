@@ -8,7 +8,7 @@
 
 <template>
     <Transition name="fade">
-        <div v-if="visible" class="fixed inset-0 bg-black/50"></div>
+        <div v-if="visible" class="fixed inset-0 bg-black/75"></div>
     </Transition>
 </template>
 
