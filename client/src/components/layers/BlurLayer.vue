@@ -8,7 +8,7 @@
 
 <template>
     <Transition name="fade">
-        <div v-if="visible" class="fixed inset-0 bg-black/0 backdrop-blur-[4px]"></div>
+        <div v-if="visible" class="fixed inset-0 backdrop-blur-[8px]"></div>
     </Transition>
 </template>
 
@@ -16,7 +16,7 @@
 <style scoped>
     .fade-enter-active,
     .fade-leave-active {
-        transition: opacity 0.34s;
+        transition: opacity 0.33s;
     }
     
     .fade-enter-from,
