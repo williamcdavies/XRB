@@ -1,24 +1,29 @@
 <script setup lang="ts">
-    import { computed, ref } from 'vue';
-    import BlurLayer       from './BlurLayer.vue';
-    import Hero            from './Hero.vue';
-    // import LoginOverlay    from './LoginOverlay.vue';
-    import Navbar          from './Navbar.vue'
-    // import RegisterOverlay from './RegisterOverlay.vue';
+    import { ref }   from 'vue';
+
+    // Local Components
+    import AuthModal from './AuthModal.vue';
+    import Hero      from './Hero.vue';
+    import Navbar    from './Navbar.vue'
+
+    // Global Components
+    import BlurLayer from '../layers/BlurLayer.vue';
+    import TintLayer from '../layers/TintLayer.vue';
     
-    const renderRegisterOverlay = ref(false)
-    const renderLoginOverlay    = ref(false)
-    const renderBlurLayer       = computed(() => renderRegisterOverlay.value || renderLoginOverlay.value)
+    const renderAuthModal = ref(false)
 </script>
 
 
 <template>
     <!-- Z0 -->
-    <Navbar @register="renderRegisterOverlay = true" @login="renderLoginOverlay = true" />
+    <Navbar @register="renderAuthModal = true" @login="renderAuthModal = true" />
     <Hero />
-
+    
     <!-- Z1 -->
-    <BlurLayer :visible="renderBlurLayer" />
+    <TintLayer :visible="renderAuthModal" />
+
+    <!-- Z2 -->
+    <AuthModal :visible="renderAuthModal" @close="renderAuthModal = false" />
 </template>
 
 
