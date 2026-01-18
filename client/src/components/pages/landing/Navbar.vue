@@ -1,8 +1,7 @@
 <script setup lang="ts">
   // Ref: https://vuejs.org/guide/components/events.html
   const emit = defineEmits<{
-    (e: 'register'): void
-    (e: 'login'): void
+    (e: 'auth'): void
   }>()
 </script>
 
@@ -15,8 +14,8 @@
     </div>
     <div class="flex-none">
       <ul class="menu menu-horizontal">
-        <li class="px-4"><button @click="emit('register')">Sign up</button></li>
-        <li class="px-4"><button @click="emit('login')">Log in</button></li>
+        <li class="px-4"><button @click="emit('auth')">Sign up</button></li>
+        <li class="px-4"><button @click="emit('auth')">Log in</button></li>
       </ul>
     </div>
   </div>
