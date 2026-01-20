@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { ref }   from 'vue';
-    import BlurLayer from '../../layers/BlurLayer.vue';
+    // import BlurLayer from '../../layers/BlurLayer.vue';
     import TintLayer from '../../layers/TintLayer.vue';
     import AuthModal from '../../modals/auth';
     import Hero      from './Hero.vue';
