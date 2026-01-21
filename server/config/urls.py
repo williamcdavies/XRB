@@ -17,17 +17,8 @@ Including another URLconf
 from django.contrib                import admin
 from django.urls                   import include, path
 
-from rest_framework.routers        import DefaultRouter
-
-from server.modules.api.xrb.views  import XRBViewset
-from server.modules.api.lrlx.views import LRLXViewset
-
-# Create a router and register viewsets
-router = DefaultRouter()
-router.register(r'xrb', XRBViewset, basename='xrb')
-router.register(r'lrlx', LRLXViewset, basename='lrlx')
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
+    path('api/lrlx/', include('modules.api.lrlx.urls')),
+    path('api/xrb/', include('modules.api.xrb.urls')),
 ]
