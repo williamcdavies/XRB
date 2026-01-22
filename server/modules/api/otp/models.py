@@ -15,6 +15,7 @@ class OTP(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     is_verified = models.BooleanField(default=False)
 
+    @staticmethod
     def generate_otp():
         return ''.join(random.choices(string.digits, k=6))
     
@@ -22,6 +23,7 @@ class OTP(models.Model):
         expiry_time = self.created_at + timedelta(minutes=settings.OTP_EXPIRY_MINUTES)
         return timezone.now() < expiry_time and not self.is_verified
     
+    @classmethod
     def create_otp(cls, user):
         # invalidate all previous OTPs for this user
         cls.objects.filter(user=user, is_verified=False).update(is_verified=True)
