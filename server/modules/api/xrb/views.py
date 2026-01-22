@@ -1,7 +1,7 @@
 from rest_framework                     import viewsets
 
-from modules.api.xrb.models      import XRB
-from modules.api.xrb.serializers import XRBSerializer
+from .models      import XRB
+from .serializers import XRBSerializer
 
 class XRBViewset(viewsets.ModelViewSet):
     queryset = XRB.objects.all()
