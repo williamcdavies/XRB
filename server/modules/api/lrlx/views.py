@@ -1,7 +1,7 @@
 from rest_framework                      import viewsets
 
-from server.modules.api.lrlx.models      import LRLX
-from server.modules.api.lrlx.serializers import LRLXSerializer
+from modules.api.lrlx.models      import LRLX
+from modules.api.lrlx.serializers import LRLXSerializer
 
 class LRLXViewset(viewsets.ModelViewSet):
     queryset = LRLX.objects.all()
