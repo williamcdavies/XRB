@@ -35,19 +35,36 @@
 
             // initialize the calculator once the script is loaded
             const calculator = Desmos.GraphingCalculator(calculatorRef.value, options);
+            
+            // initialize array of expressions that will be filled with points of lrlx data
+            var lrlxPoints = []
 
             fetchLRLXData().then((lrlxArray) => {
+                // table defaults to hidden since we are already displaying points as expressions
                 var lrColumn = {
                     latex: 'x',
+                    hidden: true,
                     values: []
                 }
                 var lxColumn = {
                     latex: 'y',
+                    hidden: true,
                     values: []
                 }
                 for (var i = 0 ; i < lrlxArray.length ; i++) {
-                    lrColumn.values.push(formatScientificToLatex(lrlxArray[i].lr.toString()))
-                    lxColumn.values.push(formatScientificToLatex(lrlxArray[i].lx.toString()))
+                    const lrlxEntry = lrlxArray[i];
+
+                    // add point to table
+                    lrColumn.values.push(formatScientificToLatex(lrlxEntry.lr.toString()))
+                    lxColumn.values.push(formatScientificToLatex(lrlxEntry.lx.toString()))
+
+                    // add point as expression
+                    lrlxPoints.push({ 
+                        id: lrlxEntry.id, 
+                        latex: `(${formatScientificToLatex(lrlxEntry.lr.toString())}, ${formatScientificToLatex(lrlxEntry.lx.toString())})` ,
+                        label: lrlxEntry.name,
+                        showLabel: true
+                    })
                 }
 
                 const lrlxTable = {
@@ -55,6 +72,7 @@
                     columns: [lrColumn, lxColumn]
                 }
                 calculator.setExpression(lrlxTable)
+                calculator.setExpressions(lrlxPoints)
             });
         };
 
