@@ -27,24 +27,34 @@
         script.onload = () => {
             // set options for desmos calculator
             const options = {
-                expressions: false,
-                logScales: true
+                expressions: true,
+                logScales: true,
+                xAxisScale: 'logarithmic',
+                yAxisScale: 'logarithmic'
             }
 
             // initialize the calculator once the script is loaded
             const calculator = Desmos.GraphingCalculator(calculatorRef.value, options);
 
             fetchLRLXData().then((lrlxArray) => {
-                for (var i = 0 ; i < lrlxArray.length ; i++) {
-                    const lrlxEntry = lrlxArray[i];
-                    calculator.setExpression({ 
-                        id: lrlxEntry.id, 
-                        latex: `(${formatScientificToLatex(lrlxEntry.lr.toString())}, ${formatScientificToLatex(lrlxEntry.lx.toString())})` ,
-                        label: lrlxEntry.name,
-                        showLabel: true
-                    })
+                var lrColumn = {
+                    latex: 'x',
+                    values: []
                 }
-                calculator.focusFirstExpression();
+                var lxColumn = {
+                    latex: 'y',
+                    values: []
+                }
+                for (var i = 0 ; i < lrlxArray.length ; i++) {
+                    lrColumn.values.push(formatScientificToLatex(lrlxArray[i].lr.toString()))
+                    lxColumn.values.push(formatScientificToLatex(lrlxArray[i].lx.toString()))
+                }
+
+                const lrlxTable = {
+                    type: 'table',
+                    columns: [lrColumn, lxColumn]
+                }
+                calculator.setExpression(lrlxTable)
             });
         };
 
