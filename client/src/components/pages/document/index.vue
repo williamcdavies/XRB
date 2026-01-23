@@ -1,6 +1,5 @@
 <script setup lang="ts">
     import axios from 'axios';
-    import Desmos from 'desmos';
     import { useTemplateRef, onMounted } from 'vue';
 
     const calculatorRef = useTemplateRef('calculator');
@@ -28,7 +27,7 @@
         script.onload = () => {
             // set options for desmos calculator
             const options = {
-                expressions: true,
+                expressions: false,
                 logScales: true
             }
 
@@ -45,6 +44,7 @@
                         showLabel: true
                     })
                 }
+                calculator.focusFirstExpression();
             });
         };
 
