@@ -1,6 +1,10 @@
 asgiref==3.11.0
 Django==5.2.8
 django-cors-headers==4.9.0
+django-otp==1.7.0                       # OTP Library
+                                        # Ref: https://django-otp-official.readthedocs.io/en/stable/auth.html#authenticating-users
+django-two-factor-auth==1.18.1          # Required by OTP
+                                        # Ref: https://django-two-factor-auth.readthedocs.io/en/1.18.1/
 djangorestframework==3.16.1
 djangorestframework-simplejwt==5.5.1    # JWT Authentication
                                         # Ref: https://www.geeksforgeeks.org/python/jwt-authentication-with-django-rest-framework/
