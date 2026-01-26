@@ -19,6 +19,7 @@ from django.urls    import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/lrlx/', include('modules.api.lrlx.urls')),
-    path('api/xrb/', include('modules.api.xrb.urls')),
+    # path('api/lrlx/', include('modules.api.lrlx.urls')),
+    # path('api/xrb/', include('modules.api.xrb.urls')),
+    path('api/auth/', include('modules.api.auth.urls')),
 ]
