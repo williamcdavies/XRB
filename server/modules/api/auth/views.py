@@ -39,7 +39,6 @@ def start(request):
         defaults={'email': email, 'confirmed': True},
     )
 
-    token = email_device.generate_token()
-    email_device.send_mail(token)
+    email_device.generate_challenge()
 
     return Response()

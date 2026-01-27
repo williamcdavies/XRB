@@ -11,3 +11,4 @@ djangorestframework-simplejwt==5.5.1    # JWT Authentication
 gunicorn==23.0.0
 psycopg==3.2.12
 psycopg-binary==3.2.12
+whitenoise==6.11.0
