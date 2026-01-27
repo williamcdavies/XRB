@@ -9,9 +9,5 @@ djangorestframework==3.16.1
 djangorestframework-simplejwt==5.5.1    # JWT Authentication
                                         # Ref: https://www.geeksforgeeks.org/python/jwt-authentication-with-django-rest-framework/
 gunicorn==23.0.0
-packaging==25.0
 psycopg==3.2.12
 psycopg-binary==3.2.12
-sqlparse==0.5.4
-typing_extensions==4.15.0
-whitenoise==6.11.0
