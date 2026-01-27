@@ -11,7 +11,7 @@
         return response.data;
     }
 
-    function formatScientificToLatex(value) {
+    function formatScientificToLatex(value: string) {
         // start by splitting the value at 'e'
         const pair = value.split('e')
         
@@ -34,22 +34,23 @@
             }
 
             // initialize the calculator once the script is loaded
-            const calculator = Desmos.GraphingCalculator(calculatorRef.value, options);
+            // (window as any) to prevent compilation error since Desmos is loaded when page loads
+            const calculator = (window as any).Desmos.GraphingCalculator(calculatorRef.value, options);
             
             // initialize array of expressions that will be filled with points of lrlx data
-            var lrlxPoints = []
+            let lrlxPoints = []
 
             fetchLRLXData().then((lrlxArray) => {
                 // table defaults to hidden since we are already displaying points as expressions
                 var lrColumn = {
                     latex: 'x',
                     hidden: true,
-                    values: []
+                    values: [] as string[]
                 }
                 var lxColumn = {
                     latex: 'y',
                     hidden: true,
-                    values: []
+                    values: [] as string[]
                 }
                 for (var i = 0 ; i < lrlxArray.length ; i++) {
                     const lrlxEntry = lrlxArray[i];
@@ -76,7 +77,7 @@
             });
         };
 
-        // Add the Desmos CDN to the top of the page
+        // add the Desmos CDN to the top of the page
         document.head.appendChild(script);
     });
 </script>
