@@ -1,53 +1,73 @@
 <template>
     <div class="drawer lg:drawer-open">
-    <input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
-    <div class="drawer-content">
-        <!-- Navbar -->
-        <!-- Page content here -->
-        <div class="p-4">Page Content</div>
-    </div>
-
-    <div class="drawer-side is-drawer-close:overflow-visible">
-        <label for="my-drawer-4" aria-label="close sidebar" class="drawer-overlay"></label>
-        <div class="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
-
-        <!-- Sidebar content here -->
-            <!-- full name sidebar icon -->
-            <ul class="menu w-full grow">
-            <label for="my-drawer-4" aria-label="open sidebar" class="btn btn-square btn-ghost">
-                <!-- Sidebar toggle icon -->
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor" class="my-1.5 inline-block size-4"><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path><path d="M9 4v16"></path><path d="M14 10l2 2l-2 2"></path></svg>
-                
-            </label>
-
-            <!-- List item -->
-            <li>
-            <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="New">
-                <!-- Home icon -->
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor" class="my-1.5 inline-block size-4"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
-                <span class="is-drawer-close:hidden">New</span>
-            </button>
-            </li>
-
-            <!-- List item -->
-            <li>
-            <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Groups">
-                <!-- Settings icon -->
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor" class="my-1.5 inline-block size-4"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
-                <span class="is-drawer-close:hidden">My Groups</span>
-            </button>
-            </li>
-
-            <!-- List item -->
-            <li>
-            <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Account">
-                <!-- Settings icon -->
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor" class="my-1.5 inline-block size-4"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
-                <span class="is-drawer-close:hidden">Accounts</span>
-            </button>
-            </li>
-        </ul>
+        <input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
+        <div class="drawer-content">
         </div>
-    </div>
+
+        <div class="drawer-side is-drawer-close:overflow-visible">
+            <label for="my-drawer-4" aria-label="close sidebar" class="drawer-overlay"></label>
+            <div class="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
+                <!-- Sidebar content here -->
+
+                <ul class="menu w-full grow">
+                    <!-- Sidebar -->
+                    <label for="my-drawer-4" aria-label="open sidebar" class="btn btn-square btn-ghost">
+                        <!-- Sidebar toggle icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linejoin="round"
+                            stroke-linecap="round" stroke-width="1" fill="none" stroke="currentColor"
+                            class="my-1.5 inline-block size-6">
+                            <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z">
+                            </path>
+                            <path d="M9 4v16"></path>
+                            <path d="M14 10l2 2l-2 2"></path>
+                        </svg>
+                    </label>
+
+                    <!-- New item -->
+                    <li>
+                        <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right p-2" data-tip="New">
+                            <!-- Groups icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
+                                stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            </svg>
+
+
+                            <span class="is-drawer-close:hidden">New</span>
+                        </button>
+                    </li>
+
+                    <!-- Groups item -->
+                    <li>
+                        <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right p-2" data-tip="Groups">
+                            <!-- Groups icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
+                                stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z" />
+                            </svg>
+
+                            <span class="is-drawer-close:hidden">Groups</span>
+                        </button>
+                    </li>
+
+                    <!-- List item -->
+                    <li>
+                        <button class="fixed bottom-3 is-drawer-close:tooltip is-drawer-close:tooltip-right p-2"
+                            data-tip="Account">
+                            <!-- Settings icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
+                                stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            </svg>
+
+                            <span class="is-drawer-close:hidden">Account</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 </template>
