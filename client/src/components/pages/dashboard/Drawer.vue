@@ -26,7 +26,7 @@
                     <!-- New item -->
                     <li>
                         <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right p-2" data-tip="New">
-                            <!-- Groups icon -->
+                            <!-- New icon -->
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
                                 stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -52,7 +52,7 @@
                         </button>
                     </li>
 
-                    <!-- List item -->
+                    <!-- Settings item -->
                     <li>
                         <button class="fixed bottom-3 is-drawer-close:tooltip is-drawer-close:tooltip-right p-2"
                             data-tip="Account">
