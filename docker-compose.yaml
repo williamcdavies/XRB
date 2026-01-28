@@ -2,13 +2,11 @@ services:
   nginx:
     build:
       context: client
-    depends_on:
-      postgres:
-        condition: service_healthy
     container_name: xrb-nginx
     ports:
       - "8080:8080"
-      - "8000:8000"
+    networks:
+      - xrb_network
 
   django:
     build:
@@ -19,7 +17,12 @@ services:
     container_name: xrb-django
     env_file:
       - .env
-    network_mode: "service:nginx"
+    hostname: django
+    ports:
+      - "8000:8000"
+      - "10021:10021" # 10021 is used as port for FTP server since 21 requires root access
+    networks:
+      - xrb_network
 
   postgres:
     env_file:
@@ -31,8 +34,14 @@ services:
     container_name: xrb-postgres
     ports:
       - "5432:5432"
+    networks:
+      - xrb_network
     volumes:
       - postgres_data:/var/lib/postgresql/data
     
+networks:
+  xrb_network:
+    driver: bridge
+
 volumes:
   postgres_data:
