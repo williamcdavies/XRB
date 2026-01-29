@@ -9,6 +9,9 @@ COPY requirements.txt ./
 RUN pip install --upgrade pip && \
     pip install -r requirements.txt
 
+# install curl for healthcheck
+RUN apt-get update -yq && apt-get install -yqq curl
+
 COPY . .
 
 EXPOSE 8000
