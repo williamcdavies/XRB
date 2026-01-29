@@ -22,12 +22,17 @@ from rest_framework.routers import DefaultRouter
 from modules.api.views.xrb import XRBViewset
 from modules.api.views.lrlx import LRLXViewset
 from modules.api.views.auth import register, logout
+from modules.api.views.files import UserFileViewSet, GroupFileViewSet, SharedFileViewSet
 from rest_framework.authtoken.views import obtain_auth_token
 
 # Create a router and register viewsets
+# router URLs are prepended with /api
 router = DefaultRouter()
 router.register(r'xrb', XRBViewset, basename='xrb')
 router.register(r'lrlx', LRLXViewset, basename='lrlx')
+router.register(r'files/user', UserFileViewSet, basename='userfile')
+router.register(r'files/group', GroupFileViewSet, basename='groupfile')
+router.register(r'files/shared', SharedFileViewSet, basename='sharedfile')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
