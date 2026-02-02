@@ -1,5 +1,7 @@
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes: dark --default;
+}
 
 @theme {
     --color-xrb-background-1: oklch(0.1277 0.0244 29.58);
