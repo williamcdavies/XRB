@@ -1,9 +1,9 @@
 import { createWebHistory, createRouter } from 'vue-router'
 
-import LandingPage from './components/pages/landing'
+import DashboardPage from './components/pages/dashboard'
 
 const routes = [
-  { path: '/', component: LandingPage }
+  { path: '/', component: DashboardPage }
 ]
 
 export const router = createRouter({
