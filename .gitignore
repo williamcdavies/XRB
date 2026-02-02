@@ -32,6 +32,7 @@ share/python-wheels/
 *.egg
 MANIFEST
 **/node_modules
+db.sql
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
