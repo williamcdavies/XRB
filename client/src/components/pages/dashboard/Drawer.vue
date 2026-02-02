@@ -6,12 +6,12 @@
 
         <div class="drawer-side is-drawer-close:overflow-visible">
             <label for="my-drawer-4" aria-label="close sidebar" class="drawer-overlay"></label>
-            <div class="flex min-h-full flex-col items-start bg-mint-200 is-drawer-close:w-14 is-drawer-open:w-64">
+            <div class="flex min-h-full flex-col items-start bg-xrb-background-1 is-drawer-close:w-14 is-drawer-open:w-64 border-r border-xrb-border-1">
                 <!-- Sidebar content here -->
 
                 <ul class="menu w-full grow">
                     <!-- Sidebar -->
-                    <label for="my-drawer-4" aria-label="open sidebar" class="btn btn-square btn-ghost">
+                    <label for="my-drawer-4" aria-label="open sidebar" class=" bg-xrb-background-1 btn btn-square btn-ghost">
                         <!-- Sidebar toggle icon -->
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linejoin="round"
                             stroke-linecap="round" stroke-width="1" fill="none" stroke="currentColor"

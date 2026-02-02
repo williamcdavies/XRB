@@ -1,10 +1,14 @@
 @import "tailwindcss";
 @plugin "daisyui" {
-  themes: dark --default, dark --prefersdark;
+  themes: light --default;
 }
 
 @theme {
-    --color-mint-200: oklch(0.8798 0.1973 151.41);
+    --color-xrb-background-1: oklch(0.1277 0.0244 29.58);
+    --color-xrb-border-1: oklch(0.3161 0.0052 106.7);
+    --color-xrb-accent-1: oklch(0.6362 0.1765 46.711);
+    --color-xrb-accent-2: oklch(0.3377 0.1244 32.6);
+    --color-xrb-accent-3: oklch(0.2822 0.1097 30.38);
 }
 
 :root {
@@ -12,7 +16,7 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: dark;
+  color-scheme: light;
   color: rgba(255, 255, 255, 0.87);
   background-color: rgb(227, 49, 240);
 
@@ -22,7 +26,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   :root {
     color: #213547;
     background-color: #ffffff;
