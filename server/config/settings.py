@@ -73,8 +73,6 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 OTP_EMAIL_SUBJECT = "Your one-time login code"
 OTP_EMAIL_BODY_TEMPLATE = """
-Hello,
-
 Your one-time login code is:
 
 {{ token }}
