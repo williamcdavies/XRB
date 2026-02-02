@@ -3,6 +3,10 @@
   themes: dark --default, dark --prefersdark;
 }
 
+@theme {
+    --color-mint-200: oklch(0.8798 0.1973 151.41);
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
