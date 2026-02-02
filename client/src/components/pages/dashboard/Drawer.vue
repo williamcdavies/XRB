@@ -1,39 +1,38 @@
 <template>
     <div class="drawer lg:drawer-open">
-        <input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
-        <div class="drawer-content">
-        </div>
+        <input id="dashboard-drawer" type="checkbox" class="drawer-toggle" />
 
         <div class="drawer-side is-drawer-close:overflow-visible">
-            <label for="my-drawer-4" aria-label="close sidebar" class="drawer-overlay"></label>
             <div class="flex min-h-full flex-col items-start bg-xrb-background-1 is-drawer-close:w-14 is-drawer-open:w-64 border-r border-xrb-border-1">
                 <!-- Sidebar content here -->
-
                 <ul class="menu w-full grow">
                     <!-- Sidebar -->
-                    <label for="my-drawer-4" aria-label="open sidebar" class=" bg-xrb-background-1 btn btn-square btn-ghost">
-                        <!-- Sidebar toggle icon -->
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linejoin="round"
-                            stroke-linecap="round" stroke-width="1" fill="none" stroke="currentColor"
-                            class="my-1.5 inline-block size-6">
-                            <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z">
-                            </path>
-                            <path d="M9 4v16"></path>
-                            <path d="M14 10l2 2l-2 2"></path>
-                        </svg>
-                    </label>
+                    <li>
+                        <label for="dashboard-drawer" aria-label="open sidebar" class="btn btn-square btn-ghost is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Open Sidebar">
+                            <!-- Sidebar toggle icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linejoin="round"
+                                stroke-linecap="round" stroke-width="1" stroke="currentColor"
+                                class="my-1.5 inline-block size-6">
+                                <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z">
+                                </path>
+                                <path d="M9 4v16"></path>
+                                <path d="M14 10l2 2l-2 2"></path>
+                            </svg>
+                        </label>
+                    </li>
+
+                    <!-- Spacer -->
+                    <div class="m-2"></div>
 
                     <!-- New item -->
                     <li>
                         <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right p-2" data-tip="New">
                             <!-- New icon -->
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
-                                stroke="currentColor" class="size-6">
+                                stroke="currentColor" class="hover:xrb-accent-1 size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                             </svg>
-
-
                             <span class="is-drawer-close:hidden">New</span>
                         </button>
                     </li>
@@ -52,7 +51,15 @@
                         </button>
                     </li>
 
-                    <!-- Settings item -->
+                    <!-- Spacer -->
+                    <div class="m-2"></div>
+
+                    <!-- Recents -->
+                    <div>
+                        <span class="item-inline is-drawer-close:hidden p-2 text-xrb-accent-1 flex justify-start">Recents</span>
+                    </div>
+
+                    <!-- Account item -->
                     <li>
                         <button class="fixed bottom-3 is-drawer-close:tooltip is-drawer-close:tooltip-right p-2"
                             data-tip="Account">
