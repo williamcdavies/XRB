@@ -1,11 +1,14 @@
 asgiref==3.11.0
 Django==5.2.8
 django-cors-headers==4.9.0
+django-otp==1.7.0                       # OTP Library
+                                        # Ref: https://django-otp-official.readthedocs.io/en/stable/auth.html#authenticating-users
+django-two-factor-auth==1.18.1          # Required by OTP
+                                        # Ref: https://django-two-factor-auth.readthedocs.io/en/1.18.1/
 djangorestframework==3.16.1
+djangorestframework-simplejwt==5.5.1    # JWT Authentication
+                                        # Ref: https://www.geeksforgeeks.org/python/jwt-authentication-with-django-rest-framework/
 gunicorn==23.0.0
-packaging==25.0             # Redundant: Django dependency; plan for removal. Testing required.
 psycopg==3.2.12
-psycopg-binary==3.2.12      # Redundant: Made redundant by psycopg; plan for removal. Testing required.
-sqlparse==0.5.4             # Redundant: Django dependency; plan for removal. Testing required.
-typing_extensions==4.15.0   # Redundant: Django dependency; plan for removal. Testing required.
-whitenoise==6.11.0          # Redundant: Made redundant by nginx; plan for removal. Testing required.
+psycopg-binary==3.2.12
+whitenoise==6.11.0

@@ -9,6 +9,9 @@ services:
     ports:
       - "8080:8080"
       - "8000:8000"
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
 
   django:
     build:
