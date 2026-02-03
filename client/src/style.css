@@ -1,6 +1,6 @@
 @import "tailwindcss";
-@plugin "daisyui" {
-  themes: dark --default, dark --prefersdark;
+@plugin "daisyui"{
+  themes: dark --default;
 }
 
 :root {
@@ -10,7 +10,9 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: rgb(227, 49, 240);
+  background-color: rgb(255, 0, 153); /* FOR DEV */
+
+  /* background-color: oklch(0.1277 0.0244 29.58); FOR PROD */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -18,7 +20,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-@media (prefers-color-scheme: light) {
+@media (dark) {
   :root {
     color: #213547;
     background-color: #ffffff;
