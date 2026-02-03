@@ -1,6 +1,14 @@
 @import "tailwindcss";
-@plugin "daisyui"{
+@plugin "daisyui" {
   themes: dark --default;
+}
+
+@theme {
+    --color-xrb-background-1: oklch(0.1277 0.0244 29.58);
+    --color-xrb-border-1: oklch(0.3161 0.0052 106.7);
+    --color-xrb-accent-1: oklch(0.6362 0.1765 46.711);
+    --color-xrb-accent-2: oklch(0.3377 0.1244 32.6);
+    --color-xrb-accent-3: oklch(0.2822 0.1097 30.38);
 }
 
 :root {
