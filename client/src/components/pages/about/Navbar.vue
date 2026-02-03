@@ -10,7 +10,7 @@
 <template>
   <div class="absolute navbar h-24 px-16">
     <div class="flex-1">
-      <a class="btn btn-ghost text-xl">XRB</a>
+      <RouterLink to="/" class="btn btn-ghost text-xl">XRB</RouterLink>
     </div>
   </div>
 </template>

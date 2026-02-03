@@ -10,10 +10,11 @@
 <template>
   <div class="absolute navbar h-24 px-16">
     <div class="flex-1">
-      <a class="btn btn-ghost text-xl">XRB</a>
+      <RouterLink to="/" class="btn btn-ghost text-xl">XRB</RouterLink>
     </div>
     <div class="flex-none">
       <ul class="menu menu-horizontal">
+        <li class="px-4"><RouterLink to="/about">About</RouterLink></li>
         <li class="px-4"><button @click="emit('auth')">Sign up</button></li>
         <li class="px-4"><button @click="emit('auth')">Log in</button></li>
       </ul>
