@@ -1,5 +1,6 @@
 <template>
-    <div class="drawer lg:drawer-open">
+    <!-- ref: https://daisyui.com/components/drawer/?lang=en, https://heroicons.com -->
+    <div class="drawer md:drawer-open lg:drawer-open">
         <input id="dashboard-drawer" type="checkbox" class="drawer-toggle" />
 
         <div class="drawer-side is-drawer-close:overflow-visible">
