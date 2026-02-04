@@ -2,6 +2,7 @@ services:
   nginx:
     build:
       context: client
+      network: host
     container_name: xrb-nginx
     depends_on:
       postgres:
@@ -16,6 +17,7 @@ services:
   django:
     build:
       context: server
+      network: host
     container_name: xrb-django
     depends_on:
       postgres:
