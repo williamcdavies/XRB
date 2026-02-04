@@ -1,17 +1,17 @@
 <template>
     <!-- ref: https://daisyui.com/components/drawer/?lang=en, https://heroicons.com -->
-    <div class="drawer md:drawer-open lg:drawer-open">
+    <div class="drawer sm:drawer-open md:drawer-open lg:drawer-open">
         <input id="dashboard-drawer" type="checkbox" class="drawer-toggle" />
 
         <div class="drawer-side is-drawer-close:overflow-visible">
             <div
                 class="flex min-h-full flex-col items-start bg-xrb-background-1 is-drawer-close:w-14 is-drawer-open:w-64 border-r border-xrb-border-1">
                 <!-- Sidebar content here -->
-                <ul class="menu w-full grow">
+                <ul class="menu w-full grow p-0">
                     <!-- Sidebar -->
                     <li>
                         <label for="dashboard-drawer" aria-label="open sidebar"
-                            class="is-drawer-open:ml-auto p-2 cursor-pointer tooltip tooltip-right tooltip-neutral group"
+                            class="is-drawer-open:ml-auto p-4 cursor-pointer rounded-none tooltip tooltip-right tooltip-neutral group"
                             data-tip="Toggle Sidebar">
                             <!-- Sidebar toggle icon -->
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linejoin="round"
@@ -29,7 +29,7 @@
 
                     <!-- New item -->
                     <li>
-                        <button class="p-2 tooltip tooltip-right tooltip-neutral group" data-tip="New">
+                        <button class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group" data-tip="New">
                             <!-- New item icon -->
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
                                 stroke="currentColor"
@@ -44,7 +44,7 @@
 
                     <!-- Groups item -->
                     <li>
-                        <button class="p-2 tooltip tooltip-right tooltip-neutral group" data-tip="Groups">
+                        <button class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group" data-tip="Groups">
                             <!-- Groups icon -->
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
                                 stroke="currentColor"
@@ -64,14 +64,14 @@
                     <!-- Recents -->
                     <div>
                         <span
-                            class="item-inline is-drawer-close:hidden p-2 text-xrb-accent-1 flex justify-start select-none">Recents</span>
+                            class="item-inline is-drawer-close:hidden p-4 text-xrb-accent-1 flex justify-start select-none">Recents</span>
                     </div>
 
                     <!-- Force to Bottom -->
-                    <div class="mt-auto is-drawer-open:border-t-1 border-xrb-border-1">
+                    <div class="mt-auto border-t-1 border-xrb-border-1">
                         <!-- Account item -->
                         <li>
-                            <button class=" p-2 tooltip tooltip-right tooltip-neutral group" data-tip="Account">
+                            <button class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group" data-tip="Account">
                                 <!-- Account icon -->
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
                                     stroke="currentColor"
