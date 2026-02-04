@@ -1,5 +1,6 @@
 <template>
-    <div class="drawer lg:drawer-open">
+    <!-- ref: https://daisyui.com/components/drawer/?lang=en, https://heroicons.com -->
+    <div class="drawer md:drawer-open lg:drawer-open">
         <input id="dashboard-drawer" type="checkbox" class="drawer-toggle" />
 
         <div class="drawer-side is-drawer-close:overflow-visible">
@@ -10,8 +11,7 @@
                     <!-- Sidebar -->
                     <li>
                         <label for="dashboard-drawer" aria-label="open sidebar"
-                            class="is-drawer-close:tooltip is-drawer-close:tooltip-right is-drawer-open:ml-auto p-2 cursor-pointer"
-                            data-tip="Open Sidebar">
+                            class="is-drawer-open:ml-auto p-2 cursor-pointer">
                             <!-- Sidebar toggle icon -->
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linejoin="round"
                                 stroke-linecap="round" stroke-width="1" stroke="currentColor" fill="none"
@@ -29,7 +29,7 @@
 
                     <!-- New item -->
                     <li>
-                        <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right p-2" data-tip="New">
+                        <button class="p-2" data-tip="New">
                             <!-- New icon -->
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
                                 stroke="currentColor" class="hover:xrb-accent-1 size-6">
@@ -42,7 +42,7 @@
 
                     <!-- Groups item -->
                     <li>
-                        <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right p-2" data-tip="Groups">
+                        <button class="p-2" data-tip="Groups">
                             <!-- Groups icon -->
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
                                 stroke="currentColor" class="size-6">
@@ -66,7 +66,7 @@
                     <div class="mt-auto is-drawer-open:border-t-1 border-xrb-border-1">
                         <!-- Account item -->
                         <li>
-                            <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right p-2"
+                            <button class="p-2"
                                 data-tip="Account">
                                 <!-- Settings icon -->
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"

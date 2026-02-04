@@ -1,14 +1,15 @@
 @import "tailwindcss";
+
 @plugin "daisyui" {
   themes: dark --default;
 }
 
 @theme {
-    --color-xrb-background-1: oklch(0.1277 0.0244 29.58);
-    --color-xrb-border-1: oklch(0.3161 0.0052 106.7);
-    --color-xrb-accent-1: oklch(0.6362 0.1765 46.711);
-    --color-xrb-accent-2: oklch(0.3377 0.1244 32.6);
-    --color-xrb-accent-3: oklch(0.2822 0.1097 30.38);
+  --color-xrb-background-1: oklch(0.1277 0.0244 29.58);
+  --color-xrb-border-1: oklch(0.3161 0.0052 106.7);
+  --color-xrb-accent-1: oklch(0.6362 0.1765 46.711);
+  --color-xrb-accent-2: oklch(0.3377 0.1244 32.6);
+  --color-xrb-accent-3: oklch(0.2822 0.1097 30.38);
 }
 
 :root {
@@ -18,7 +19,8 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: rgb(255, 0, 153); /* FOR DEV */
+  background-color: rgb(255, 0, 153);
+  /* FOR DEV */
 
   /* background-color: oklch(0.1277 0.0244 29.58); FOR PROD */
 
@@ -33,9 +35,11 @@
     color: #213547;
     background-color: #ffffff;
   }
+
   a:hover {
     color: #747bff;
   }
+
   button {
     background-color: #f9f9f9;
   }
