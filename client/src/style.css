@@ -10,12 +10,15 @@
   --color-xrb-accent-1: oklch(0.6362 0.1765 46.711);
   --color-xrb-accent-2: oklch(0.3377 0.1244 32.6);
   --color-xrb-accent-3: oklch(0.2822 0.1097 30.38);
+
+  --color-tooltip-primary: var(--color-xrb-accent-1);
 }
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
@@ -51,3 +54,14 @@
   font-weight: normal;
   font-style: normal;
 }
+
+@layer components {
+  .tooltip-primary::before {
+    --tooltip-color: var(--color-xrb-accent-1);
+    --tooltip-text-color: var(--color-xrb-background-1);
+    
+    background-color: var(--tooltip-color);
+    color: var(--tooltip-text-color);
+  }
+}
+
