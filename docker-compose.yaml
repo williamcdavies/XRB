@@ -2,6 +2,7 @@ services:
   nginx:
     build:
       context: client
+      network: host
     depends_on:
       postgres:
         condition: service_healthy
@@ -16,6 +17,7 @@ services:
   django:
     build:
       context: server
+      network: host
     depends_on:
       postgres:
         condition: service_healthy
