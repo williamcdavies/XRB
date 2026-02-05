@@ -2,10 +2,9 @@
     <!-- ref: https://daisyui.com/components/drawer/?lang=en, https://heroicons.com -->
     <div class="drawer sm:drawer-open md:drawer-open lg:drawer-open">
         <input id="dashboard-drawer" type="checkbox" class="drawer-toggle" />
-
         <div class="drawer-side is-drawer-close:overflow-visible">
             <div
-                class="flex min-h-full flex-col items-start bg-xrb-background-1 is-drawer-close:w-14 is-drawer-open:w-64 border-r border-xrb-border-1">
+                class="flex min-h-full flex-col items-start bg-xrb-background-1 is-drawer-close:w-14 is-drawer-open:w-64 border-r border-xrb-border-1 transition-[width] duration-300">
                 <!-- Sidebar content here -->
                 <ul class="menu w-full grow p-0">
                     <!-- Sidebar -->

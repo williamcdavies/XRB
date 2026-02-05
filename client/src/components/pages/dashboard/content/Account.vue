@@ -3,7 +3,8 @@
 
 
 <template>
-    <div class="hero min-h-screen bg-xrb-accent-2"></div>
+    <div class="hero min-h-screen bg-xrb-bg-xrb-background-2">ACCOUNT</div>
+
 </template>
 
 
