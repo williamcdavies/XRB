@@ -1,12 +1,12 @@
 <script setup lang="ts">
-    //handle button clicks and navigation between components
-    const emit = defineEmits<{
-        changeView: [view: string]
-    }>();
+//handle button clicks and navigation between components
+const emit = defineEmits<{
+    changeView: [view: string]
+}>();
 
-    const handleNavigation = (view: string) => {
-        emit('changeView', view);
-    };
+const handleNavigation = (view: string) => {
+    emit('changeView', view);
+};
 </script>
 
 <template>
@@ -39,7 +39,9 @@
 
                     <!-- New item -->
                     <li>
-                        <button class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group" data-tip="New">
+                        <button
+                            class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group"
+                            data-tip="New">
                             <!-- New item icon -->
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
                                 stroke="currentColor"
@@ -48,28 +50,31 @@
                                     d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                             </svg>
                             <span
-                                class="is-drawer-close:hidden select-none transition-colors duration-200 group-hover:text-xrb-accent-1">New</span>
+                                class="is-drawer-close:hidden select-none transition-colors duration-200 group-hover:text-xrb-accent-1 leading-6">New</span>
                         </button>
                     </li>
 
                     <!-- Home item -->
                     <li>
-                        <button @click="handleNavigation('home')" class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group" data-tip="Home">
+                        <button @click="handleNavigation('home')"
+                            class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group" data-tip="Home">
                             <!-- Home icon -->
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="group-hover:stroke-xrb-accent-1 size-6 transition-colors duration-300">
+                                stroke="currentColor"
+                                class="group-hover:stroke-xrb-accent-1 size-6 transition-colors duration-300">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
                             </svg>
 
                             <span
-                                class="is-drawer-close:hidden select-none transition-colors duration-200 group-hover:text-xrb-accent-1">Home</span>
+                                class="is-drawer-close:hidden select-none transition-colors duration-200 group-hover:text-xrb-accent-1 leading-6">Home</span>
                         </button>
                     </li>
 
                     <!-- Groups item -->
                     <li>
-                        <button @click="handleNavigation('groups')" class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group" data-tip="Groups">
+                        <button @click="handleNavigation('groups')"
+                            class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group" data-tip="Groups">
                             <!-- Groups icon -->
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
                                 stroke="currentColor"
@@ -79,7 +84,7 @@
                                     18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z" />
                             </svg>
                             <span
-                                class="is-drawer-close:hidden select-none transition-colors duration-200 group-hover:text-xrb-accent-1">Groups</span>
+                                class="is-drawer-close:hidden select-none transition-colors duration-200 group-hover:text-xrb-accent-1 leading-6">Groups</span>
                         </button>
                     </li>
 
@@ -96,8 +101,8 @@
                     <div class="mt-auto border-t-1 border-xrb-border-1">
                         <!-- Account item -->
                         <li>
-                            <button @click="handleNavigation('account')" class="flex items-center gap-3 p-4 rounded-none tooltip tooltip-right tooltip-neutral group"
-                                data-tip="Account">
+                            <button @click="handleNavigation('account')"
+                                class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group" data-tip="Account">
                                 <!-- Account icon -->
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
                                     stroke="currentColor"
@@ -107,7 +112,7 @@
                                     9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                 </svg>
                                 <span
-                                    class="is-drawer-close:hidden select-none transition-colors duration-200 group-hover:text-xrb-accent-1">Account</span>
+                                    class="is-drawer-close:hidden select-none transition-colors duration-200 group-hover:text-xrb-accent-1 leading-6">Account</span>
                             </button>
                         </li>
                     </div>
