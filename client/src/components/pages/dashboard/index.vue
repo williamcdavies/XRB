@@ -1,8 +1,19 @@
 <script setup lang="ts">
+    import {ref} from 'vue';
     import Hero from './Hero.vue';
     import Drawer from './Drawer.vue';
     import AccountComponent from './content/Account.vue'
+    import GroupsComponent from './content/Groups.vue'
+    import HomeComponent from './content/Home.vue'
+
+    //home is default for this
+    const activeView = ref('home'); 
+
+    const changeView = (view: string) => {
+        activeView.value = view;
+    };
 </script>
+
 
 
 <template>
@@ -12,10 +23,11 @@
 
         <!-- Z1 -->
         <div class="flex flex-row relative">
-            <Drawer class="shrink-0 w-fit" />
-            <AccountComponent class="flex-1" />
+            <Drawer class="shrink-0 w-fit" @change-view="changeView" />
+            <HomeComponent v-if="activeView === 'home'" class="flex-1"/>
+            <AccountComponent v-if="activeView === 'account'" class="flex-1"/>
+            <GroupsComponent v-if="activeView === 'groups'" class="flex-1"/>
         </div>
-
     </div>
 </template>
 

@@ -1,3 +1,14 @@
+<script setup lang="ts">
+    //handle button clicks and navigation between components
+    const emit = defineEmits<{
+        changeView: [view: string]
+    }>();
+
+    const handleNavigation = (view: string) => {
+        emit('changeView', view);
+    };
+</script>
+
 <template>
     <!-- ref: https://daisyui.com/components/drawer/?lang=en, https://heroicons.com -->
     <div class="drawer sm:drawer-open md:drawer-open lg:drawer-open">
@@ -28,7 +39,7 @@
 
                     <!-- Home item -->
                     <li>
-                        <button class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group" data-tip="Home">
+                        <button @click="handleNavigation('home')" class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group" data-tip="Home">
                             <!-- Home icon -->
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="size-6">
@@ -58,7 +69,7 @@
 
                     <!-- Groups item -->
                     <li>
-                        <button class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group" data-tip="Groups">
+                        <button @click="handleNavigation('groups')" class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group" data-tip="Groups">
                             <!-- Groups icon -->
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
                                 stroke="currentColor"
@@ -85,7 +96,7 @@
                     <div class="mt-auto border-t-1 border-xrb-border-1">
                         <!-- Account item -->
                         <li>
-                            <button class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group"
+                            <button @click="handleNavigation('account')" class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group"
                                 data-tip="Account">
                                 <!-- Account icon -->
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
