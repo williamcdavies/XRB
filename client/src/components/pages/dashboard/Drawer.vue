@@ -96,7 +96,7 @@
                     <div class="mt-auto border-t-1 border-xrb-border-1">
                         <!-- Account item -->
                         <li>
-                            <button @click="handleNavigation('account')" class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group"
+                            <button @click="handleNavigation('account')" class="flex items-center gap-3 p-4 rounded-none tooltip tooltip-right tooltip-neutral group"
                                 data-tip="Account">
                                 <!-- Account icon -->
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"

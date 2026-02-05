@@ -6,12 +6,17 @@
 
 @theme {
   --color-xrb-background-1: oklch(0.1277 0.0244 29.58);
+  --color-xrb-background-2: oklch(0.6499 0.0053 293.76);
   --color-xrb-border-1: oklch(0.3161 0.0052 106.7);
   --color-xrb-accent-1: oklch(0.6362 0.1765 46.711);
   --color-xrb-accent-2: oklch(0.3377 0.1244 32.6);
   --color-xrb-accent-3: oklch(0.2822 0.1097 30.38);
+  --color-xrb-accent-4: oklch(15.96% 0.016 26.68);  /* for selection in account component */
 
-  --color-tooltip-primary: var(--color-xrb-accent-1);
+  --color-xrb-warning-1: oklch(0.6133 0.2651 24.35);
+
+  --font-sans: Inter, system-ui, sans-serif;
+
 }
 
 :root {
@@ -65,3 +70,8 @@
   }
 }
 
+@layer base {
+  body {
+    font-family: Inter, sans-serif;
+  }
+}
