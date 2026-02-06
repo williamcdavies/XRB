@@ -12,6 +12,8 @@ services:
     dns:
       - 8.8.8.8
       - 8.8.4.4
+    networks:
+      - xrb-network
 
   django:
     build:
@@ -22,7 +24,10 @@ services:
     container_name: xrb-django
     env_file:
       - .env
-    network_mode: "service:nginx"
+    volumes:
+      - ./shared/data:/data
+    networks:
+      - xrb-network
 
   postgres:
     env_file:
@@ -36,6 +41,12 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    
+    networks:
+      - xrb-network
+
+networks:
+  xrb-network:
+    driver: bridge
+
 volumes:
   postgres_data:
