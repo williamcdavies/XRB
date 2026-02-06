@@ -4,9 +4,10 @@
 
 <template>
     <div class="flex flex-col justify-center items-center space-y-6 rounded-none">
-    <div class="flex text-2xl font-bold w-3/4 min-w-[36rem] max-w-[48rem]">Personal Information</div>
-        <!-- <div class="flex text-l">Manage details that work best for you</div> -->
-        <ul class="list w-3/4 min-w-[36rem] max-w-[48rem] h-3/4 min-h-[36rem] max-h-[48rem] rounded-none hover:cursor-pointer">
+        <div class="flex text-2xl font-bold w-3/4 min-w-[36rem] max-w-[48rem]">Personal Information</div>
+        <!-- <div class="flex text-l w-3/4 min-w-[36rem] max-w-[48rem]">Manage details that work best for you</div> Add maybe when I think of something better -->
+        <ul
+            class="list w-3/4 min-w-[36rem] max-w-[48rem] h-3/4 min-h-[36rem] max-h-[48rem] rounded-none hover:cursor-pointer">
             <li class="flex list-row h-full rounded-t-3xl rounded-b-none hover:bg-xrb-accent-4 hover:text-xrb-accent-1">
                 <div class="flex justify-center items-center w-1/6">
                     <img class="w-20 h-20  rounded-full"
@@ -18,7 +19,8 @@
                 </div>
             </li>
 
-            <li class="flex list-row h-full rounded-t-none rounded-b-none hover:bg-xrb-accent-4 hover:text-xrb-accent-1">
+            <li
+                class="flex list-row h-full rounded-t-none rounded-b-none hover:bg-xrb-accent-4 hover:text-xrb-accent-1">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
@@ -32,7 +34,8 @@
                 </div>
             </li>
 
-            <li class="flex list-row h-full rounded-t-none rounded-b-none hover:bg-xrb-accent-4 hover:text-xrb-accent-1">
+            <li
+                class="flex list-row h-full rounded-t-none rounded-b-none hover:bg-xrb-accent-4 hover:text-xrb-accent-1">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
@@ -46,7 +49,8 @@
                 </div>
             </li>
 
-            <li class="flex list-row h-full rounded-t-none rounded-b-none hover:bg-xrb-accent-4 hover:text-xrb-accent-1">
+            <li
+                class="flex list-row h-full rounded-t-none rounded-b-none hover:bg-xrb-accent-4 hover:text-xrb-accent-1">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
@@ -60,7 +64,8 @@
                 </div>
             </li>
 
-            <li class="flex list-row h-full rounded-t-none rounded-b-none hover:bg-xrb-accent-4 hover:text-xrb-accent-1">
+            <li
+                class="flex list-row h-full rounded-t-none rounded-b-none hover:bg-xrb-accent-4 hover:text-xrb-accent-1">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
@@ -74,7 +79,8 @@
                 </div>
             </li>
 
-            <li class="flex list-row h-full rounded-t-none rounded-b-3xl hover:bg-xrb-accent-4 hover:text-xrb-warning-1">
+            <li
+                class="flex list-row h-full rounded-t-none rounded-b-3xl hover:bg-xrb-accent-4 hover:text-xrb-warning-1">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
