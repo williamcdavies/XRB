@@ -10,6 +10,9 @@ from modules.api.auth.serializers        import CredentialSerializer
 from modules.api.auth.serializers        import EmailSerializer
 
 
+User = get_user_model()
+
+
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def login(request):
@@ -22,7 +25,6 @@ def login(request):
     serializer.is_valid(raise_exception=True)
     email = serializer.validated_data['email'].strip().lower()
 
-    User = get_user_model()
     # lookup user by email:
     #   if user.email==email, User user=returned_user
     #   else,                 User user=returned_user
@@ -60,7 +62,6 @@ def verify(request):
     email = serializer.validated_data['email'].strip().lower()
     token = serializer.validated_data['token']
 
-    User = get_user_model()
     # lookup user by email:
     #   if user.email==email, User user=returned_user
     #   else,                 return 401 Unauthorized
@@ -112,7 +113,7 @@ def verify(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def refresh(request):
-    old_refresh_token_str = request.COOKIES.get('refresh')
+    old_refresh_token_str = request.COOKIES.get('refresh_token')
     
     # verify expired refresh token:
     #   if token is bad, return 401 Unauthorized
