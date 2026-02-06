@@ -8,6 +8,7 @@
         <!-- <div class="flex text-l w-3/4 min-w-[36rem] max-w-[48rem]">Manage details that work best for you</div> Add maybe when I think of something better -->
         <ul
             class="list w-3/4 min-w-[36rem] max-w-[48rem] h-3/4 min-h-[36rem] max-h-[48rem] rounded-none hover:cursor-pointer">
+
             <li class="flex list-row h-full rounded-t-3xl rounded-b-none hover:bg-xrb-accent-4 hover:text-xrb-accent-1">
                 <div class="flex justify-center items-center w-1/6">
                     <img class="w-20 h-20  rounded-full"
