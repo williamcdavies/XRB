@@ -100,9 +100,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'config.urls'
 
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:5173'
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',
+    'http://localhost:8080',
 ]
+CORS_ALLOW_CREDENTIALS = True
 
 TEMPLATES = [
     {
