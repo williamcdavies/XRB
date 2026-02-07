@@ -1,5 +1,7 @@
 <script setup lang="ts">
     import { ref } from 'vue';
+    import { useAuth } from '@/composables/auth';
+
 
     // Ref: https://vuejs.org/guide/components/events.html
     const prop = defineProps<{
@@ -10,7 +12,7 @@
     }>()
 
     
-    const accessToken = ref<string | null>(null)
+    const { setAccessToken } = useAuth()
 
 
     // verify
@@ -38,7 +40,7 @@
             }
 
             const data = await response.json()
-            accessToken.value = data.access
+            setAccessToken(data.access)
         } catch(err) {
             console.error(err)
         }
