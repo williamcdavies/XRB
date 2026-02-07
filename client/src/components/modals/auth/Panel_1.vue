@@ -1,7 +1,7 @@
 <script setup lang="ts">
     // Ref: https://vuejs.org/guide/components/events.html
     const emit = defineEmits<{
-        (e: 'continue-with-email'): void
+        (e: 'go-forward'): void
     }>()
 </script>
 
@@ -25,7 +25,7 @@
             </button>
             
             <!-- Continue w/ email -->
-            <button @click="emit('continue-with-email')" class="group btn btn-outline justify-start bg-transparent border-white/25 text-white hover:bg-white hover:border-white hover:text-[#181818]">
+            <button @click="emit('go-forward')" class="group btn btn-outline justify-start bg-transparent border-white/25 text-white hover:bg-white hover:border-white hover:text-[#181818]">
                 <span class="flex items-center justify-center h-full w-8">
                     <img class="h-5 w-5 group-hover:invert " src="../../../assets/icons/mail.svg" />
                 </span>

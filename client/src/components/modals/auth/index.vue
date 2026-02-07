@@ -2,14 +2,39 @@
     import { ref } from 'vue';
     import Panel_1 from './Panel_1.vue';
     import Panel_2 from './Panel_2.vue';
+    import Panel_3 from './Panel_3.vue';
 
     // Ref: https://vuejs.org/guide/components/events.html
     const emit = defineEmits<{
         (e: 'close'): void
     }>()
 
-    type Panel = 'panel_1' | 'panel_2'
+    
+    const email = ref('')
+    
+    type Panel = 'panel_1' | 'panel_2' | 'panel_3'
+    const panels: Panel[] = ['panel_1', 'panel_2', 'panel_3']
     const activePanel = ref<Panel>('panel_1')
+    
+
+    // @go-back
+    function goBack() {
+        const i = panels.indexOf(activePanel.value)
+        
+        if (i > 0) {
+            activePanel.value = panels[i - 1]!
+        }
+    }  
+
+
+    // @go-forward
+    function goForward() {
+        const i = panels.indexOf(activePanel.value)
+        
+        if (i < panels.length - 1) {
+            activePanel.value = panels[i + 1]!
+        }
+    }
 </script>
 
 
@@ -18,8 +43,9 @@
         <div @click.stop class="flex flex-row min-h-[36rem] max-h-[36rem] min-w-[48rem] max-w-[48rem] bg-[#181818] overflow-hidden rounded-xl">
             <!-- Left Panel -->
             <Transition name="slide" mode="out-in">
-                <Panel_1 v-if="activePanel === 'panel_1'" key="panel_1" @continue-with-email="activePanel = 'panel_2'" />
-                <Panel_2 v-else-if="activePanel === 'panel_2'" key="panel_2" @go-back="activePanel = 'panel_1'" />
+                <Panel_1 v-if="activePanel === 'panel_1'" @go-forward="goForward" />
+                <Panel_2 v-else-if="activePanel === 'panel_2'" v-model:email="email" @go-forward="goForward" @go-back="goBack" />
+                <Panel_3 v-else-if="activePanel === 'panel_3'" :email="email" @go-back="goBack" />
             </Transition>
 
             <!-- Right Panel-->

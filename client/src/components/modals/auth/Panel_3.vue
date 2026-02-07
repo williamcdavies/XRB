@@ -1,26 +1,34 @@
 <script setup lang="ts">
+    import { ref } from 'vue';
+
     // Ref: https://vuejs.org/guide/components/events.html
     const prop = defineProps<{
         email: string
     }>()
     const emit = defineEmits<{
         (e: 'go-back'): void
-        (e: 'go-forward'): void
-        (e: 'update:email', value: string): void
     }>()
 
     
-    // login
-    async function login() {
-        if(!prop.email.trim().toLowerCase()) {
+    const accessToken = ref<string | null>(null)
+
+
+    // verify
+    const token = ref('')
+
+    async function verify() {
+        if(!prop.email.trim().toLowerCase() || !token.value.trim().toLowerCase()) {
             return
         }
 
         try {
-            const response = await fetch('http://localhost:8000/api/auth/login/', {
+            const response = await fetch('http://localhost:8000/api/auth/verify/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: prop.email.trim().toLowerCase() }),
+                body: JSON.stringify({ 
+                    email: prop.email.trim().toLowerCase(),
+                    token: token.value.trim().toLowerCase() 
+                }),
                 credentials: 'include'
             })
 
@@ -28,11 +36,13 @@
                 console.error(response.status)
                 return
             }
+
+            const data = await response.json()
+            accessToken.value = data.access
         } catch(err) {
             console.error(err)
         }
 
-        emit('go-forward')
         return
     }
 </script>
@@ -55,19 +65,30 @@
         <div class="flex flex-col gap-4">
             <!-- Email fieldset -->
             <fieldset class="fieldset">
-                <form @submit.prevent="login" novalidate class="flex flex-col gap-4">
-                    <label class="fieldset-legend text-xs" for="token">Email</label>
-                    <input
-                        :value="prop.email"
-                        @input="emit('update:email', ($event.target as HTMLInputElement).value)"
-                        type="email"
-                        class="input"
-                        placeholder="Type here"
-                        required
-                    />
+                <form @submit.prevent="verify" novalidate class="flex flex-col gap-4">
+                    <div class="flex flex-col gap-2">
+                        <label class="fieldset-legend pl-1 text-xs" for="token">Email</label>
+                        <input
+                            :value="prop.email"
+                            type="email"
+                            class="input"
+                            placeholder="Type here"
+                            readonly
+                        />
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="fieldset-legend pl-1 text-xs" for="token">Password</label>
+                        <input
+                            v-model="token"
+                            type="token"
+                            class="input"
+                            placeholder="XXXXXX"
+                            required
+                        />
+                    </div>
                     <button
                         type="submit"
-                        :disabled="!prop.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)"
+                        :disabled="!token.match(/^\d{6}$/)"
                         class="btn btn-outline bg-[#dc8c64] border-white/25 text-[#181818] hover:bg-white hover:border-white hover:text-[#181818]"
                     >
                         <span class="text-xs tracking-wider">CONTINUE</span>
