@@ -148,3 +148,10 @@ def refresh(request):
     )
 
     return response
+
+
+@api_view(['GET'])
+def whoami(request):
+    return Response({
+        "email": request.user.email
+    })
