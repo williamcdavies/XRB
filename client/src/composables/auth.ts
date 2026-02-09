@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 
 
-const accessToken = ref('')
+const accessToken = ref<string>('')
 
 
 function getAccessToken() {
@@ -11,10 +11,19 @@ function getAccessToken() {
 
 function setAccessToken(token: string) {
     accessToken.value = token
+
+    return
 }
 
 
-async function refreshAccessToken() {
+function clearAccessToken() {
+    accessToken.value = ''
+
+    return
+}
+
+
+async function refreshAccessToken(): Promise<boolean> {
     try {
         const response = await fetch('http://localhost:8000/api/auth/refresh/', {
             method: 'POST',
@@ -23,17 +32,32 @@ async function refreshAccessToken() {
 
         if(!response.ok) {
             console.error(response.status)
+            clearAccessToken()
             return false
         }
 
         const data = await response.json()
         setAccessToken(data.access)
+        return true
     } catch(err) {
         console.error(err)
+        clearAccessToken()
         return false
     }
+}
 
-    return true
+
+async function isAuthenticated(): Promise<boolean> {
+    if(accessToken.value) {
+        return true
+    }
+    
+    if(await refreshAccessToken()) {
+        return true
+    }
+
+    clearAccessToken()
+    return false
 }
 
 
@@ -44,5 +68,6 @@ export function useAuth() {
         getAccessToken,
         setAccessToken,
         refreshAccessToken,
+        isAuthenticated,
     }
 }
