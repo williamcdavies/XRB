@@ -1,6 +1,7 @@
 <script setup lang="ts">
-    import { ref } from 'vue';
-    import { useAuth } from '@/composables/auth';
+    import { ref }       from 'vue';
+    import { useAuth }   from '@/composables/auth';
+    import { useRouter } from 'vue-router';
 
 
     // Ref: https://vuejs.org/guide/components/events.html
@@ -13,14 +14,15 @@
 
     
     const { setAccessToken } = useAuth()
+    const router = useRouter()
 
 
     // verify
     const token = ref('')
 
-    async function verify() {
+    async function verify(): Promise<boolean> {
         if(!prop.email.trim().toLowerCase() || !token.value.trim().toLowerCase()) {
-            return
+            return false
         }
 
         try {
@@ -36,16 +38,22 @@
 
             if(!response.ok) {
                 console.error(response.status)
-                return
+                return false
             }
 
             const data = await response.json()
             setAccessToken(data.access)
+            return true
         } catch(err) {
             console.error(err)
+            return false
         }
+    }
 
-        return
+    async function goToWhoAmI() {
+        if(await verify()) {
+            router.push('/whoami')
+        }
     }
 </script>
 
@@ -67,7 +75,7 @@
         <div class="flex flex-col gap-4">
             <!-- Email fieldset -->
             <fieldset class="fieldset">
-                <form @submit.prevent="verify" novalidate class="flex flex-col gap-4">
+                <form @submit.prevent="goToWhoAmI" novalidate class="flex flex-col gap-4">
                     <div class="flex flex-col gap-2">
                         <label class="fieldset-legend pl-1 text-xs" for="token">Email</label>
                         <input
