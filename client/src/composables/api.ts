@@ -1,13 +1,14 @@
 import { useAuth } from "./auth";
 
 
-const { getAccessToken, refreshAccessToken } = useAuth()
-
+// prevents symbol collision with window.fetch
 const api = {
     // wrapper for window.fetch
     //  enforces Authorization: `Bearer ${getAccessToken()}`
     //  enforces credentials: 'include',
     async fetch(input: RequestInfo, init?: RequestInit) {
+        const { getAccessToken, refreshAccessToken } = useAuth()
+
         let headers: HeadersInit = {
             ...(init?.headers || {}),
             Authorization: `Bearer ${getAccessToken()}`,
@@ -20,10 +21,8 @@ const api = {
         })
 
         // if 401 Unauthorized, attempt to refresh access token and try again
-        if(response.status === 401) {
-            const token = await refreshAccessToken()
-            
-            if(!token) {
+        if(response.status === 401) {         
+            if(!await refreshAccessToken()) {
                 return response
             }
 
