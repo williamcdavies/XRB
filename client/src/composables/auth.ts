@@ -33,15 +33,18 @@ async function refreshAccessToken(): Promise<boolean> {
         if(!response.ok) {
             console.error(response.status)
             clearAccessToken()
+            
             return false
         }
 
         const data = await response.json()
         setAccessToken(data.access)
+        
         return true
     } catch(err) {
         console.error(err)
         clearAccessToken()
+        
         return false
     }
 }
@@ -57,6 +60,7 @@ async function isAuthenticated(): Promise<boolean> {
     }
 
     clearAccessToken()
+    
     return false
 }
 

@@ -20,7 +20,8 @@ const api = {
             credentials: 'include',
         })
 
-        // if 401 Unauthorized, attempt to refresh access token and try again
+        // if 401 Unauthorized
+        //  attempt token rotation and try again
         if(response.status === 401) {         
             if(!await refreshAccessToken()) {
                 return response
