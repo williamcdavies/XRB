@@ -38,19 +38,22 @@
 
             if(!response.ok) {
                 console.error(response.status)
+                
                 return false
             }
 
             const data = await response.json()
             setAccessToken(data.access)
+            
             return true
         } catch(err) {
             console.error(err)
+            
             return false
         }
     }
 
-    async function goToWhoAmI() {
+    async function goToDashboard() {
         if(await verify()) {
             router.push('/whoami')
         }
@@ -75,7 +78,7 @@
         <div class="flex flex-col gap-4">
             <!-- Email fieldset -->
             <fieldset class="fieldset">
-                <form @submit.prevent="goToWhoAmI" novalidate class="flex flex-col gap-4">
+                <form @submit.prevent="goToDashboard" novalidate class="flex flex-col gap-4">
                     <div class="flex flex-col gap-2">
                         <label class="fieldset-legend pl-1 text-xs" for="token">Email</label>
                         <input
