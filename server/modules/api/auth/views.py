@@ -1,4 +1,5 @@
 from django_otp.plugins.otp_email.models import EmailDevice
+from django.conf                         import settings
 from django.contrib.auth                 import get_user_model
 from rest_framework.decorators           import api_view, permission_classes
 from rest_framework.permissions          import AllowAny
@@ -98,13 +99,15 @@ def verify(request):
     # note:
     #   set secure=True  in prod
     #   set secure=False in dev
+    response.delete_cookie('refresh_token', path='/', samesite='Lax')
     response.set_cookie(
         key='refresh_token',
         value=str(refresh_token),
-        path='/api/auth/refresh',
+        max_age=int(settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'].total_seconds()),
+        path='/',
         secure=False,
         httponly=True,
-        samesite='Strict'
+        samesite='Lax'
     )
 
     return response
@@ -121,13 +124,21 @@ def refresh(request):
         return Response(status=401)
 
     # RefreshToken() can raise TokenError
+    #   if token is bad, return 401 Unauthorized
     try:
         old_refresh_token = RefreshToken(old_refresh_token_str)
     except TokenError:
         return Response(status=401)
     
+    # User.objects.get() can raise User.DoesNotExist
+    #   if user is bad, return 401 Unauthorized
+    try:
+        user = User.objects.get(id=old_refresh_token.get('user_id'))
+    except User.DoesNotExist:
+        return Response(status=401)
+    
     new_access_token = old_refresh_token.access_token
-    new_refresh_token = RefreshToken.for_user(old_refresh_token.user)
+    new_refresh_token = RefreshToken.for_user(user)
     old_refresh_token.blacklist()
     
     response = Response({'access': str(new_access_token)})
@@ -138,13 +149,15 @@ def refresh(request):
     # note:
     #   set secure=True  in prod
     #   set secure=False in dev
+    response.delete_cookie('refresh_token', path='/', samesite='Lax')
     response.set_cookie(
         key='refresh_token',
         value=str(new_refresh_token),
-        path='/api/auth/refresh',
+        max_age=int(settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'].total_seconds()),
+        path='/',
         secure=False,
         httponly=True,
-        samesite='Strict'
+        samesite='Lax'
     )
 
     return response
