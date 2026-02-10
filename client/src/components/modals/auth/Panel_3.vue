@@ -55,7 +55,7 @@
 
     async function goToDashboard() {
         if(await verify()) {
-            router.push('/whoami')
+            router.push('/dashboard')
         }
     }
 </script>
