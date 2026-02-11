@@ -70,6 +70,9 @@ db.sqlite3
 db.sqlite3-journal
 server/static
 
+# Docker
+docker-data/
+
 # Flask stuff:
 instance/
 .webassets-cache
