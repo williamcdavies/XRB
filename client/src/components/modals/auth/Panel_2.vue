@@ -1,8 +1,40 @@
 <script setup lang="ts">
     // Ref: https://vuejs.org/guide/components/events.html
+    const prop = defineProps<{
+        email: string
+    }>()
     const emit = defineEmits<{
         (e: 'go-back'): void
+        (e: 'go-forward'): void
+        (e: 'update:email', value: string): void
     }>()
+
+    
+    // login
+    async function login() {
+        if(!prop.email.trim().toLowerCase()) {
+            return
+        }
+
+        try {
+            const response = await fetch('http://localhost:8000/api/auth/login/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: prop.email.trim().toLowerCase() }),
+                credentials: 'include'
+            })
+
+            if(!response.ok) {
+                console.error(response.status)
+                return
+            }
+        } catch(err) {
+            console.error(err)
+        }
+
+        emit('go-forward')
+        return
+    }
 </script>
 
 
@@ -11,26 +43,29 @@
         <!-- Header -->
         <div class="flex flex-col gap-4">
             <div class="flex flex-row items-center">
-                <button @click="emit('go-back')" class="btn btn-ghost hover:bg-transparent hover:border-transparent hover:shadow-none">
-                    <img class="h-4 w-4" src="../../../assets/icons/chevrons/chevron_left.svg"/>
+                <button @click="emit('go-back')"
+                    class="btn btn-ghost hover:bg-transparent hover:border-transparent hover:shadow-none">
+                    <img class="h-4 w-4" src="../../../assets/icons/chevrons/chevron_left.svg" />
                 </button>
                 <span class="text-2xl font-bold">Continue with email</span>
             </div>
             <span class="text-xs">We'll check if you have an account, and help create one if you don't.</span>
         </div>
-        
+
         <!-- Body -->
         <div class="flex flex-col gap-4">
             <!-- Email fieldset -->
             <fieldset class="fieldset">
-                <legend class="fieldset-legend text-xs">Email</legend>
-                <input type="text" class="input" placeholder="Type here" />
+                <form @submit.prevent="login" novalidate class="flex flex-col gap-4">
+                    <label class="fieldset-legend text-xs" for="token">Email</label>
+                    <input :value="prop.email" @input="emit('update:email', ($event.target as HTMLInputElement).value)"
+                        type="email" class="input" placeholder="Type here" required />
+                    <button type="submit" :disabled="!prop.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)"
+                        class="btn btn-outline bg-[#dc8c64] border-white/25 text-[#181818] hover:bg-white hover:border-white hover:text-[#181818]">
+                        <span class="text-xs tracking-wider">CONTINUE</span>
+                    </button>
+                </form>
             </fieldset>
-            
-            <!-- Continue -->
-            <button class="btn btn-outline bg-[#dc8c64] border-white/25 text-[#181818] hover:bg-white hover:border-white hover:text-[#181818]">
-                <span class="text-xs tracking-wider">CONTINUE</span>
-            </button>
         </div>
     </div>
 </template>

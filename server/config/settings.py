@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django_otp.plugins.otp_email',
     'modules.api',
     'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
 ]
 
 # Ref : https://simplejwt-test.readthedocs.io/en/latest/settings.html
@@ -64,6 +65,8 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -97,9 +100,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'config.urls'
 
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:5173'
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',
+    'http://localhost:8080',
 ]
+CORS_ALLOW_CREDENTIALS = True
 
 TEMPLATES = [
     {
