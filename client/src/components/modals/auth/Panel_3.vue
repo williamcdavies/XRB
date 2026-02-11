@@ -84,7 +84,7 @@
                         <input
                             :value="prop.email"
                             type="email"
-                            class="input"
+                            class="input btn-disabled bg-[#080808]"
                             placeholder="Type here"
                             readonly
                         />

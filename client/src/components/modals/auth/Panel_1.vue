@@ -36,7 +36,7 @@
             <div class="divider text-xs">OR</div>
             
             <!-- Continue as guest -->
-            <button class="group btn btn-outline justify-start bg-transparent border-white/25 text-white hover:bg-white hover:border-white hover:text-[#181818]">
+            <button class="group btn btn-outline btn-disabled justify-start bg-[#080808] border-white/25 text-white hover:bg-white hover:border-white hover:text-[#181818]">
                 <span class="flex items-center justify-center h-full w-8">
                     <img class="h-5 w-5 group-hover:invert " src="../../../assets/icons/users/user_3.svg" />
                 </span>
@@ -44,7 +44,7 @@
             </button>
             
             <!-- Continue as student -->
-            <button class="group btn btn-outline justify-start bg-transparent border-white/25 text-white hover:bg-white hover:border-white hover:text-[#181818]">
+            <button class="group btn btn-outline btn-disabled justify-start bg-[#080808] border-white/25 text-white hover:bg-white hover:border-white hover:text-[#181818]">
                 <span class="flex items-center justify-center h-full w-8">
                     <img class="h-5 w-5 group-hover:invert " src="../../../assets/icons/pencils/edit_pencil_line_1.svg" />
                 </span>
