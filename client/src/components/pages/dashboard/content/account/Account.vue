@@ -16,8 +16,8 @@
     }
 </script>
 
+
 <template>
-    
     <AccountMenu @open-modal="activeModal = $event" />
 
     <Transition name="fade">
