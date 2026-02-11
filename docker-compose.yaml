@@ -2,10 +2,11 @@ services:
   nginx:
     build:
       context: client
+      network: host
+    container_name: xrb-nginx
     depends_on:
       postgres:
         condition: service_healthy
-    container_name: xrb-nginx
     ports:
       - "8080:8080"
       - "8000:8000"
@@ -18,10 +19,11 @@ services:
   django:
     build:
       context: server
+      network: host
+    container_name: xrb-django
     depends_on:
       postgres:
         condition: service_healthy
-    container_name: xrb-django
     env_file:
       - .env
     volumes:
@@ -30,13 +32,13 @@ services:
       - xrb-network
 
   postgres:
+    container_name: xrb-postgres
     env_file:
       - .env
     healthcheck:
       start_period: 30s
       test: ["CMD-SHELL", "pg_isready -d $POSTGRES_DB -U $POSTGRES_USER -h localhost -p $POSTGRES_PORT"]
     image: postgres:15-alpine
-    container_name: xrb-postgres
     ports:
       - "5432:5432"
     volumes:

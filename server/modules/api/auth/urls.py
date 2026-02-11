@@ -1,8 +1,10 @@
 from .           import views
 from django.urls import path
 
-app_name = 'auth'
 
+app_name    = 'auth'
 urlpatterns = [
-    path('start/', views.start, name='start'),
+    path('login/', views.login, name='login'),
+    path('verify/', views.verify, name='verify'),
+    path('refresh/', views.refresh, name='refresh'),
 ]
