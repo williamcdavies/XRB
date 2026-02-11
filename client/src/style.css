@@ -17,7 +17,7 @@
   --color-xrb-accent-3: oklch(0.2822 0.1097 30.38);
   --color-xrb-accent-4: oklch(15.96% 0.016 26.68);  /* for selection in account component */
   --color-xrb-text-primary: oklch(1 0 0); /* for main text in body, pure white */
-  --color-xrb-text-secondary: oklch(0.8427 0.0052 228.83); /* for secondary text, pre-selection emphasis. */
+  --color-xrb-text-secondary: oklch(0.7871 0.0044 236.52); /* for secondary text, pre-selection emphasis. */
   --color-xrb-text-warning-1: oklch(63% 0.17 26);
   
 
