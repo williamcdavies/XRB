@@ -1,11 +1,10 @@
 
 <script setup lang="ts">
-import type {AccountModalType} from '../../../../modals/dashboard/account-modals'
+    import type {AccountModalType} from '../../../../modals/dashboard/account-modals'
 
-const emit = defineEmits<{
-    (e: 'open-modal', modal: AccountModalType): void
-}>()
-
+    const emit = defineEmits<{
+        (e: 'open-modal', modal: AccountModalType): void
+    }>()
 </script>
 
 <template>
@@ -15,7 +14,7 @@ const emit = defineEmits<{
         <ul
             class="list w-3/4 min-w-[48rem] max-w-[48rem] h-3/4 min-h-[36rem] max-h-[48rem] mx-auto rounded-none hover:cursor-pointer">
 
-            <li @click="emit('open-modal', 'picture')" 
+            <li @click="emit('open-modal', 'picture')"
                 class="flex list-row h-full rounded-t-3xl rounded-b-none hover:bg-xrb-accent-4 hover:text-xrb-accent-1">
                 <div class="flex justify-center items-center w-1/6">
                     <img class="w-20 h-20  rounded-full"

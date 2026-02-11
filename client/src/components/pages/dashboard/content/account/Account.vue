@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import AccountMenu from './AccountMenu.vue'
-import TintLayer from '../../../../layers/TintLayer.vue'
-import { accountModals, type AccountModalType } from '../../../../modals/dashboard/account-modals'
+    import { ref, computed }                        from 'vue'
+    import { accountModals, type AccountModalType } from '../../../../modals/dashboard/account-modals'
 
-const activeModal = ref<AccountModalType | null>(null)
+    import TintLayer                                from '../../../../layers/TintLayer.vue'
+    import AccountMenu                              from './AccountMenu.vue'
+    
+    const activeModal = ref<AccountModalType | null>(null)
 
-const ActiveModalComponent = computed(() =>
-    activeModal.value ? accountModals[activeModal.value] : null
-)
+    const ActiveModalComponent = computed(() =>
+        activeModal.value ? accountModals[activeModal.value] : null
+    )
 
-function closeModal() {
-    activeModal.value = null
-}
-
+    function closeModal() {
+        activeModal.value = null
+    }
 </script>
 
 <template>
@@ -30,35 +30,35 @@ function closeModal() {
 
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity 0.33s;
-}
+    .fade-enter-active,
+    .fade-leave-active {
+        transition: opacity 0.33s;
+    }
 
-.fade-enter-from,
-.fade-leave-to {
-    opacity: 0;
-}
+    .fade-enter-from,
+    .fade-leave-to {
+        opacity: 0;
+    }
 
-.fade-enter-to,
-.fade-leave-from {
-    opacity: 1;
-}
+    .fade-enter-to,
+    .fade-leave-from {
+        opacity: 1;
+    }
 
-.pop-enter-active,
-.pop-leave-active {
-    transition: opacity 0.33s ease, transform 0.33s ease;
-}
+    .pop-enter-active,
+    .pop-leave-active {
+        transition: opacity 0.33s ease, transform 0.33s ease;
+    }
 
-.pop-enter-from,
-.pop-leave-to {
-    opacity: 0;
-    transform: scale(0.75);
-}
+    .pop-enter-from,
+    .pop-leave-to {
+        opacity: 0;
+        transform: scale(0.75);
+    }
 
-.pop-enter-to,
-.pop-leave-from {
-    opacity: 1;
-    transform: scale(1);
-}
+    .pop-enter-to,
+    .pop-leave-from {
+        opacity: 1;
+        transform: scale(1);
+    }
 </style>

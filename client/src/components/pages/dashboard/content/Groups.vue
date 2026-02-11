@@ -4,7 +4,6 @@
 
 <template>
     <div class="hero min-h-screen bg-xrb-bg-xrb-background-2">GROUPS</div>
-
 </template>
 
 

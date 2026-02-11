@@ -1,27 +1,28 @@
 <script setup lang="ts">
-//handle button clicks and navigation between components
-const emit = defineEmits<{
-    changeView: [view: string]
-}>();
+    // Ref: https://vuejs.org/guide/components/events.html
+    const emit = defineEmits<{
+        changeView: [view: string]
+    }>();
 
-const handleNavigation = (view: string) => {
-    emit('changeView', view);
-};
+    const handleNavigation = (view: string) => {
+        emit('changeView', view);
+    };
 </script>
+
 
 <template>
     <!-- ref: https://daisyui.com/components/drawer/?lang=en, https://heroicons.com -->
-    <div class="drawer sm:drawer-open md:drawer-open lg:drawer-open">
+    <div class="drawer drawer-open">
         <input id="dashboard-drawer" type="checkbox" class="drawer-toggle" />
         <div class="drawer-side is-drawer-close:overflow-visible">
             <div
-                class="flex min-h-full flex-col items-start bg-xrb-background-1 is-drawer-close:w-14 is-drawer-open:w-64 border-r border-xrb-border-1 transition-[width] duration-300">
+                class="flex flex-col min-h-full is-drawer-close:w-14 is-drawer-open:w-64 items-start bg-xrb-background-1 border-r border-xrb-border-1 transition-[width] duration-300">
                 <!-- Sidebar content here -->
-                <ul class="menu w-full grow p-0">
+                <ul class="menu w-full grow p-0 gap-1">
                     <!-- Sidebar -->
-                    <li>
-                        <label for="dashboard-drawer" aria-label="open sidebar"
-                            class="is-drawer-open:ml-auto p-4 cursor-pointer rounded-none tooltip tooltip-right tooltip-neutral group"
+                    <li class="pb-8">
+                        <label for="dashboard-drawer" aria-label="toggle sidebar"
+                            class="p-4 is-drawer-open:ml-auto cursor-pointer rounded-none tooltip tooltip-right tooltip-neutral group"
                             data-tip="Toggle Sidebar">
                             <!-- Sidebar toggle icon -->
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linejoin="round"
@@ -34,14 +35,9 @@ const handleNavigation = (view: string) => {
                         </label>
                     </li>
 
-                    <!-- Spacer -->
-                    <div class="m-2"></div>
-
                     <!-- New item -->
                     <li>
-                        <button
-                            class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group"
-                            data-tip="New">
+                        <button class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group" data-tip="New">
                             <!-- New item icon -->
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
                                 stroke="currentColor"
@@ -88,9 +84,6 @@ const handleNavigation = (view: string) => {
                         </button>
                     </li>
 
-                    <!-- Spacer -->
-                    <div class="m-2"></div>
-
                     <!-- Recents -->
                     <div>
                         <span
@@ -121,3 +114,6 @@ const handleNavigation = (view: string) => {
         </div>
     </div>
 </template>
+
+<style scoped>
+</style>
