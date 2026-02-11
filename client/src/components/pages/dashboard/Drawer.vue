@@ -16,7 +16,11 @@
         <input id="dashboard-drawer" type="checkbox" class="drawer-toggle" />
         <div class="drawer-side is-drawer-close:overflow-visible">
             <div
+<<<<<<< Updated upstream
                 class="flex flex-col min-h-full is-drawer-close:w-14 is-drawer-open:w-64 items-start bg-xrb-background-1 border-r border-xrb-border-1 transition-[width] duration-300">
+=======
+                class="flex min-h-full flex-col items-start bg-xrb-drawer-background is-drawer-close:w-14 is-drawer-open:w-64 border-r border-xrb-border-1 transition-[width] duration-300">
+>>>>>>> Stashed changes
                 <!-- Sidebar content here -->
                 <ul class="menu w-full grow p-0 gap-1">
                     <!-- Sidebar -->
