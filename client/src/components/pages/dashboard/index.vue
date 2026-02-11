@@ -2,7 +2,7 @@
     import {ref} from 'vue';
     import Hero from './Hero.vue';
     import Drawer from './Drawer.vue';
-    import AccountComponent from './content/Account.vue'
+    import AccountComponent from './content/account/Account.vue'
     import GroupsComponent from './content/Groups.vue'
     import HomeComponent from './content/Home.vue'
 
@@ -13,8 +13,6 @@
         activeView.value = view;
     };
 </script>
-
-
 
 <template>
     <div class="relative min-h-screen ">

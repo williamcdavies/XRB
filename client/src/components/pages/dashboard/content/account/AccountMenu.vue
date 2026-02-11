@@ -1,15 +1,22 @@
-<script setup lang="ts">
-</script>
 
+<script setup lang="ts">
+import type {AccountModalType} from '../../../../modals/dashboard/account-modals'
+
+const emit = defineEmits<{
+    (e: 'open-modal', modal: AccountModalType): void
+}>()
+
+</script>
 
 <template>
     <div class="flex flex-col justify-center items-center space-y-6 rounded-none">
-        <div class="flex text-2xl font-bold w-3/4 min-w-[36rem] max-w-[48rem]">Personal Information</div>
+        <div class="text-2xl font-bold w-3/4 min-w-[48rem] max-w-[48rem] mx-auto">Personal Information</div>
         <!-- <div class="flex text-l w-3/4 min-w-[36rem] max-w-[48rem]">Manage details that work best for you</div> Add maybe when I think of something better -->
         <ul
-            class="list w-3/4 min-w-[36rem] max-w-[48rem] h-3/4 min-h-[36rem] max-h-[48rem] rounded-none hover:cursor-pointer">
+            class="list w-3/4 min-w-[48rem] max-w-[48rem] h-3/4 min-h-[36rem] max-h-[48rem] mx-auto rounded-none hover:cursor-pointer">
 
-            <li class="flex list-row h-full rounded-t-3xl rounded-b-none hover:bg-xrb-accent-4 hover:text-xrb-accent-1">
+            <li @click="emit('open-modal', 'picture')" 
+                class="flex list-row h-full rounded-t-3xl rounded-b-none hover:bg-xrb-accent-4 hover:text-xrb-accent-1">
                 <div class="flex justify-center items-center w-1/6">
                     <img class="w-20 h-20  rounded-full"
                         src="../../../../assets/images/profile-icons/profile-icon-3.jpg" alt="Rounded avatar">
@@ -20,7 +27,7 @@
                 </div>
             </li>
 
-            <li
+            <li @click="emit('open-modal', 'name')"
                 class="flex list-row h-full rounded-t-none rounded-b-none hover:bg-xrb-accent-4 hover:text-xrb-accent-1">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -35,7 +42,7 @@
                 </div>
             </li>
 
-            <li
+            <li @click="emit('open-modal', 'type')"
                 class="flex list-row h-full rounded-t-none rounded-b-none hover:bg-xrb-accent-4 hover:text-xrb-accent-1">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -50,7 +57,7 @@
                 </div>
             </li>
 
-            <li
+            <li @click="emit('open-modal', 'language')"
                 class="flex list-row h-full rounded-t-none rounded-b-none hover:bg-xrb-accent-4 hover:text-xrb-accent-1">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -65,7 +72,7 @@
                 </div>
             </li>
 
-            <li
+            <li @click="emit('open-modal', 'email')"
                 class="flex list-row h-full rounded-t-none rounded-b-none hover:bg-xrb-accent-4 hover:text-xrb-accent-1">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -80,7 +87,7 @@
                 </div>
             </li>
 
-            <li
+            <li @click="emit('open-modal', 'delete')"
                 class="flex list-row h-full rounded-t-none rounded-b-3xl hover:bg-xrb-accent-4 hover:text-xrb-warning-1">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -97,6 +104,3 @@
         </ul>
     </div>
 </template>
-
-
-<style scoped></style>
