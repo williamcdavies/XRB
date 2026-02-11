@@ -9,10 +9,8 @@ services:
         condition: service_healthy
     ports:
       - "8080:8080"
-      - "8000:8000"
-    dns:
-      - 8.8.8.8
-      - 8.8.4.4
+    networks:
+      - xrb-network
 
   django:
     build:
@@ -24,7 +22,10 @@ services:
         condition: service_healthy
     env_file:
       - .env
-    network_mode: "service:nginx"
+    volumes:
+      - ./docker-data/data:/data
+    networks:
+      - xrb-network
 
   postgres:
     container_name: xrb-postgres
@@ -37,7 +38,10 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-    
-volumes:
-  postgres_data:
+      - ./docker-data/postgres:/var/lib/postgresql/data
+    networks:
+      - xrb-network
+
+networks:
+  xrb-network:
+    driver: bridge
