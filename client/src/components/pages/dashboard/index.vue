@@ -22,9 +22,9 @@
         <!-- Z1 -->
         <div class="flex flex-row relative">
             <Drawer class="shrink-0 w-fit" @change-view="changeView" />
-            <HomeComponent v-if="activeView === 'home'" class="flex-1"/>
-            <AccountComponent v-if="activeView === 'account'" class="flex-1"/>
-            <GroupsComponent v-if="activeView === 'groups'" class="flex-1"/>
+            <HomeComponent v-if="activeView === 'home'"/>
+            <AccountComponent v-else-if="activeView === 'account'"/>
+            <GroupsComponent v-else-if="activeView === 'groups'" />
         </div>
     </div>
 </template>
