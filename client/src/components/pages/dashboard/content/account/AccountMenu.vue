@@ -11,10 +11,10 @@
         <div class="text-2xl font-bold w-full min-w-[48rem] max-w-[48rem] mx-auto">Personal Information</div>
         <!-- <div class="flex text-l w-3/4 min-w-[36rem] max-w-[48rem]">Manage details that work best for you</div> -->
         <ul
-            class="list w-full min-w-[48rem] max-w-[48rem] h-full min-h-[36rem] max-h-[48rem] mx-auto rounded-none hover:cursor-pointer">
+            class="list w-full min-w-[48rem] max-w-[48rem] h-full min-h-[36rem] max-h-[48rem] mx-auto rounded-none bg-xrb-menu-background rounded-t-3xl rounded-b-3xl hover:cursor-pointer">
 
             <li @click="emit('open-modal', 'picture')"
-                class="flex list-row h-full rounded-t-3xl rounded-b-none hover:bg-xrb-accent-4 hover:text-xrb-accent-1">
+                class="flex list-row h-full rounded-t-3xl rounded-b-none hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary">
                 <div class="flex justify-center items-center w-1/6">
                     <img class="w-20 h-20  rounded-full"
                         src="../../../../assets/images/profile-icons/profile-icon-3.jpg" alt="Rounded avatar">
@@ -26,7 +26,7 @@
             </li>
 
             <li @click="emit('open-modal', 'name')"
-                class="flex list-row h-full rounded-t-none rounded-b-none hover:bg-xrb-accent-4 hover:text-xrb-accent-1">
+                class="flex list-row h-full rounded-t-none rounded-b-none hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
@@ -40,8 +40,23 @@
                 </div>
             </li>
 
+            <li @click="emit('open-modal', 'email')"
+                class="flex list-row h-full rounded-t-none rounded-b-none hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary">
+                <div class="flex justify-center items-center w-1/6">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                    </svg>
+                </div>
+                <div class="flex flex-col w-5/6 justify-center h-full select-none">
+                    <div class="font-bold text-lg">Email</div>
+                    <div class="py-0 text-md">eclaire@unr.edu</div>
+                </div>
+            </li>
+
             <li @click="emit('open-modal', 'type')"
-                class="flex list-row h-full rounded-t-none rounded-b-none hover:bg-xrb-accent-4 hover:text-xrb-accent-1">
+                class="flex list-row h-full rounded-t-none rounded-b-none hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
@@ -56,7 +71,7 @@
             </li>
 
             <li @click="emit('open-modal', 'language')"
-                class="flex list-row h-full rounded-t-none rounded-b-none hover:bg-xrb-accent-4 hover:text-xrb-accent-1">
+                class="flex list-row h-full rounded-t-none rounded-b-none hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
@@ -70,23 +85,8 @@
                 </div>
             </li>
 
-            <li @click="emit('open-modal', 'email')"
-                class="flex list-row h-full rounded-t-none rounded-b-none hover:bg-xrb-accent-4 hover:text-xrb-accent-1">
-                <div class="flex justify-center items-center w-1/6">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-                    </svg>
-                </div>
-                <div class="flex flex-col w-5/6 justify-center h-full select-none">
-                    <div class="font-bold text-lg">Email</div>
-                    <div class="py-0 text-md">eclaire@unr.edu</div>
-                </div>
-            </li>
-
             <li @click="emit('open-modal', 'delete')"
-                class="flex list-row h-full rounded-t-none rounded-b-3xl hover:bg-xrb-accent-4 hover:text-xrb-warning-1">
+                class="flex list-row h-full rounded-t-none rounded-b-3xl hover:bg-xrb-menu-background-warning text-xrb-text-secondary hover:text-xrb-text-primary">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
