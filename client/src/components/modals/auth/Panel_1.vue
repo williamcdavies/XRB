@@ -18,7 +18,7 @@
 
             <!-- Continue w/ Google -->
             <button
-                class="group btn btn-outline btn-disabled justify-start bg-[#080808] border-white/25 text-[#cfcfcf] hover:bg-white hover:border-white hover:text-[#181818]">
+                class="group btn btn-outline btn-disabled justify-start bg-xrb-background-disabled border-white/25 text-[#cfcfcf] hover:bg-white hover:border-white hover:text-[#181818]">
                 <span class="flex items-center justify-center h-full w-8">
                     <img class="h-4 w-4" src="../../../assets/icons/google.svg" />
                 </span>
@@ -27,7 +27,7 @@
 
             <!-- Continue w/ email -->
             <button @click="emit('go-forward')"
-                class="group btn btn-outline justify-start bg-transparent border-white/25 text-white hover:bg-white hover:border-white hover:text-[#181818]">
+                class="group btn btn-outline justify-start bg-transparent border-white/25 text-xrb-text-primary hover:bg-white hover:border-white hover:text-[#181818]">
                 <span class="flex items-center justify-center h-full w-8">
                     <img class="h-5 w-5 group-hover:invert " src="../../../assets/icons/mail.svg" />
                 </span>

@@ -17,7 +17,7 @@
                 class="flex list-row h-full rounded-t-3xl rounded-b-none hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary">
                 <div class="flex justify-center items-center w-1/6">
                     <img class="w-20 h-20  rounded-full"
-                        src="../../../../assets/images/profile-icons/profile-icon-3.jpg" alt="Rounded avatar">
+                        src="" alt="Rounded avatar">
                 </div>
                 <div class="flex flex-col w-5/6 justify-center h-full select-none">
                     <div class="font-bold text-lg">Ethan Claire</div>

@@ -7,6 +7,7 @@
 @theme {
   --color-xrb-background-1: oklch(20.96% 0.0123 270.77);  /* main content background: */
   --color-xrb-background-2: oklch(0.6499 0.0053 293.76);
+  --color-xrb-background-disabled: oklch(0 0 0); /* for unusable features */
   --color-xrb-drawer-background: oklch(15.98% 0.0086 274.31); /* drawer content background: */
   --color-xrb-menu-background: oklch(26.36% 0.0063 258.36); /* menu content background: */
   --color-xrb-menu-background-accent: oklch(30.54% 0.0123 243.24); /* for selection in account component */
