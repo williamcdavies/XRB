@@ -1,17 +1,30 @@
 <script setup lang="ts">
-    import { ref }   from 'vue';
+    import { ref }       from 'vue';
+    import { useRouter } from 'vue-router';
+
     import TintLayer from '../../layers/TintLayer.vue';
     import AuthModal from '../../modals/auth';
     import Hero      from './Hero.vue';
     import Navbar    from './Navbar.vue'
     
+    const router          = useRouter()
     const renderAuthModal = ref(false)
+
+
+    async function goToLanding() {
+        router.push('/')
+    }
+
+
+    async function goToAbout() {
+        router.push('/about')
+    }
 </script>
 
 
 <template>
     <!-- Z0 -->
-    <Navbar @auth="renderAuthModal = true" />
+    <Navbar @goto-landing="goToLanding" @goto-about="goToAbout" @auth="renderAuthModal = true" />
     <Hero />
 
     <!-- Z1 -->

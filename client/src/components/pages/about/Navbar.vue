@@ -1,7 +1,7 @@
 <script setup lang="ts">
   // Ref: https://vuejs.org/guide/components/events.html
   const emit = defineEmits<{
-    (e: 'auth'): void
+    (e: 'goto-landing'): void
   }>()
 </script>
 
@@ -10,7 +10,7 @@
 <template>
   <div class="absolute navbar h-24 px-16">
     <div class="flex-1">
-      <RouterLink to="/" class="btn btn-ghost text-xl">XRB</RouterLink>
+      <div class="flex-1"><button @click="emit('goto-landing')" class="btn btn-ghost text-xl">XRB</button></div>
     </div>
   </div>
 </template>
