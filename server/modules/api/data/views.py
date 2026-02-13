@@ -11,6 +11,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group as AuthGroup
+from django.http import FileResponse
 
 from .permissions import check_path_access, check_write_access
 
@@ -272,6 +273,70 @@ def get_file(request):
         return Response({'error': 'Permission denied when reading file'}, status=status.HTTP_403_FORBIDDEN)
     except Exception as e:
         return Response({'error': f'Error processing file: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def download_file(request):
+    """
+    allow any user to download a file as long as they can access it
+
+    query parameters:
+    -----------------
+    path : str (required)
+    """
+    relative_path = request.query_params.get('path')
+
+    if not relative_path:
+        return Response(
+            {'error': 'Missing required parameter: path'},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    user = request.user if request.user.is_authenticated else None
+    allowed, reason = check_path_access(user, relative_path)
+    if not allowed:
+        return Response(
+            {'error': f'Access denied: {reason}'},
+            status=status.HTTP_403_FORBIDDEN,
+        )
+
+    file_path = BASE_DATA_DIR / relative_path
+    if not is_path_safe(str(file_path)):
+        return Response(
+            {'error': 'Access denied: path outside allowed directories'},
+            status=status.HTTP_403_FORBIDDEN,
+        )
+
+    if not file_path.exists():
+        return Response(
+            {'error': f'File not found: {relative_path}'},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+
+    if not file_path.is_file():
+        return Response(
+            {'error': 'Not a file'},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    try:
+        return FileResponse(
+            open(file_path, 'rb'),
+            as_attachment=True,
+            filename=file_path.name,
+        )
+    except PermissionError:
+        return Response(
+            {'error': 'Permission denied when reading file'},
+            status=status.HTTP_403_FORBIDDEN,
+        )
+    except Exception as e:
+        return Response(
+            {'error': f'Error reading file: {str(e)}'},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
+
 
 @api_view(['POST'])
 def upload_file(request):
