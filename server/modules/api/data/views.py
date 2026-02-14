@@ -1,6 +1,5 @@
 import csv
 import math
-import json
 from pathlib import Path
 
 from rest_framework.decorators import api_view, permission_classes
@@ -27,6 +26,8 @@ def is_path_safe(file_path: str) -> bool:
     except (ValueError, OSError):
         return False
 
+
+# used to detect and validate erroneous csv values
 def validate_and_convert_value(value: str, column_name: str) -> dict:
     result = {
         'value': None,
@@ -65,18 +66,12 @@ def validate_and_convert_value(value: str, column_name: str) -> dict:
         result['warning'] = 'not_a_number'
         return result
 
-    comparison_match = None
-    if value[0] in ('>', '<'):
-        comparison_match = value[0]
-        numeric_part = value[1:].strip()
-    else:
-        numeric_part = value
-
     try:
-        if '.' not in numeric_part and 'e' not in numeric_part.lower():
-            result['value'] = int(numeric_part)
+        # check if decimal or scientific notation
+        if '.' not in value and 'e' not in value.lower():
+            result['value'] = int(value)
         else:
-            float_val = float(numeric_part)
+            float_val = float(value)
             if math.isinf(float_val):
                 result['value'] = None
                 result['is_valid'] = False
@@ -88,17 +83,13 @@ def validate_and_convert_value(value: str, column_name: str) -> dict:
                 result['warning'] = 'nan_after_conversion'
                 return result
             result['value'] = float_val
-
-        if comparison_match:
-            result['warning'] = f'comparison_operator_{comparison_match}'
-            result['original_with_operator'] = value
     except ValueError:
         result['value'] = value
 
     return result
 
 
-def csv_to_json(file_path: str) -> dict:
+def read_validate_csv(file_path: str) -> dict:
     data = []
     columns = []
     warnings = []
@@ -142,74 +133,19 @@ def csv_to_json(file_path: str) -> dict:
 
             data.append(row_data)
 
-    result = {'success': True, 'data': data, 'columns': columns}
-
-    result['metadata'] = {
-        'row_count': row_count,
-        'column_count': len(columns),
-        'warnings': warnings,
-        'warning_count': len(warnings),
-        'file_path': file_path,
+    result = {
+        'data': data,
+        'columns': columns,
+        'metadata': {
+            'row_count': row_count,
+            'column_count': len(columns),
+            'warnings': warnings,
+            'warning_count': len(warnings),
+            'file_path': file_path,
+        },
     }
-
     return result
 
-
-def get_column_stats(data: list, columns: list) -> dict:
-    stats = {}
-    for col in columns:
-        values = [row.get(col) for row in data if row.get(col) is not None]
-        numeric_values = [v for v in values if isinstance(v, (int, float))]
-
-        col_stats = {
-            'total_count': len(data),
-            'non_null_count': len(values),
-            'null_count': len(data) - len(values),
-            'is_numeric': len(numeric_values) == len(values) and len(values) > 0,
-        }
-
-        if col_stats['is_numeric'] and numeric_values:
-            col_stats['min'] = min(numeric_values)
-            col_stats['max'] = max(numeric_values)
-            col_stats['mean'] = sum(numeric_values) / len(numeric_values)
-
-        stats[col] = col_stats
-    return stats
-
-
-def read_file(file_path: Path):
-    ext = file_path.suffix.lower()
-
-    if ext == '.csv':
-        result = csv_to_json(str(file_path))
-        if not result['success']:
-            return None, Response(
-                {'error': result.get('error', 'Failed to parse CSV file')},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        result['column_stats'] = get_column_stats(result['data'], result['columns'])
-        return result, None
-
-    if ext == '.json':
-        with open(file_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-
-        columns = []
-        if isinstance(data, list) and data and isinstance(data[0], dict):
-            columns = list(data[0].keys())
-
-        result = {'success': True, 'data': data, 'columns': columns}
-        result['metadata'] = {
-            'row_count': len(data) if isinstance(data, list) else 1,
-            'column_count': len(columns),
-            'file_path': str(file_path),
-        }
-        return result, None
-
-    return None, Response(
-        {'error': f'Unsupported file format: {ext}. Supported: .csv, .json'},
-        status=status.HTTP_400_BAD_REQUEST,
-    )
 
 # -----------------------------------------------------
 # API Endpoints
@@ -262,11 +198,17 @@ def get_file(request):
             status=status.HTTP_404_NOT_FOUND,
         )
 
+    if file_path.suffix.lower() not in ['.csv', '.xlsx']:
+        return Response(
+            {'error': 'Unsupported file format. Only .csv, .xlsx is supported.'},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    # TODO add xlsx conversion
     try:
-        result, err_response = read_file(file_path)
-        if err_response:
-            return err_response
-        return Response(result)
+        with open(file_path, 'r', encoding='utf-8') as f:
+            csv_content = f.read()
+        return Response(csv_content, content_type='text/csv')
     except FileNotFoundError:
         return Response({'error': f'File not found: {relative_path}'}, status=status.HTTP_404_NOT_FOUND)
     except PermissionError:
