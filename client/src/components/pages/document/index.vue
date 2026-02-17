@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { ref } from 'vue';
+    import { onBeforeUnmount, onMounted, ref } from 'vue';
     
     import ColorLayer from '@/components/layers/ColorLayer.vue';
     import Topbar     from './Topbar.vue';
@@ -7,7 +7,7 @@
     import Handle     from './Handle.vue';
     import Graph      from './Graph.vue';
 
-    
+
     // pretty loading stuff
     const isContentReady = ref(false)
     
@@ -43,6 +43,22 @@
         window.removeEventListener('mousemove', onMouseMove)
         window.removeEventListener('mouseup', onMouseUp)
     }
+
+
+    function onWindowResize() {
+        leftbarWidth.value = Math.min(
+            leftbarWidth.value,
+            window.innerWidth - MIN_GRAPH_WIDTH - HANDLE_WIDTH
+        )
+    }
+
+    onMounted(() => {
+        window.addEventListener('resize', onWindowResize)
+    })
+
+    onBeforeUnmount(() => {
+        window.removeEventListener('resize', onWindowResize)
+    })
 </script>
 
 
