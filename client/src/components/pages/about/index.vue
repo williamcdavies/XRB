@@ -5,8 +5,10 @@
 
 
 <template>
-  <Navbar />
-  <Section_1 />
+  <div class="bg-xrb-bg-1">
+    <Navbar />
+    <Section_1 />
+  </div>
 </template>
 
 

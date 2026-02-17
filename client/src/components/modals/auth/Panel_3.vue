@@ -62,12 +62,12 @@
 
 
 <template>
-    <div class="flex flex-col w-1/2 p-8 gap-8">
+    <div class="flex flex-col w-1/2 p-8 gap-8 text-xrb-text-1">
         <!-- Header -->
         <div class="flex flex-col gap-4">
             <div class="flex flex-row items-center">
                 <button @click="emit('go-back')"
-                    class="btn btn-ghost hover:bg-transparent hover:border-transparent hover:shadow-none">
+                    class="btn btn-ghost hover:bg-transparent hover:border-transparent hover:shadow-none pl-0">
                     <img class="h-4 w-4" src="../../../assets/icons/chevrons/chevron_left.svg" />
                 </button>
                 <span class="text-2xl font-bold">Continue with email</span>
@@ -81,16 +81,16 @@
             <fieldset class="fieldset">
                 <form @submit.prevent="goToDashboard" novalidate class="flex flex-col gap-4">
                     <div class="flex flex-col gap-2">
-                        <label class="fieldset-legend pl-1 text-xs" for="token">Email</label>
-                        <input :value="prop.email" type="email" class="input btn-disabled bg-[#080808]"
+                        <label class="fieldset-legend pl-1 text-xs text-xrb-text-1" for="token">Email</label>
+                        <input :value="prop.email" type="email" class="input btn-disabled bg-xrb-disabled"
                             placeholder="Type here" readonly />
                     </div>
                     <div class="flex flex-col gap-2">
-                        <label class="fieldset-legend pl-1 text-xs" for="token">Password</label>
-                        <input v-model="token" type="token" class="input" placeholder="XXXXXX" required />
+                        <label class="fieldset-legend pl-1 text-xs text-xrb-text-1" for="token">Password</label>
+                        <input v-model="token" type="token" class="input bg-xrb-bg-3" placeholder="XXXXXX" required />
                     </div>
                     <button type="submit" :disabled="!token.match(/^\d{6}$/)"
-                        class="btn btn-outline bg-[#dc8c64] border-white/25 text-[#181818] hover:bg-white hover:border-white hover:text-[#181818]">
+                        class="btn btn-outline bg-xrb-highlight border-xrb-border text-xrb-text-1 hover:bg-xrb-text-1 hover:border-xrb-text-1 hover:text-xrb-text-2">
                         <span class="text-xs tracking-wider">CONTINUE</span>
                     </button>
                 </form>

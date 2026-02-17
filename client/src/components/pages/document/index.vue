@@ -7,14 +7,17 @@
     import Graph   from './Graph.vue';
 
 
-    const MIN_LEFTBAR_WIDTH = 200
-    const MIN_GRAPH_WIDTH   = 200
-    const HANDLE_WIDTH      = 4
+    const MIN_LEFTBAR_WIDTH     = 200
+    const MIN_GRAPH_WIDTH       = 200
+    const HANDLE_WIDTH          = 10
     
-    const leftbarWidth      = ref(200)
+    const leftbarWidth          = ref(200)
+    const handleClass           = ref('bg-transparent')
 
 
     function onMouseDown() {
+        handleClass.value = 'bg-xrb-bg-3'
+
         window.addEventListener('mousemove', onMouseMove)
         window.addEventListener('mouseup', onMouseUp)
     }
@@ -29,6 +32,8 @@
 
 
     function onMouseUp() {
+        handleClass.value = 'transparent'
+
         window.removeEventListener('mousemove', onMouseMove)
         window.removeEventListener('mouseup', onMouseUp)
     }
@@ -36,12 +41,12 @@
 
 
 <template>
-    <div class="grid grid-rows-[auto_1fr] h-screen w-screen"
+    <div class="grid grid-rows-[auto_1fr] h-screen w-screen bg-xrb-bg-1"
         :style="{ gridTemplateColumns: `${leftbarWidth}px ${HANDLE_WIDTH}px 1fr` }">
-        <Topbar class="col-span-3 h-10" />
-        <Leftbar class="row-start-2 h-full" />
-        <Handle @mousedown="onMouseDown" class="row-start-2 h-full" />
-        <Graph class="row-start-2 h-full w-full" />
+        <Topbar class="col-span-3" />
+        <Leftbar class="row-start-2" />
+        <Handle @mousedown="onMouseDown" class="row-start-2" :class="handleClass" />
+        <Graph class="row-start-2" />
     </div>
 </template>
 

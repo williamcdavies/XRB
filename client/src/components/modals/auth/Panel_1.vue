@@ -18,7 +18,7 @@
 
             <!-- Continue w/ Google -->
             <button
-                class="group btn btn-outline btn-disabled justify-start bg-[#080808] border-white/25 text-[#cfcfcf] hover:bg-white hover:border-white hover:text-[#181818]">
+                class="group btn btn-outline btn-disabled justify-start bg-xrb-disabled border-xrb-border text-xrb-text-1 hover:bg-xrb-text-1  hover:border-xrb-text-1 hover:text-xrb-bg-1">
                 <span class="flex items-center justify-center h-full w-8">
                     <img class="h-4 w-4" src="../../../assets/icons/google.svg" />
                 </span>
@@ -27,7 +27,7 @@
 
             <!-- Continue w/ email -->
             <button @click="emit('go-forward')"
-                class="group btn btn-outline justify-start bg-transparent border-white/25 text-white hover:bg-white hover:border-white hover:text-[#181818]">
+                class="group btn btn-outline justify-start bg-xrb-bg-2 border-xrb-border text-xrb-text-1 hover:bg-xrb-text-1 hover:border-xrb-text-1 hover:text-xrb-bg-1">
                 <span class="flex items-center justify-center h-full w-8">
                     <img class="h-5 w-5 group-hover:invert " src="../../../assets/icons/mail.svg" />
                 </span>
@@ -39,7 +39,7 @@
 
             <!-- Continue as guest -->
             <button
-                class="group btn btn-outline btn-disabled justify-start bg-[#080808] border-white/25 text-white hover:bg-white hover:border-white hover:text-[#181818]">
+                class="group btn btn-outline btn-disabled justify-start bg-xrb-disabled border-xrb-border text-xrb-text-1 hover:bg-xrb-text-1 hover:border-xrb-text-1 hover:text-xrb-bg-1">
                 <span class="flex items-center justify-center h-full w-8">
                     <img class="h-5 w-5 group-hover:invert " src="../../../assets/icons/users/user_3.svg" />
                 </span>
@@ -48,7 +48,7 @@
 
             <!-- Continue as student -->
             <button
-                class="group btn btn-outline btn-disabled justify-start bg-[#080808] border-white/25 text-white hover:bg-white hover:border-white hover:text-[#181818]">
+                class="group btn btn-outline btn-disabled justify-start bg-xrb-disabled border-xrb-border text-xrb-text-1 hover:bg-xrb-text-1 hover:border-xrb-text-1 hover:text-xrb-bg-1">
                 <span class="flex items-center justify-center h-full w-8">
                     <img class="h-5 w-5 group-hover:invert "
                         src="../../../assets/icons/pencils/edit_pencil_line_1.svg" />
