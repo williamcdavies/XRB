@@ -13,6 +13,7 @@
   --color-xrb-disabled:                oklch(0 0 0);
   --color-xrb-text-1:                  oklch(0.9708 0.0086 247.91);
   --color-xrb-text-2:                  oklch(0.1444 0.0159 73.55);
+  --color-xrb-error:                   oklch(0.7232 0.1344 26.96);
   
   
   --color-xrb-drawer-background:       oklch(15.98% 0.0086 274.31); /* drawer content background: */

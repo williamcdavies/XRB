@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { ref }       from 'vue';
+    import { computed, ref }       from 'vue';
     import { useAuth }   from '@/composables/auth';
     import { useRouter } from 'vue-router';
 
@@ -12,14 +12,16 @@
         (e: 'go-back'): void
     }>()
 
-    
     const { setAccessToken } = useAuth()
-    const router = useRouter()
+    const router             = useRouter()
+
+    const token              = ref('')
+    
+    const isTokenValid       = computed<boolean>(() => !!token.value.match(/^\d{6}$/))
+    const isBadInput         = ref(false)
 
 
     // verify
-    const token = ref('')
-
     async function verify(): Promise<boolean> {
         if(!prop.email.trim().toLowerCase() || !token.value.trim().toLowerCase()) {
             return false
@@ -37,6 +39,8 @@
             })
 
             if(!response.ok) {
+                isBadInput.value = true
+                
                 console.error(response.status)
                 
                 return false
@@ -72,7 +76,7 @@
                 </button>
                 <span class="text-2xl font-bold">Continue with email</span>
             </div>
-            <span class="text-xs">We'll check if you have an account, and help create one if you don't.</span>
+            <span class="text-xs">Almost there! We've sent a one-time login code to your email. Please submit the code to continue</span>
         </div>
 
         <!-- Body -->
@@ -86,11 +90,11 @@
                             placeholder="Type here" readonly />
                     </div>
                     <div class="flex flex-col gap-2">
-                        <label class="fieldset-legend pl-1 text-xs text-xrb-text-1" for="token">Password</label>
-                        <input v-model="token" type="token" class="input bg-xrb-bg-3" placeholder="XXXXXX" required />
+                        <label class="fieldset-legend pl-1 text-xs text-xrb-text-1" for="token">One-time login code</label>
+                        <input v-model="token" type="token" class="input bg-xrb-bg-3" :class="{'border-xrb-error': isBadInput}" placeholder="XXXXXX" required />
                     </div>
-                    <button type="submit" :disabled="!token.match(/^\d{6}$/)"
-                        class="btn btn-outline bg-xrb-highlight border-xrb-border text-xrb-text-1 hover:bg-xrb-text-1 hover:border-xrb-text-1 hover:text-xrb-text-2">
+                    <button type="submit" :disabled="!isTokenValid"
+                        class="btn btn-outline bg-xrb-disabled border-xrb-border text-xrb-text-1 hover:bg-xrb-text-1 hover:border-xrb-text-1 hover:text-xrb-text-2" :class="{'bg-xrb-highlight': isTokenValid}">
                         <span class="text-xs tracking-wider">CONTINUE</span>
                     </button>
                 </form>

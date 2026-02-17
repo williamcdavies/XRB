@@ -1,4 +1,7 @@
 <script setup lang="ts">
+    import { computed } from 'vue';
+
+
     // Ref: https://vuejs.org/guide/components/events.html
     const prop = defineProps<{
         email: string
@@ -8,6 +11,8 @@
         (e: 'go-forward'): void
         (e: 'update:email', value: string): void
     }>()
+
+    const isEmailValid = computed<boolean>(() => !!prop.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/))
 
     
     // login
@@ -60,8 +65,8 @@
                     <label class="fieldset-legend text-xs text-xrb-text-1" for="token">Email</label>
                     <input :value="prop.email" @input="emit('update:email', ($event.target as HTMLInputElement).value)"
                         type="email" class="input bg-xrb-bg-3" placeholder="Type here" required />
-                    <button type="submit" :disabled="!prop.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)"
-                        class="btn btn-outline bg-xrb-highlight border-xrb-border text-xrb-text-1 hover:bg-xrb-text-1 hover:border-xrb-text-1 hover:text-xrb-text-2">
+                    <button type="submit" :disabled="!isEmailValid"
+                        class="btn btn-outline bg-xrb-disabled border-xrb-border text-xrb-text-1 hover:bg-xrb-text-1 hover:border-xrb-text-1 hover:text-xrb-text-2" :class="{'bg-xrb-highlight': isEmailValid}">
                         <span class="text-xs tracking-wider">CONTINUE</span>
                     </button>
                 </form>
