@@ -61,7 +61,7 @@
                     <input :value="prop.email" @input="emit('update:email', ($event.target as HTMLInputElement).value)"
                         type="email" class="input bg-xrb-bg-3" placeholder="Type here" required />
                     <button type="submit" :disabled="!prop.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)"
-                        class="btn btn-outline bg-xrb-highlight border-xrb-border text-xrb-text-2 hover:bg-xrb-text-1 hover:border-xrb-text-1">
+                        class="btn btn-outline bg-xrb-highlight border-xrb-border text-xrb-text-1 hover:bg-xrb-text-1 hover:border-xrb-text-1 hover:text-xrb-text-2">
                         <span class="text-xs tracking-wider">CONTINUE</span>
                     </button>
                 </form>

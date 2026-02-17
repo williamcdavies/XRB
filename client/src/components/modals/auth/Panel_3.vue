@@ -90,7 +90,7 @@
                         <input v-model="token" type="token" class="input bg-xrb-bg-3" placeholder="XXXXXX" required />
                     </div>
                     <button type="submit" :disabled="!token.match(/^\d{6}$/)"
-                        class="btn btn-outline bg-xrb-highlight border-xrb-border text-xrb-text-2 hover:bg-xrb-text-1 hover:border-xrb-text-1">
+                        class="btn btn-outline bg-xrb-highlight border-xrb-border text-xrb-text-1 hover:bg-xrb-text-1 hover:border-xrb-text-1 hover:text-xrb-text-2">
                         <span class="text-xs tracking-wider">CONTINUE</span>
                     </button>
                 </form>

@@ -12,9 +12,12 @@
     const HANDLE_WIDTH          = 10
     
     const leftbarWidth          = ref(200)
+    const handleClass           = ref('bg-transparent')
 
 
     function onMouseDown() {
+        handleClass.value = 'bg-xrb-bg-3'
+
         window.addEventListener('mousemove', onMouseMove)
         window.addEventListener('mouseup', onMouseUp)
     }
@@ -29,6 +32,8 @@
 
 
     function onMouseUp() {
+        handleClass.value = 'transparent'
+
         window.removeEventListener('mousemove', onMouseMove)
         window.removeEventListener('mouseup', onMouseUp)
     }
@@ -38,10 +43,10 @@
 <template>
     <div class="grid grid-rows-[auto_1fr] h-screen w-screen bg-xrb-bg-1"
         :style="{ gridTemplateColumns: `${leftbarWidth}px ${HANDLE_WIDTH}px 1fr` }">
-        <Topbar class="col-span-3 h-10 border-b border-xrb-border" />
+        <Topbar class="col-span-3" />
         <Leftbar class="row-start-2" />
-        <Handle @mousedown="onMouseDown" class="row-start-2 border-l border-xrb-border hover:bg-xrb-bg-2 transition-colors" />
-        <Graph class="row-start-2 bg-xrb-border-1" />
+        <Handle @mousedown="onMouseDown" class="row-start-2" :class="handleClass" />
+        <Graph class="row-start-2" />
     </div>
 </template>
 

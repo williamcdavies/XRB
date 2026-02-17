@@ -52,7 +52,7 @@
 
             <!-- Right Panel-->
             <div class="w-1/2 border-l border-xrb-border">
-                <img src="../../../assets/images/steve-johnson-unsplash.jpg" class="h-full w-full object-cover">
+                <img src="../../../assets/images/splash.png" class="h-full w-full object-cover">
             </div>
         </div>
     </div>
