@@ -9,9 +9,10 @@
         (e: 'close'): void
     }>()
 
-    
     const email = ref('')
     
+    
+    // navigation stuff
     type Panel = 'panel_1' | 'panel_2' | 'panel_3'
     const panels: Panel[] = ['panel_1', 'panel_2', 'panel_3']
     const activePanel = ref<Panel>('panel_1')

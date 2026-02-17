@@ -1,7 +1,15 @@
 <script setup lang="ts">
     import { onMounted } from 'vue';
 
+    // Ref: https://vuejs.org/guide/components/events.html
+    const emit = defineEmits<{
+        (e: 'ready'): void
+    }>()
     
+
+    // desmos stuff
+    const READY_DELAY = 100
+
     let calculator: any = null
     let options = {
         expressions: false
@@ -17,9 +25,14 @@
         }
         script.onload = () => {
             const elt = document.getElementById('calculator')
+            
             if(elt) {
                 calculator = new (window as any).Desmos.GraphingCalculator(elt, options)
+                
                 calculator.setExpression({ id: 'graph1', latex: 'y=x^2' })
+                setTimeout(() => {
+                    emit('ready')
+                }, READY_DELAY)
             }
         }
     

@@ -12,10 +12,14 @@
         (e: 'update:email', value: string): void
     }>()
 
-    const isEmailValid = computed<boolean>(() => !!prop.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/))
-
     
-    // login
+    // login stuff
+
+
+    // reactivity stuff
+    const isEmailValid = computed<boolean>(() => !!prop.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/))
+    
+        
     async function login() {
         if(!prop.email.trim().toLowerCase()) {
             return
@@ -40,6 +44,9 @@
         emit('go-forward')
         return
     }
+
+
+    
 </script>
 
 
@@ -66,7 +73,7 @@
                     <input :value="prop.email" @input="emit('update:email', ($event.target as HTMLInputElement).value)"
                         type="email" class="input bg-xrb-bg-3" placeholder="Type here" required />
                     <button type="submit" :disabled="!isEmailValid"
-                        class="btn btn-outline bg-xrb-disabled border-xrb-border text-xrb-text-1 hover:bg-xrb-text-1 hover:border-xrb-text-1 hover:text-xrb-text-2" :class="{'bg-xrb-highlight': isEmailValid}">
+                       class="btn btn-outline bg-xrb-highlight border-xrb-border text-xrb-text-1 hover:bg-xrb-text-1 hover:border-xrb-text-1 hover:text-xrb-text-2" :class="{'bg-xrb-disabled': !isEmailValid}">
                         <span class="text-xs tracking-wider">CONTINUE</span>
                     </button>
                 </form>

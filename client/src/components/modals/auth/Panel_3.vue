@@ -1,7 +1,7 @@
 <script setup lang="ts">
-    import { computed, ref }       from 'vue';
-    import { useAuth }   from '@/composables/auth';
-    import { useRouter } from 'vue-router';
+    import { computed, ref } from 'vue';
+    import { useAuth }       from '@/composables/auth';
+    import { useRouter }     from 'vue-router';
 
 
     // Ref: https://vuejs.org/guide/components/events.html
@@ -12,16 +12,18 @@
         (e: 'go-back'): void
     }>()
 
+
+    // verify stuff
     const { setAccessToken } = useAuth()
     const router             = useRouter()
-
     const token              = ref('')
+
+
+    // reactivity stuff
+    const isTokenValid = computed<boolean>(() => !!token.value.match(/^\d{6}$/))
+    const isInputValid = ref(true)
+
     
-    const isTokenValid       = computed<boolean>(() => !!token.value.match(/^\d{6}$/))
-    const isBadInput         = ref(false)
-
-
-    // verify
     async function verify(): Promise<boolean> {
         if(!prop.email.trim().toLowerCase() || !token.value.trim().toLowerCase()) {
             return false
@@ -39,7 +41,7 @@
             })
 
             if(!response.ok) {
-                isBadInput.value = true
+                isInputValid.value = false
                 
                 console.error(response.status)
 
@@ -91,10 +93,10 @@
                     </div>
                     <div class="flex flex-col gap-2">
                         <label class="fieldset-legend pl-1 text-xs text-xrb-text-1" for="token">One-time login code</label>
-                        <input v-model="token" type="token" class="input bg-xrb-bg-3" :class="{'border-xrb-error': isBadInput}" placeholder="XXXXXX" required />
+                        <input v-model="token" type="token" class="input bg-xrb-bg-3" :class="{'border-xrb-error': !isInputValid}" placeholder="XXXXXX" required />
                     </div>
                     <button type="submit" :disabled="!isTokenValid"
-                        class="btn btn-outline bg-xrb-disabled border-xrb-border text-xrb-text-1 hover:bg-xrb-text-1 hover:border-xrb-text-1 hover:text-xrb-text-2" :class="{'bg-xrb-highlight': isTokenValid}">
+                        class="btn btn-outline bg-xrb-highlight border-xrb-border text-xrb-text-1 hover:bg-xrb-text-1 hover:border-xrb-text-1 hover:text-xrb-text-2" :class="{'bg-xrb-disabled': !isTokenValid}">
                         <span class="text-xs tracking-wider">CONTINUE</span>
                     </button>
                 </form>
