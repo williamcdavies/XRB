@@ -4,12 +4,14 @@ import { useAuth }                        from './composables/auth'
 import AboutPage                          from './components/pages/about'
 import LandingPage                        from './components/pages/landing'
 import DashboardPage                      from './components/pages/dashboard'
+import DocumentPage                       from './components/pages/document'
 
 
 const routes = [
   { path: '/',          component: LandingPage },
   { path: '/about',     component: AboutPage },
   { path: '/dashboard', component: DashboardPage, meta: { requiresAuth: true }},
+  { path: '/document',  component: DocumentPage,  meta: { requiresAuth: false }},
 ]
 
 
@@ -32,5 +34,6 @@ router.beforeEach(async (to) => {
 
   return '/'
 })
+
 
 export default router

@@ -40,11 +40,13 @@
 
 <template>
     <div @click="emit('close')" class="fixed inset-0 flex items-center justify-center">
-        <div @click.stop class="flex flex-row min-h-[36rem] max-h-[36rem] min-w-[48rem] max-w-[48rem] bg-[#181818] overflow-hidden rounded-xl">
+        <div @click.stop
+            class="flex flex-row min-h-[36rem] max-h-[36rem] min-w-[48rem] max-w-[48rem] bg-[#181818] overflow-hidden rounded-xl">
             <!-- Left Panel -->
             <Transition name="slide" mode="out-in">
                 <Panel_1 v-if="activePanel === 'panel_1'" @go-forward="goForward" />
-                <Panel_2 v-else-if="activePanel === 'panel_2'" v-model:email="email" @go-forward="goForward" @go-back="goBack" />
+                <Panel_2 v-else-if="activePanel === 'panel_2'" v-model:email="email" @go-forward="goForward"
+                    @go-back="goBack" />
                 <Panel_3 v-else-if="activePanel === 'panel_3'" :email="email" @go-back="goBack" />
             </Transition>
 

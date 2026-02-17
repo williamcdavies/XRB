@@ -13,12 +13,12 @@
     <!-- Z0 -->
     <Navbar @auth="renderAuthModal = true" />
     <Hero />
-    
+
     <!-- Z1 -->
     <Transition name="fade">
         <TintLayer v-if="renderAuthModal" />
     </Transition>
-    
+
     <!-- Z2 -->
     <Transition name="pop">
         <AuthModal v-if="renderAuthModal" @close="renderAuthModal = false" />
