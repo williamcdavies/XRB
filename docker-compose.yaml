@@ -7,11 +7,11 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    ports:
-      - "8080:8080"
     networks:
       - xrb-network
-
+    ports:
+      - "8080:8080"
+    
   django:
     build:
       context: server
@@ -22,10 +22,10 @@ services:
         condition: service_healthy
     env_file:
       - .env
-    volumes:
-      - ./docker-data/data:/data
     networks:
       - xrb-network
+    volumes:
+      - ./docker-data/data:/data
 
   postgres:
     container_name: xrb-postgres
@@ -35,13 +35,13 @@ services:
       start_period: 30s
       test: ["CMD-SHELL", "pg_isready -d $POSTGRES_DB -U $POSTGRES_USER -h localhost -p $POSTGRES_PORT"]
     image: postgres:15-alpine
+    networks:
+      - xrb-network
     ports:
       - "5432:5432"
     volumes:
       - ./docker-data/postgres:/var/lib/postgresql/data
-    networks:
-      - xrb-network
-
+    
 networks:
   xrb-network:
     driver: bridge
