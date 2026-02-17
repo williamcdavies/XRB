@@ -7,11 +7,11 @@
     import Graph   from './Graph.vue';
 
 
-    const MIN_LEFTBAR_WIDTH = 200
-    const MIN_GRAPH_WIDTH   = 200
-    const HANDLE_WIDTH      = 4
+    const MIN_LEFTBAR_WIDTH     = 200
+    const MIN_GRAPH_WIDTH       = 200
+    const HANDLE_WIDTH          = 10
     
-    const leftbarWidth      = ref(200)
+    const leftbarWidth          = ref(200)
 
 
     function onMouseDown() {
@@ -36,12 +36,12 @@
 
 
 <template>
-    <div class="grid grid-rows-[auto_1fr] h-screen w-screen"
+    <div class="grid grid-rows-[auto_1fr] h-screen w-screen bg-xrb-bg-1"
         :style="{ gridTemplateColumns: `${leftbarWidth}px ${HANDLE_WIDTH}px 1fr` }">
-        <Topbar class="col-span-3 h-10" />
-        <Leftbar class="row-start-2 h-full" />
-        <Handle @mousedown="onMouseDown" class="row-start-2 h-full" />
-        <Graph class="row-start-2 h-full w-full" />
+        <Topbar class="col-span-3 h-10 border-b border-xrb-border" />
+        <Leftbar class="row-start-2" />
+        <Handle @mousedown="onMouseDown" class="row-start-2 border-l border-xrb-border hover:bg-xrb-bg-2 transition-colors" />
+        <Graph class="row-start-2 bg-xrb-border-1" />
     </div>
 </template>
 

@@ -3,7 +3,7 @@
 
 
 <template>
-    <div class="flex flex-col items-center min-h-screen px-4 pt-24 pb-24 space-y-8 bg-[#080808]">
+    <div class="flex flex-col items-center min-h-screen px-4 pt-24 pb-24 space-y-8 text-xrb-text-1">
         <!-- Text Box #1 -->
         <div class="max-w-xl w-full">
             <p class="text-justify leading-relaxed">

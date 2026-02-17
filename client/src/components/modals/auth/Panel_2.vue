@@ -39,12 +39,12 @@
 
 
 <template>
-    <div class="flex flex-col w-1/2 p-8 gap-8">
+    <div class="flex flex-col w-1/2 p-8 gap-8 text-xrb-text-1">
         <!-- Header -->
         <div class="flex flex-col gap-4">
             <div class="flex flex-row items-center">
                 <button @click="emit('go-back')"
-                    class="btn btn-ghost hover:bg-transparent hover:border-transparent hover:shadow-none">
+                    class="btn btn-ghost hover:bg-transparent hover:border-transparent hover:shadow-none pl-0">
                     <img class="h-4 w-4" src="../../../assets/icons/chevrons/chevron_left.svg" />
                 </button>
                 <span class="text-2xl font-bold">Continue with email</span>
@@ -57,11 +57,11 @@
             <!-- Email fieldset -->
             <fieldset class="fieldset">
                 <form @submit.prevent="login" novalidate class="flex flex-col gap-4">
-                    <label class="fieldset-legend text-xs" for="token">Email</label>
+                    <label class="fieldset-legend text-xs text-xrb-text-1" for="token">Email</label>
                     <input :value="prop.email" @input="emit('update:email', ($event.target as HTMLInputElement).value)"
-                        type="email" class="input" placeholder="Type here" required />
+                        type="email" class="input bg-xrb-bg-3" placeholder="Type here" required />
                     <button type="submit" :disabled="!prop.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)"
-                        class="btn btn-outline bg-[#dc8c64] border-white/25 text-[#181818] hover:bg-white hover:border-white hover:text-[#181818]">
+                        class="btn btn-outline bg-xrb-highlight border-xrb-border text-xrb-text-2 hover:bg-xrb-text-1 hover:border-xrb-text-1">
                         <span class="text-xs tracking-wider">CONTINUE</span>
                     </button>
                 </form>

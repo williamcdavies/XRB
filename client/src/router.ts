@@ -10,7 +10,7 @@ import DocumentPage                       from './components/pages/document'
 const routes = [
   { path: '/',          component: LandingPage },
   { path: '/about',     component: AboutPage },
-  { path: '/dashboard', component: DashboardPage, meta: { requiresAuth: true }},
+  { path: '/dashboard', component: DashboardPage, meta: { requiresAuth: false }},
   { path: '/document',  component: DocumentPage,  meta: { requiresAuth: false }},
 ]
 

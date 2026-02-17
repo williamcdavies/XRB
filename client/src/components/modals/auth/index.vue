@@ -41,7 +41,7 @@
 <template>
     <div @click="emit('close')" class="fixed inset-0 flex items-center justify-center">
         <div @click.stop
-            class="flex flex-row min-h-[36rem] max-h-[36rem] min-w-[48rem] max-w-[48rem] bg-[#181818] overflow-hidden rounded-xl">
+            class="flex flex-row h-[36rem] w-[48rem] bg-xrb-bg-1 overflow-hidden rounded-xl">
             <!-- Left Panel -->
             <Transition name="slide" mode="out-in">
                 <Panel_1 v-if="activePanel === 'panel_1'" @go-forward="goForward" />
@@ -51,7 +51,7 @@
             </Transition>
 
             <!-- Right Panel-->
-            <div class="w-1/2">
+            <div class="w-1/2 border-l border-xrb-border">
                 <img src="../../../assets/images/steve-johnson-unsplash.jpg" class="h-full w-full object-cover">
             </div>
         </div>

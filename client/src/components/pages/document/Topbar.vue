@@ -3,7 +3,7 @@
 
 
 <template>
-    <div class="flex flex-col  w-full bg-gray-300">
+    <div class="flex flex-col w-full">
     </div>
 </template>
 
