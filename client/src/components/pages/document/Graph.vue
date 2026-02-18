@@ -8,7 +8,7 @@
     
 
     // desmos stuff
-    const READY_DELAY = 100
+    const READY_DELAY = 50
 
     let calculator: any = null
     let options = {
