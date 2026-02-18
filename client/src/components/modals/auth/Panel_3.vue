@@ -96,7 +96,7 @@
                         <input v-model="token" type="token" class="input bg-xrb-bg-3" :class="{'border-xrb-error': !isInputValid}" placeholder="XXXXXX" required />
                     </div>
                     <button type="submit" :disabled="!isTokenValid"
-                        class="btn btn-outline bg-xrb-highlight border-xrb-border text-xrb-text-1 hover:bg-xrb-text-1 hover:border-xrb-text-1 hover:text-xrb-text-2" :class="{'bg-xrb-disabled': !isTokenValid}">
+                        class="btn btn-outline border-xrb-border text-xrb-text-1 hover:bg-xrb-text-1 hover:border-xrb-text-1 hover:text-xrb-text-2" :class="isTokenValid ? `bg-xrb-highlight` : `bg-xrb-disabled`">
                         <span class="text-xs tracking-wider">CONTINUE</span>
                     </button>
                 </form>
