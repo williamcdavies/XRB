@@ -52,7 +52,7 @@
 
             <!-- Right Panel-->
             <div class="w-1/2">
-                <img src="../../../assets/images/steve-johnson-unsplash.jpg" class="h-full w-full object-cover">
+                <img src="../../../assets/images/steve-johnson-unsplash.jpg" alt="Decorative abstract image, created by Steve Johnson" class="h-full w-full object-cover">
             </div>
         </div>
     </div>
