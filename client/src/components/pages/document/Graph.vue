@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { onMounted } from 'vue';
+    import { onMounted, onUnmounted } from 'vue';
 
     // Ref: https://vuejs.org/guide/components/events.html
     const emit = defineEmits<{
@@ -37,6 +37,13 @@
         }
     
         document.head.appendChild(script)
+    })
+
+    onUnmounted(async () => {
+        if(calculator) {
+            calculator.destroy()
+            calculator = null
+        }
     })
 </script>
 
