@@ -1,11 +1,13 @@
 <script setup lang="ts">
-    import { onBeforeUnmount, onMounted, ref } from 'vue';
+    import      { onBeforeUnmount, onMounted, ref } from 'vue';
+    import type { Table }                           from '@/types/table';
+    import      { parseCSV }                        from '@/utils/parse';
     
-    import ColorLayer from '@/components/layers/ColorLayer.vue';
-    import Topbar     from './Topbar.vue';
-    import Leftbar    from './Leftbar.vue';
-    import Handle     from './Handle.vue';
-    import Graph      from './Graph.vue';
+    import      ColorLayer                          from '@/components/layers/ColorLayer.vue';
+    import      Topbar                              from './Topbar.vue';
+    import      Leftbar                             from './Leftbar.vue';
+    import      Handle                              from './Handle.vue';
+    import      Graph                               from './Graph.vue';
 
 
     // pretty loading stuff
@@ -52,6 +54,20 @@
         )
     }
 
+
+    // data stuff
+    const table = ref<Table | null>(null)
+
+    
+    async function onFileReceived(file: File) {
+        const text  = await file.text()
+        table.value = parseCSV(text)
+
+        console.log(table.value)
+    }
+    
+
+    // mounting stuff
     onMounted(() => {
         window.addEventListener('resize', onWindowResize)
     })
@@ -66,7 +82,7 @@
     <div class="grid grid-rows-[auto_1fr] h-screen w-screen bg-xrb-bg-1"
         :style="{ gridTemplateColumns: `${leftbarWidth}px ${HANDLE_WIDTH}px 1fr` }">
         <!-- Z0 -->
-        <Topbar class="col-span-3" />
+        <Topbar @file-selected="onFileReceived" class="col-span-3" />
         <Leftbar class="row-start-2" />
         <Handle @mousedown="onMouseDown" class="row-start-2" :class="handleClass" />
         <Graph @ready="isContentReady = true" class="row-start-2" />

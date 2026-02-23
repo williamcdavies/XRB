@@ -8,10 +8,11 @@
     
 
     // desmos stuff
-    let   calculator: any = null
     const options         = {
         expressions: false
     }
+
+    let   calculator: any = null
 
 
     function init() {
@@ -28,6 +29,7 @@
     }
 
 
+    // mounting stuff
     onMounted(() => {
         if((window as any).Desmos) {
             init()
@@ -41,7 +43,7 @@
         script.onerror = () => {
             console.error("Failed to create element: `script` for Graph.vue")
         }
-        script.onload = init
+        script.onload  = init
     
         document.head.appendChild(script)
     })
