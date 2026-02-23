@@ -72,6 +72,7 @@
         window.addEventListener('resize', onWindowResize)
     })
 
+    
     onBeforeUnmount(() => {
         window.removeEventListener('resize', onWindowResize)
     })

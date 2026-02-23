@@ -53,6 +53,7 @@
         document.head.appendChild(script)
     })
 
+    
     onUnmounted(() => {
         calculator?.destroy()
         calculator = null
