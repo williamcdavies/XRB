@@ -5,7 +5,7 @@
 
 <template>
     <div class="fixed inset-0 flex items-center justify-center z-50" @click="$emit('close')">
-        <div class="relative bg-xrb-menu-background rounded-3xl min-w-[30rem] max-w-[30rem] min-h-[36rem] max-h-[36rem] p-6 z-50"
+        <div class="select-none relative bg-xrb-menu-background rounded-3xl min-w-[30rem] max-w-[30rem] min-h-[36rem] max-h-[36rem] p-6 z-50"
             @click.stop>
             <div class="relative flex rounded-3xl">
                 <div @click="$emit('close')">
