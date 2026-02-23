@@ -8,42 +8,47 @@
     
 
     // desmos stuff
-    const READY_DELAY = 50
-
-    let calculator: any = null
-    let options = {
+    let   calculator: any = null
+    const options         = {
         expressions: false
     }
 
 
-    onMounted(async () => {
+    function init() {
+        const elt = document.getElementById('calculator')
+
+        if(!elt || !(window as any).Desmos) {
+            return
+        }
+
+        calculator = new (window as any).Desmos.GraphingCalculator(elt, options)
+        
+        calculator.setExpression({ id: 'graph', latex: 'y=x^2' })
+        emit('ready')
+    }
+
+
+    onMounted(() => {
+        if((window as any).Desmos) {
+            init()
+
+            return
+        }
+        
         const script   = document.createElement('script')
         script.async   = true
         script.src     = "https://www.desmos.com/api/v1.11/calculator.js?apiKey=6d296d9af7c9474a830bc30e6ab595a3"
         script.onerror = () => {
             console.error("Failed to create element: `script` for Graph.vue")
         }
-        script.onload = () => {
-            const elt = document.getElementById('calculator')
-            
-            if(elt) {
-                calculator = new (window as any).Desmos.GraphingCalculator(elt, options)
-                
-                calculator.setExpression({ id: 'graph1', latex: 'y=x^2' })
-                setTimeout(() => {
-                    emit('ready')
-                }, READY_DELAY)
-            }
-        }
+        script.onload = init
     
         document.head.appendChild(script)
     })
 
-    onUnmounted(async () => {
-        if(calculator) {
-            calculator.destroy()
-            calculator = null
-        }
+    onUnmounted(() => {
+        calculator?.destroy()
+        calculator = null
     })
 </script>
 
