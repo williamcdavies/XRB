@@ -1,11 +1,12 @@
 from django_otp.plugins.otp_email.models import EmailDevice
 from django.conf                         import settings
 from django.contrib.auth                 import get_user_model
-from rest_framework.decorators           import api_view, permission_classes
+from rest_framework.decorators           import api_view, permission_classes, throttle_classes
 from rest_framework.permissions          import AllowAny
 from rest_framework.response             import Response
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.tokens     import RefreshToken
+from rest_framework.throttling           import ScopedRateThrottle
 
 from modules.api.auth.serializers        import CredentialSerializer
 from modules.api.auth.serializers        import EmailSerializer
@@ -16,7 +17,10 @@ User = get_user_model()
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
+@throttle_classes([ScopedRateThrottle])
 def login(request):
+    login.throttle_scope = "login"
+
     # serialize login request:
     #   login requests are expected to be of the key-value pair {"email": "email.value"}.
     #   if login requests cannot be appropriately serialized, a status.HTTP_400_BAD_REQUEST is 
@@ -51,7 +55,9 @@ def login(request):
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
+@throttle_classes([ScopedRateThrottle])
 def verify(request):
+    verify.throttle_scope = "verify"
     # serialize verify request:
     #   verify requests are expected to be of the key-value pairs {"email": "email.value"}, {"token": "token.value"}.
     #   if verify requests cannot be appropriately serialized, a status.HTTP_400_BAD_REQUEST is 
