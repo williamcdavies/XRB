@@ -85,7 +85,7 @@
         <Topbar @file-selected="onFileReceived" class="col-span-3" />
         <Leftbar class="row-start-2" />
         <Handle @mousedown="onMouseDown" class="row-start-2" :class="handleClass" />
-        <Graph @ready="isContentReady = true" class="row-start-2" />
+        <Graph :table="table" @ready="isContentReady = true" class="row-start-2" />
 
         <!-- Z1 -->
         <transition name="fade">

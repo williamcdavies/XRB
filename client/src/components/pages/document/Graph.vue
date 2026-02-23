@@ -1,7 +1,12 @@
 <script setup lang="ts">
-    import { onMounted, onUnmounted } from 'vue';
+    import      { onMounted, onUnmounted } from 'vue';
+    import type { Table }                  from '@/types/table';
+
 
     // Ref: https://vuejs.org/guide/components/events.html
+    const prop = defineProps<{
+        table: Table | null
+    }>()
     const emit = defineEmits<{
         (e: 'ready'): void
     }>()
