@@ -19,14 +19,17 @@
   --color-xrb-menu-background:         oklch(26.36% 0.0063 258.36); /* menu content background: */
   --color-xrb-menu-background-accent:  oklch(30.54% 0.0123 243.24); /* for selection in account component */
   --color-xrb-menu-background-warning: oklch(0.5504 0.1673 23.7);
-  --color-xrb-border-1:                oklch(39.27% 0.0114 258.36); /* border content background */
-  --color-xrb-accent-1:                oklch(0.6362 0.1765 46.711);
-  --color-xrb-accent-2:                oklch(0.3377 0.1244 32.6);
-  --color-xrb-accent-3:                oklch(0.2822 0.1097 30.38);
-  --color-xrb-accent-4:                oklch(15.96% 0.016 26.68);   /* for selection in account component */
-  --color-xrb-text-primary:            oklch(1 0 0);                /* for main text in body, pure white */
-  --color-xrb-text-secondary:          oklch(0.7871 0.0044 236.52); /* for secondary text, pre-selection emphasis. */
-  --color-xrb-text-warning-1:          oklch(63% 0.17 26);
+  --color-xrb-border-1: oklch(39.27% 0.0114 258.36); /* border content background */
+  
+  --color-xrb-accent-1: oklch(0.6362 0.1765 46.711);
+  --color-xrb-accent-2: oklch(0.3377 0.1244 32.6);
+  --color-xrb-accent-3: oklch(0.2822 0.1097 30.38);
+
+  --color-xrb-accent-4: oklch(15.96% 0.016 26.68);  /* for selection in account component */
+  --color-xrb-text-primary: oklch(1 0 0); /* for main text in body, pure white */
+  --color-xrb-text-secondary: oklch(0.7871 0.0044 236.52); /* for secondary text, pre-selection emphasis. */
+  --color-xrb-text-accent: oklch(0.7 0.1381 239.29);
+  --color-xrb-text-warning-1: oklch(63% 0.17 26);
   
 
   --font-sans: Inter, system-ui, sans-serif;
