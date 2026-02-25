@@ -1,4 +1,4 @@
-import type { Table } from "@/types/table";
+import type { Table } from "@/dgclib/types";
 
 
 export function parseCSV(text: string): Table {
