@@ -46,10 +46,10 @@
         const x = newTable.rows.map(r => Number(r[0]))
         const y = newTable.rows.map(r => Number(r[1]))
 
-        dgc.populate(x, 
-                     y, 
-                     newTable.headers[0] ?? 'X', 
-                     newTable.headers[1] ?? 'Y')
+        dgc.load(x, 
+                 y, 
+                 newTable.headers[0], 
+                 newTable.headers[1])
     })
 </script>
 

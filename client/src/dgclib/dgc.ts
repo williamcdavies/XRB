@@ -1,6 +1,9 @@
 export class DesmosGraphingCalculator {
     private calculator: any
     
+    private exprv:      string[]
+    private exprc:      number
+    
 
     constructor(elt: HTMLElement, options?: any) {
         if(!(window as any).Desmos) {
@@ -11,6 +14,9 @@ export class DesmosGraphingCalculator {
             elt,
             options
         )
+
+        this.exprv      = []
+        this.exprc      = 0
     }
 
 
@@ -27,16 +33,17 @@ export class DesmosGraphingCalculator {
         })
     }
 
-    populate(x:      number[], 
-             y:      number[], 
-             xLabel: string, 
-             yLabel: string): void {
+    // add new dataset
+    add(x: number[], 
+        y: number[]): void {
         if(!this.calculator)                 return
         if(x.length === 0 || y.length === 0) return
         if(x.length !== y.length)            return
 
+        const id = `dataset-${ this.exprc }`
+        
         this.calculator.setExpression({
-            id: 'dataset',
+            id,
             type: 'table',
             columns: [
                 { latex: 'x', values: x },
@@ -44,6 +51,24 @@ export class DesmosGraphingCalculator {
             ]
         })
 
+        this.exprv.push(id)
+        ++this.exprc
+    }
+
+
+    // load new dataset
+    //  overrides existing dataset
+    //  overrides existing expressions
+    load(x:      number[], 
+         y:      number[], 
+         xLabel: string = "X", 
+         yLabel: string = "Y"): void {
+        if(!this.calculator)                 return
+        if(x.length === 0 || y.length === 0) return
+        if(x.length !== y.length)            return
+
+        this.clear()
+        this.add(x, y)
         this.setXLabel(xLabel)
         this.setYLabel(yLabel)
     }
@@ -52,6 +77,8 @@ export class DesmosGraphingCalculator {
     clear(): void {
         if(!this.calculator) return
 
+        this.exprv      = []
+        this.exprc      = 0
         this.calculator.setBlank()
     }
 
@@ -59,6 +86,7 @@ export class DesmosGraphingCalculator {
     destroy(): void {
         if(!this.calculator) return
 
+        this.clear()
         this.calculator.destroy()
         this.calculator = null
     }
