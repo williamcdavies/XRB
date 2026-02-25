@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import      { onBeforeUnmount, onMounted, ref } from 'vue';
-    import type { Table }                           from '@/dgclib/types';
+    import type { Table }                           from '@/types/table';
     import      { parseCSV }                        from '@/utils/parse';
     
     import      ColorLayer                          from '@/components/layers/ColorLayer.vue';

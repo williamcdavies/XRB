@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import      { DesmosGraphingCalculator }      from '@/dgclib';
     import      { onMounted, onUnmounted, watch } from 'vue';
-    import type { Table }                         from '@/dgclib/types';
+    import type { Table }                         from '@/types/table';
 
 
     // Ref: https://vuejs.org/guide/components/events.html
