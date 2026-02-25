@@ -3,7 +3,7 @@
 
 
 <template>
-    <div class="fixed inset-0 bg-black/75"></div>
+    <div class="fixed inset-0 bg-xrb-tint/75"></div>
 </template>
 
 

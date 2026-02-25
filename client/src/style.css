@@ -5,21 +5,18 @@
 }
 
 @theme {
-  --color-xrb-bg-1:                    oklch(0.1767 0.0114 260.64); /* dark */
-  --color-xrb-bg-2:                    oklch(0.2202 0.0157 256.82); 
-  --color-xrb-bg-3:                    oklch(0.2739 0.0156 252.38); /* light */
-  --color-xrb-border:                  oklch(0.3842 0.0158 255.61); 
-  --color-xrb-highlight:               oklch(0.5377 0.1124 255.89);
-  --color-xrb-disabled:                oklch(0 0 0);
-  --color-xrb-text-1:                  oklch(0.9708 0.0086 247.91);
-  --color-xrb-text-2:                  oklch(0.1444 0.0159 73.55);
-  --color-xrb-error:                   oklch(0.7232 0.1344 26.96);
-  
-  --color-xrb-drawer-background:       oklch(15.98% 0.0086 274.31); /* drawer content background: */
-  --color-xrb-menu-background:         oklch(26.36% 0.0063 258.36); /* menu content background: */
-  --color-xrb-menu-background-accent:  oklch(30.54% 0.0123 243.24); /* for selection in account component */
-  --color-xrb-menu-background-warning: oklch(0.5504 0.1673 23.7);
-  --color-xrb-border-1: oklch(39.27% 0.0114 258.36); /* border content background */
+  --color-xrb-background-1: oklch(15.98% 0.0086 274.31);  /* main content background: */
+  --color-xrb-background-2: oklch(0.6499 0.0053 293.76);
+
+  --color-xrb-drawer-background: oklch(15.98% 0.0086 274.31); /* drawer content background: */
+
+  --color-xrb-menu-background: oklch(0.1767 0.0114 260.64); /* menu content background: */
+  --color-xrb-menu-background-accent: oklch(0.2202 0.0157 256.82); /* for selection in account component */
+  --color-xrb-menu-background-warning: oklch(0.1807 0.0382 21.6);
+
+  --color-xrb-modal-background: oklch(0.2202 0.0157 256.82);
+
+  --color-xrb-border-1: oklch(0.3842 0.0158 255.61); /* border content background */
   
   --color-xrb-accent-1: oklch(0.6362 0.1765 46.711);
   --color-xrb-accent-2: oklch(0.3377 0.1244 32.6);
@@ -32,24 +29,23 @@
 
   --color-xrb-text-warning-1: oklch(63% 0.17 26); /* for deleting things */
   --color-xrb-text-warning-2: oklch(0.4763 0.17 26);
-  
 
-  --font-sans: Inter, system-ui, sans-serif;
+  --color-xrb-tint: oklch(0 0 0);
+  
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Nunito", var(--font-sans);
 }
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  
-  
-  background-color: oklch(0.1767 0.0114 260.64);
+  background-color: rgb(255, 0, 153);
+  /* FOR DEV */
 
-  font-synthesis: none;
+  /* background-color: oklch(0.1277 0.0244 29.58); FOR PROD */
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -72,9 +68,70 @@
 
 @font-face {
   font-family: "Inter";
-  src: url("/fonts/inter.ttf") format("truetype");
-  font-weight: normal;
+  src: url("/fonts/Inter/Inter-Regular.ttf") format("truetype");
+  font-weight: 400;
   font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter/Inter-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter/Inter-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter/Inter-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("/fonts/Nunito/Nunito-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("/fonts/Nunito/Nunito-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    font-family: var(--font-sans);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 700;
+  }
+
+  code, pre {
+    font-family: var(--font-mono);
+  }
 }
 
 @layer components {
@@ -84,11 +141,5 @@
     
     background-color: var(--tooltip-color);
     color: var(--tooltip-text-color);
-  }
-}
-
-@layer base {
-  body {
-    font-family: Inter, sans-serif;
   }
 }

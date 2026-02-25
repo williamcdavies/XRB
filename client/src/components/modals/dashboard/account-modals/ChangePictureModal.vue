@@ -5,7 +5,7 @@
 
 <template>
     <div class="fixed inset-0 flex items-center justify-center z-50" @click="$emit('close')">
-        <div class="select-none relative bg-xrb-menu-background rounded-3xl min-w-[30rem] max-w-[30rem] h-[36rem] p-6 z-50 flex flex-col"
+        <div class="select-none relative bg-xrb-modal-background rounded-3xl min-w-[30rem] max-w-[30rem] h-[36rem] p-6 z-50 flex flex-col"
             @click.stop>
             <div class="relative flex rounded-3xl">
                 <div @click="$emit('close')">
@@ -15,9 +15,9 @@
                             d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                     </svg>
                 </div>
-                <p class="text-2xl absolute left-1/2 -translate-x-1/2 whitespace-nowrap">
-                    Change Profile Picture
-                </p>
+                <h2 class="justify-center items-center text-2xl absolute left-1/2 -translate-x-1/2 whitespace-nowrap">
+                    Profile Picture
+                </h2>
             </div>
             <!-- add border border-xrb-border-1 if you like how it looks -->
             <div class="mt-6 rounded-xl flex-1 min-h-0 overflow-auto
