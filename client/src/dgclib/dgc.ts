@@ -20,16 +20,37 @@ export class DesmosGraphingCalculator {
     }
 
 
-    setXLabel(xLabel: string): void {
+    setGraphPaper(graphPaper: boolean): void {
         this.calculator.updateSettings({
-            xAxisLabel: xLabel
+            graphPaper: graphPaper
         })
     }
 
 
-    setYLabel(yLabel: string): void {
+    setExpressions(expressions: boolean): void {
         this.calculator.updateSettings({
-            yAxisLabel: yLabel
+            expressions: expressions
+        })
+    }
+
+
+    setSettingsMenu(settingsMenu: boolean): void {
+        this.calculator.updateSettings({
+            settingsMenu: settingsMenu
+        })
+    }
+
+
+    setXLabel(xAxisLabel: string): void {
+        this.calculator.updateSettings({
+            xAxisLabel: xAxisLabel
+        })
+    }
+
+
+    setYLabel(yAxisLabel: string): void {
+        this.calculator.updateSettings({
+            yAxisLabel: yAxisLabel
         })
     }
 
@@ -61,16 +82,16 @@ export class DesmosGraphingCalculator {
     //  overrides existing expressions
     load(x:      number[], 
          y:      number[], 
-         xLabel: string = "X", 
-         yLabel: string = "Y"): void {
+         xAxisLabel: string = "X", 
+         yAxisLabel: string = "Y"): void {
         if(!this.calculator)                 return
         if(x.length === 0 || y.length === 0) return
         if(x.length !== y.length)            return
 
         this.clear()
         this.add(x, y)
-        this.setXLabel(xLabel)
-        this.setYLabel(yLabel)
+        this.setXLabel(xAxisLabel)
+        this.setYLabel(yAxisLabel)
     }
 
 
