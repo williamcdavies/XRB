@@ -1,6 +1,7 @@
 <script setup lang="ts">
-    import      { onMounted, onUnmounted } from 'vue';
-    import type { Table }                  from '@/types/table';
+    import      { DesmosGraphingCalculator }      from '@/dgclib';
+    import      { onMounted, onUnmounted, watch } from 'vue';
+    import type { Table }                         from '@/dgclib/types';
 
 
     // Ref: https://vuejs.org/guide/components/events.html
@@ -13,50 +14,42 @@
     
 
     // desmos stuff
-    const options         = {
+    const options                            = {
         expressions: false
     }
 
-    let   calculator: any = null
-
-
-    function init() {
-        const elt = document.getElementById('calculator')
-
-        if(!elt || !(window as any).Desmos) {
-            return
-        }
-
-        calculator = new (window as any).Desmos.GraphingCalculator(elt, options)
-        
-        calculator.setExpression({ id: 'graph', latex: 'y=x^2' })
-        emit('ready')
-    }
-
+    let dgc: DesmosGraphingCalculator | null = null
+    
 
     // mounting stuff
     onMounted(() => {
-        if((window as any).Desmos) {
-            init()
+        const elt = document.getElementById('calculator')
 
-            return
-        }
-        
-        const script   = document.createElement('script')
-        script.async   = true
-        script.src     = "https://www.desmos.com/api/v1.11/calculator.js?apiKey=6d296d9af7c9474a830bc30e6ab595a3"
-        script.onerror = () => {
-            console.error("Failed to create element: `script` for Graph.vue")
-        }
-        script.onload  = init
-    
-        document.head.appendChild(script)
+        if(!elt) return
+
+        dgc = new DesmosGraphingCalculator(elt, options)
+
+        emit('ready')
     })
 
-    
+
     onUnmounted(() => {
-        calculator?.destroy()
-        calculator = null
+        dgc?.destroy()
+        dgc = null
+    })
+
+
+    // watching
+    watch(() => prop.table, (newTable) => {
+        if(!newTable || !dgc) return
+
+        const x = newTable.rows.map(r => Number(r[0]))
+        const y = newTable.rows.map(r => Number(r[1]))
+
+        dgc.populate(x, 
+                     y, 
+                     newTable.headers[0] ?? 'X', 
+                     newTable.headers[1] ?? 'Y')
     })
 </script>
 
