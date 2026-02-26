@@ -61,7 +61,7 @@ onMounted(async () => {
                 </div>
                 <div class="flex flex-col w-5/6 justify-center h-full select-none">
                     <h2 class="font-sans font-bold text-lg">Name</h2>
-                    <p class="font-sans py-0 text-md">Ethan Claire</p>
+                    <p class="font-sans py-0 text-md">{{ user?.first_name ?? '' }} {{user?.last_name ?? ''}}</p>
                 </div>
             </li>
 
