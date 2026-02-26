@@ -1,9 +1,24 @@
 <script setup lang="ts">
 import type { AccountModalType } from '../../../../modals/dashboard/account-modals'
+import { useAuth } from '@/composables/auth'
+import { onMounted } from 'vue'
+import { useUser } from '@/composables/account'
 
 const emit = defineEmits<{
     (e: 'open-modal', modal: AccountModalType): void
 }>()
+
+const { user, fetchUser } = useUser()
+const { isAuthenticated } = useAuth()
+
+onMounted(async () => {
+  const authenticated = await isAuthenticated()
+  if (authenticated) {
+    await fetchUser()
+  } else {
+    console.log('No valid token found')
+  }
+})
 </script>
 
 <template>
@@ -61,7 +76,7 @@ const emit = defineEmits<{
                 </div>
                 <div class="flex flex-col w-5/6 justify-center h-full select-none">
                     <h2 class="font-sans font-bold text-lg">Email</h2>
-                    <p class="font-sans py-0 text-md">eclaire@unr.edu</p>
+                     <p class="font-sans py-0 text-md">{{user?.email ?? ''}}</p>
                 </div>
             </li>
 
