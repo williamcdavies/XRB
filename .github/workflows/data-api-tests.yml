@@ -1,4 +1,4 @@
-name: REST API Endpoints CI
+name: Data API Endpoints CI
 
 on:
   push:
@@ -53,5 +53,5 @@ jobs:
       working-directory: server
     - name: Run Tests
       run: |
-        python manage.py test modules.api.tests
+        python manage.py test modules.api.data
       working-directory: server
