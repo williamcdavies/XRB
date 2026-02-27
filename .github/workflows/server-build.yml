@@ -17,4 +17,3 @@ jobs:
     - uses: actions/checkout@v4
     - name: Docker Compose Build
       run: docker compose build
-      working-directory: server
