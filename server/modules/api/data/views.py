@@ -1,5 +1,6 @@
 import csv
 import math
+import os
 import shutil
 from pathlib import Path
 
@@ -17,7 +18,7 @@ from .permissions import check_path_access, check_write_access
 
 User = get_user_model()
 
-BASE_DATA_DIR = Path('/data')
+BASE_DATA_DIR = Path(os.environ.get('DATA_DIR', '/data'))
 
 def is_path_safe(file_path: str) -> bool:
     try:
