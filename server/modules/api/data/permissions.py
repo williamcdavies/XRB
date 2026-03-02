@@ -26,6 +26,13 @@ def check_path_access(user, relative_path: str):
             return True, 'owner'
         return False, 'not_owner'
 
+    # groups/<groupname> — user must belong to the group
+    if prefix == 'groups' and len(parts) >= 2:
+        group_name = parts[1]
+        if user.groups.filter(name=group_name).exists():
+            return True, 'group_member'
+        return False, 'not_group_member'
+
     return False, 'other'
 
 
@@ -51,5 +58,12 @@ def check_write_access(user, relative_path: str):
         if user.username == owner_name:
             return True, 'owner'
         return False, 'not_owner'
+
+    # groups/<groupname> — user must belong to the group
+    if prefix == 'groups' and len(parts) >= 2:
+        group_name = parts[1]
+        if user.groups.filter(name=group_name).exists():
+            return True, 'group_member'
+        return False, 'not_group_member'
 
     return False, 'unmanaged_path'

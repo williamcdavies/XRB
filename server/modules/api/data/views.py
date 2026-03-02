@@ -1,5 +1,7 @@
 import csv
 import math
+import os
+import shutil
 from pathlib import Path
 
 from rest_framework.decorators import api_view, permission_classes
@@ -16,10 +18,9 @@ from .permissions import check_path_access, check_write_access
 
 User = get_user_model()
 
-BASE_DATA_DIR = Path('/data')
+BASE_DATA_DIR = Path(os.environ.get('DATA_DIR', '/data'))
 
 def is_path_safe(file_path: str) -> bool:
-    # check if path is relative to base directory
     try:
         resolved = Path(file_path).resolve()
         return resolved.is_relative_to(BASE_DATA_DIR.resolve())
@@ -27,7 +28,6 @@ def is_path_safe(file_path: str) -> bool:
         return False
 
 
-# used to detect and validate erroneous csv values
 def validate_and_convert_value(value: str, column_name: str) -> dict:
     result = {
         'value': None,
@@ -67,7 +67,6 @@ def validate_and_convert_value(value: str, column_name: str) -> dict:
         return result
 
     try:
-        # check if decimal or scientific notation
         if '.' not in value and 'e' not in value.lower():
             result['value'] = int(value)
         else:
@@ -153,72 +152,6 @@ def read_validate_csv(file_path: str) -> dict:
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
-def get_file(request):
-    """
-    any user can attempt to get file data
-
-    query parameters:
-    -----------------
-    path : str (required)
-        Relative path under /data.  The first directory component determines
-        access control:
-            public/
-            users/<username>/
-            groups/<group>/
-    """
-    relative_path = request.query_params.get('path')
-
-    # check if path has been provided
-    if not relative_path:
-        return Response(
-            {'error': 'Missing required parameter: path'},
-            status=status.HTTP_400_BAD_REQUEST,
-        )
-
-    # check if authenticated for requested path
-    user = request.user if request.user.is_authenticated else None
-    allowed, reason = check_path_access(user, relative_path)
-    if not allowed:
-        return Response(
-            {'error': f'Access denied: {reason}'},
-            status=status.HTTP_403_FORBIDDEN,
-        )
-
-    # append provided path to base data directory
-    file_path = BASE_DATA_DIR / relative_path
-    if not is_path_safe(str(file_path)):
-        return Response(
-            {'error': 'Access denied: path outside allowed directories'},
-            status=status.HTTP_403_FORBIDDEN,
-        )
-
-    if not file_path.exists():
-        return Response(
-            {'error': f'File not found: {relative_path}'},
-            status=status.HTTP_404_NOT_FOUND,
-        )
-
-    if file_path.suffix.lower() not in ['.csv', '.xlsx']:
-        return Response(
-            {'error': 'Unsupported file format. Only .csv, .xlsx is supported.'},
-            status=status.HTTP_400_BAD_REQUEST,
-        )
-
-    # TODO add xlsx conversion
-    try:
-        with open(file_path, 'r', encoding='utf-8') as f:
-            csv_content = f.read()
-        return Response(csv_content, content_type='text/csv')
-    except FileNotFoundError:
-        return Response({'error': f'File not found: {relative_path}'}, status=status.HTTP_404_NOT_FOUND)
-    except PermissionError:
-        return Response({'error': 'Permission denied when reading file'}, status=status.HTTP_403_FORBIDDEN)
-    except Exception as e:
-        return Response({'error': f'Error processing file: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-@api_view(['GET'])
-@permission_classes([AllowAny])
 def download_file(request):
     """
     allow any user to download a file as long as they can access it
@@ -293,7 +226,6 @@ def upload_file(request):
         groups/astro-lab, or public.
     """
 
-    # check if form data is provided
     if 'file' not in request.FILES:
         return Response({'error': 'No file provided'}, status=status.HTTP_400_BAD_REQUEST)
     target_dir = request.data.get('path', '').strip('/')
@@ -303,7 +235,6 @@ def upload_file(request):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
-    # check permissions
     allowed, reason = check_write_access(request.user, target_dir)
     if not allowed:
         return Response(
@@ -314,15 +245,12 @@ def upload_file(request):
     uploaded_file = request.FILES['file']
 
     try:
-        # append target directory to base data directory
         upload_dir = BASE_DATA_DIR / target_dir
         upload_dir.mkdir(parents=True, exist_ok=True)
 
-        # sanitize filename and add to upload directory
         safe_name = uploaded_file.name.replace(' ', '_').replace('/', '_').replace('\\', '_')
         file_path = upload_dir / safe_name
 
-        # write file in chunks
         with open(file_path, 'wb+') as dest:
             for chunk in uploaded_file.chunks():
                 dest.write(chunk)
@@ -342,6 +270,129 @@ def upload_file(request):
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
+
+@api_view(['POST'])
+def create_directory(request):
+    """
+    Authenticated user creates a new directory under a path they can write to.
+
+    body (JSON or form):
+    --------------------
+    path : str (required)
+        Parent directory relative to /data, e.g. public, users/jake, groups/astro-lab.
+    name : str (required)
+        New directory name (single segment; no slashes).
+    """
+    parent = (request.data.get('path') or '').strip().rstrip('/')
+    name = (request.data.get('name') or '').strip()
+
+    if not parent:
+        return Response(
+            {'error': 'Missing required parameter: path (parent directory)'},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+    if not name:
+        return Response(
+            {'error': 'Missing required parameter: name (directory name)'},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+    if '/' in name or '\\' in name:
+        return Response(
+            {'error': 'Directory name must not contain slashes'},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    safe_name = name.replace(' ', '_').replace('\\', '_')
+    target_path = f'{parent}/{safe_name}' if parent else safe_name
+
+    allowed, reason = check_write_access(request.user, target_path)
+    if not allowed:
+        return Response(
+            {'error': f'Create directory denied: {reason}'},
+            status=status.HTTP_403_FORBIDDEN,
+        )
+
+    full_path = BASE_DATA_DIR / target_path
+    if not is_path_safe(str(full_path)):
+        return Response(
+            {'error': 'Access denied: path outside allowed directories'},
+            status=status.HTTP_403_FORBIDDEN,
+        )
+
+    try:
+        full_path.mkdir(parents=True, exist_ok=False)
+        return Response(
+            {'path': target_path, 'name': safe_name},
+            status=status.HTTP_201_CREATED,
+        )
+    except FileExistsError:
+        return Response(
+            {'error': f'Directory already exists: {target_path}'},
+            status=status.HTTP_409_CONFLICT,
+        )
+    except Exception as e:
+        return Response(
+            {'error': f'Error creating directory: {str(e)}'},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
+
+
+@api_view(['DELETE'])
+def delete_file(request):
+    """
+    Authenticated user deletes a file they have write access to.
+
+    query parameters:
+    -----------------
+    path : str (required)
+        File path relative to /data.
+    """
+    relative_path = request.query_params.get('path', '').strip('/')
+
+    if not relative_path:
+        return Response(
+            {'error': 'Missing required parameter: path'},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    allowed, reason = check_write_access(request.user, relative_path)
+    if not allowed:
+        return Response(
+            {'error': f'Delete denied: {reason}'},
+            status=status.HTTP_403_FORBIDDEN,
+        )
+
+    file_path = BASE_DATA_DIR / relative_path
+    if not is_path_safe(str(file_path)):
+        return Response(
+            {'error': 'Access denied: path outside allowed directories'},
+            status=status.HTTP_403_FORBIDDEN,
+        )
+
+    if not file_path.exists():
+        return Response(
+            {'error': f'Not found: {relative_path}'},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+
+    try:
+        if file_path.is_file():
+            file_path.unlink()
+        elif file_path.is_dir():
+            shutil.rmtree(file_path)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    except PermissionError:
+        return Response(
+            {'error': 'Permission denied'},
+            status=status.HTTP_403_FORBIDDEN,
+        )
+    except Exception as e:
+        return Response(
+            {'error': f'Error deleting: {str(e)}'},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
+
+
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def browse_files(request):
@@ -356,14 +407,12 @@ def browse_files(request):
     """
     base_path = request.query_params.get('path', '').strip('/')
 
-    # check permissions
     user = request.user if request.user.is_authenticated else None
     if base_path:
         allowed, reason = check_path_access(user, base_path)
         if not allowed:
             return Response({'error': f'Access denied: {reason}'}, status=status.HTTP_403_FORBIDDEN)
 
-    # when no path provided, return all possible top-level paths the user can access
     if not base_path:
         items = [{'name': 'public', 'path': 'public', 'type': 'directory'}]
         if user and user.is_authenticated:
@@ -372,6 +421,12 @@ def browse_files(request):
                 'path': f'users/{user.username}',
                 'type': 'directory',
             })
+            for group in user.groups.all().order_by('name'):
+                items.append({
+                    'name': group.name,
+                    'path': f'groups/{group.name}',
+                    'type': 'directory',
+                })
         return Response({'path': '', 'items': items, 'count': len(items)})
 
     full_path = BASE_DATA_DIR / base_path
