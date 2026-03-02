@@ -1,15 +1,18 @@
 <script setup lang="ts">
-    import { ref } from 'vue';
-    import Panel_1 from './Panel_1.vue';
-    import Panel_2 from './Panel_2.vue';
-    import Panel_3 from './Panel_3.vue';
+    import { ref       } from 'vue';
+    import { useRouter } from 'vue-router';
+
+    import Panel_1       from './Panel_1.vue';
+    import Panel_2       from './Panel_2.vue';
+    import Panel_3       from './Panel_3.vue';
 
     // Ref: https://vuejs.org/guide/components/events.html
     const emit = defineEmits<{
         (e: 'close'): void
     }>()
-
-    const email = ref('')
+    
+    const router = useRouter()
+    const email  = ref('')
     
     
     // navigation stuff
@@ -17,16 +20,6 @@
     const panels: Panel[] = ['panel_1', 'panel_2', 'panel_3']
     const activePanel = ref<Panel>('panel_1')
     
-
-    // @go-back
-    function goBack() {
-        const i = panels.indexOf(activePanel.value)
-        
-        if (i > 0) {
-            activePanel.value = panels[i - 1]!
-        }
-    }  
-
 
     // @go-forward
     function goForward() {
@@ -36,6 +29,22 @@
             activePanel.value = panels[i + 1]!
         }
     }
+
+
+    // @go-forward-as-guest
+    function goForwardAsGuest() {
+        router.push('/dashboard')
+    }
+
+
+    // @go-back
+    function goBack() {
+        const i = panels.indexOf(activePanel.value)
+        
+        if (i > 0) {
+            activePanel.value = panels[i - 1]!
+        }
+    }      
 </script>
 
 
@@ -45,7 +54,7 @@
             class="flex flex-row h-[36rem] w-[48rem] bg-xrb-bg-1 overflow-hidden rounded-xl">
             <!-- Left Panel -->
             <Transition name="slide" mode="out-in">
-                <Panel_1 v-if="activePanel === 'panel_1'" @go-forward="goForward" />
+                <Panel_1 v-if="activePanel === 'panel_1'" @go-forward="goForward" @go-forward-as-guest="goForwardAsGuest" />
                 <Panel_2 v-else-if="activePanel === 'panel_2'" v-model:email="email" @go-forward="goForward"
                     @go-back="goBack" />
                 <Panel_3 v-else-if="activePanel === 'panel_3'" :email="email" @go-back="goBack" />

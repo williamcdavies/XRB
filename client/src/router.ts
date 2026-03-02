@@ -13,7 +13,7 @@ const routes = [
   { path: '/about',     component: AboutPage },
   { path: '/dashboard', component: DashboardPage, meta: { requiresAuth: false }},
   { path: '/document',  component: DocumentPage,  meta: { requiresAuth: false }},
-  { path: '/files',     component: FilesPage,      meta: { requiresAuth: true }},
+  { path: '/files',     component: FilesPage,     meta: { requiresAuth: true }},
 ]
 
 
