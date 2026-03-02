@@ -1,8 +1,9 @@
 <script setup lang="ts">
     // Ref: https://vuejs.org/guide/components/events.html
     const emit = defineEmits<{
-        (e: 'go-forward'):          void
-        (e: 'go-forward-as-guest'): void
+        (e: 'go-forward'):            void
+        (e: 'go-forward-as-guest'):   void
+        (e: 'go-forward-as-student'): void
     }>()
 </script>
 
@@ -42,17 +43,16 @@
             <button @click="emit('go-forward-as-guest')"
                 class="group btn btn-outline justify-start bg-xrb-bg-2 border-xrb-border text-xrb-text-1 hover:bg-xrb-text-1 hover:border-xrb-text-1 hover:text-xrb-bg-1">
                 <span class="flex items-center justify-center h-full w-8">
-                    <img class="h-5 w-5 group-hover:invert " src="../../../assets/icons/mail.svg" />
+                    <img class="h-5 w-5 group-hover:invert " src="../../../assets/icons/users/user_1.svg" />
                 </span>
                 <span class="text-xs tracking-wider">CONTINUE AS GUEST</span>
             </button>
 
             <!-- Continue as student -->
-            <button
-                class="group btn btn-outline btn-disabled justify-start bg-xrb-disabled border-xrb-border text-xrb-text-1 hover:bg-xrb-text-1 hover:border-xrb-text-1 hover:text-xrb-bg-1">
+            <button @click="emit('go-forward-as-student')"
+                class="group btn btn-outline justify-start bg-xrb-bg-2 border-xrb-border text-xrb-text-1 hover:bg-xrb-text-1 hover:border-xrb-text-1 hover:text-xrb-bg-1">
                 <span class="flex items-center justify-center h-full w-8">
-                    <img class="h-5 w-5 group-hover:invert "
-                        src="../../../assets/icons/pencils/edit_pencil_line_1.svg" />
+                    <img class="h-5 w-5 group-hover:invert " src="../../../assets/icons/pencils/edit_pencil_1.svg" />
                 </span>
                 <span class="text-xs tracking-wider">CONTINUE AS STUDENT</span>
             </button>

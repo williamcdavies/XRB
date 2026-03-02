@@ -12,6 +12,8 @@
     }>()
     
     const router = useRouter()
+    
+    const role   = ref<'default' | 'student'>('default')
     const email  = ref('')
     
     
@@ -30,13 +32,6 @@
         }
     }
 
-
-    // @go-forward-as-guest
-    function goForwardAsGuest() {
-        router.push('/dashboard')
-    }
-
-
     // @go-back
     function goBack() {
         const i = panels.indexOf(activePanel.value)
@@ -44,7 +39,7 @@
         if (i > 0) {
             activePanel.value = panels[i - 1]!
         }
-    }      
+    }
 </script>
 
 
@@ -54,8 +49,8 @@
             class="flex flex-row h-[36rem] w-[48rem] bg-xrb-bg-1 overflow-hidden rounded-xl">
             <!-- Left Panel -->
             <Transition name="slide" mode="out-in">
-                <Panel_1 v-if="activePanel === 'panel_1'" @go-forward="goForward" @go-forward-as-guest="goForwardAsGuest" />
-                <Panel_2 v-else-if="activePanel === 'panel_2'" v-model:email="email" @go-forward="goForward"
+                <Panel_1 v-if="activePanel === 'panel_1'" @go-forward="goForward" @go-forward-as-guest="router.push('/dashboard')" @go-forward-as-student="() => { role = 'student'; goForward(); }" />
+                <Panel_2 v-else-if="activePanel === 'panel_2'" v-model:email="email" :role="role" @go-forward="goForward"
                     @go-back="goBack" />
                 <Panel_3 v-else-if="activePanel === 'panel_3'" :email="email" @go-back="goBack" />
             </Transition>

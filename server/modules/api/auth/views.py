@@ -9,7 +9,7 @@ from rest_framework_simplejwt.tokens     import RefreshToken
 from rest_framework.throttling           import ScopedRateThrottle
 
 from modules.api.auth.serializers        import CredentialSerializer
-from modules.api.auth.serializers        import EmailSerializer
+from modules.api.auth.serializers        import LoginSerializer
 
 
 User = get_user_model()
@@ -26,16 +26,20 @@ def login(request):
     #   if login requests cannot be appropriately serialized, a status.HTTP_400_BAD_REQUEST is 
     #       automatically raised.
     #   'email' is read into email following validation 
-    serializer = EmailSerializer(data=request.data)
+    serializer = LoginSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     email = serializer.validated_data['email'].strip().lower()
+    # role  = serializer.validated_data['role']
 
     # lookup user by email:
     #   if user.email==email, User user=returned_user
     #   else,                 User user=returned_user
     user, _ = User.objects.get_or_create(
         email=email,
-        defaults={'username': email},
+        defaults={
+            'email': email, 
+            # 'type': role
+        },
     )
 
     # lookup email_device by user and name (name because users may have > 1 email_device):

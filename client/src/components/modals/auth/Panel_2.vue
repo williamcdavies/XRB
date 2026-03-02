@@ -5,6 +5,7 @@
     // Ref: https://vuejs.org/guide/components/events.html
     const prop = defineProps<{
         email: string
+        role:  'default' | 'student'
     }>()
     const emit = defineEmits<{
         (e: 'go-back'): void
@@ -29,7 +30,7 @@
             const response = await fetch('/api/auth/login/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: prop.email.trim().toLowerCase() }),
+                body: JSON.stringify({ email: prop.email.trim().toLowerCase(), role: prop.role }),
                 credentials: 'include'
             })
 
