@@ -10,8 +10,10 @@
 
 <!-- Ref: https://daisyui.com/components/navbar/ -->
 <template>
-  <div class="absolute navbar h-24 px-16">
-    <div class="flex-1"><button @click="emit('goto-landing')" class="btn btn-ghost text-xl">XRB</button></div>
+  <div class="absolute navbar h-24 px-16 text-xrb-text-1">
+    <div class="flex-1">
+      <RouterLink to="/" class="btn btn-ghost text-xl">XRB</RouterLink>
+    </div>
     <div class="flex-none">
       <ul class="menu menu-horizontal">
         <li class="px-4"><button @click="emit('goto-about')">About</button></li>

@@ -3,7 +3,8 @@
 
 
 <template>
-    <div class="hero min-h-screen"></div>
+    <div class="flex flex-row h-full w-full">
+    </div>
 </template>
 
 

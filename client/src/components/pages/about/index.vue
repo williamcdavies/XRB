@@ -1,6 +1,4 @@
 <script setup lang="ts">
-  import { useRouter } from 'vue-router';
-
   import Navbar    from './Navbar.vue';
   import Section_1 from './Section_1.vue';
 
@@ -15,8 +13,10 @@
 
 
 <template>
-  <Navbar @goto-landing="goToLanding"/>
-  <Section_1 />
+  <div class="bg-xrb-bg-1">
+    <Navbar />
+    <Section_1 />
+  </div>
 </template>
 
 

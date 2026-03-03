@@ -1,31 +1,27 @@
 <script setup lang="ts">
-    import { ref } from 'vue';
-    import Panel_1 from './Panel_1.vue';
-    import Panel_2 from './Panel_2.vue';
-    import Panel_3 from './Panel_3.vue';
+    import { ref       } from 'vue';
+    import { useRouter } from 'vue-router';
+
+    import Panel_1       from './Panel_1.vue';
+    import Panel_2       from './Panel_2.vue';
+    import Panel_3       from './Panel_3.vue';
 
     // Ref: https://vuejs.org/guide/components/events.html
     const emit = defineEmits<{
         (e: 'close'): void
     }>()
-
     
-    const email = ref('')
+    const router = useRouter()
     
+    const role   = ref<'default' | 'student'>('default')
+    const email  = ref('')
+    
+    
+    // navigation stuff
     type Panel = 'panel_1' | 'panel_2' | 'panel_3'
     const panels: Panel[] = ['panel_1', 'panel_2', 'panel_3']
     const activePanel = ref<Panel>('panel_1')
     
-
-    // @go-back
-    function goBack() {
-        const i = panels.indexOf(activePanel.value)
-        
-        if (i > 0) {
-            activePanel.value = panels[i - 1]!
-        }
-    }  
-
 
     // @go-forward
     function goForward() {
@@ -35,24 +31,33 @@
             activePanel.value = panels[i + 1]!
         }
     }
+
+    // @go-back
+    function goBack() {
+        const i = panels.indexOf(activePanel.value)
+        
+        if (i > 0) {
+            activePanel.value = panels[i - 1]!
+        }
+    }
 </script>
 
 
 <template>
     <div @click="emit('close')" class="fixed inset-0 flex items-center justify-center">
         <div @click.stop
-            class="flex flex-row min-h-[36rem] max-h-[36rem] min-w-[48rem] max-w-[48rem] bg-[#181818] overflow-hidden rounded-xl">
+            class="flex flex-row h-[36rem] w-[48rem] bg-xrb-bg-1 overflow-hidden rounded-xl">
             <!-- Left Panel -->
             <Transition name="slide" mode="out-in">
-                <Panel_1 v-if="activePanel === 'panel_1'" @go-forward="goForward" />
-                <Panel_2 v-else-if="activePanel === 'panel_2'" v-model:email="email" @go-forward="goForward"
+                <Panel_1 v-if="activePanel === 'panel_1'" @go-forward="goForward" @go-forward-as-guest="router.push('/dashboard')" @go-forward-as-student="() => { role = 'student'; goForward(); }" />
+                <Panel_2 v-else-if="activePanel === 'panel_2'" v-model:email="email" :role="role" @go-forward="goForward"
                     @go-back="goBack" />
                 <Panel_3 v-else-if="activePanel === 'panel_3'" :email="email" @go-back="goBack" />
             </Transition>
 
             <!-- Right Panel-->
-            <div class="w-1/2">
-                <img src="../../../assets/images/steve-johnson-unsplash.jpg" alt="Decorative abstract image, created by Steve Johnson" class="h-full w-full object-cover">
+            <div class="w-1/2 border-l border-xrb-border">
+                <img src="../../../assets/images/splash.png" class="h-full w-full object-cover">
             </div>
         </div>
     </div>

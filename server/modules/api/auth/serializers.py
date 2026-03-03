@@ -2,9 +2,12 @@ from rest_framework import serializers
 
 
 # Ref: https://www.django-rest-framework.org/api-guide/serializers/#declaring-serializers
-# Required by start()
-class EmailSerializer(serializers.Serializer):
+# Required by login()
+class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
+    role  = serializers.ChoiceField(
+        choices=('default', 'student')
+    )
 
 
 # Required by verify()

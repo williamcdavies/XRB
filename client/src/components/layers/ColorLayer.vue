@@ -3,7 +3,7 @@
 
 
 <template>
-    <div class="hero min-h-screen"></div>
+    <div class="fixed inset-0 bg-xrb-bg-1"></div>
 </template>
 
 
