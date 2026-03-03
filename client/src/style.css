@@ -42,8 +42,7 @@
   color: rgba(255, 255, 255, 0.87);
   
   
-  /* DEV */  background-color: rgb(255, 0, 153);
-  /* PROD */ /* background-color: oklch(0.1277 0.0244 29.58); */
+  background-color: oklch(0.1767 0.0114 260.64);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
