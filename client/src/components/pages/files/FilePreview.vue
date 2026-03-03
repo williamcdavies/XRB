@@ -95,7 +95,8 @@
 
         <!-- CSV table preview -->
         <div v-else-if="csvHeaders.length > 0" class="flex flex-col flex-1 min-h-0">
-            <div class="px-4 py-3 border-b border-xrb-border bg-xrb-bg-2 text-sm font-medium truncate flex items-center gap-2">
+            <div
+                class="px-4 py-3 border-b border-xrb-border bg-xrb-bg-2 text-sm font-medium truncate flex items-center gap-2">
                 <span class="truncate">{{ fileName }}</span>
                 <span class="text-xs text-xrb-text-secondary shrink-0">{{ csvRows.length }} rows</span>
             </div>
@@ -103,22 +104,16 @@
                 <table class="table table-xs table-pin-rows w-full">
                     <thead>
                         <tr class="bg-xrb-bg-2">
-                            <th
-                                v-for="header in csvHeaders"
-                                :key="header"
-                                class="text-xrb-text-secondary font-medium text-xs px-3 py-2 border-b border-xrb-border"
-                            >
+                            <th v-for="header in csvHeaders" :key="header"
+                                class="text-xrb-text-secondary font-medium text-xs px-3 py-2 border-b border-xrb-border">
                                 {{ header }}
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="(row, i) in csvRows" :key="i" class="hover:bg-xrb-bg-2">
-                            <td
-                                v-for="(cell, j) in row"
-                                :key="j"
-                                class="px-3 py-1.5 text-xs border-b border-xrb-border/50 whitespace-nowrap"
-                            >
+                            <td v-for="(cell, j) in row" :key="j"
+                                class="px-3 py-1.5 text-xs border-b border-xrb-border/50 whitespace-nowrap">
                                 {{ cell }}
                             </td>
                         </tr>
@@ -132,7 +127,8 @@
             <div class="px-4 py-3 border-b border-xrb-border bg-xrb-bg-2 text-sm font-medium truncate">
                 {{ fileName }}
             </div>
-            <pre class="flex-1 overflow-auto p-4 text-xs leading-relaxed whitespace-pre-wrap break-words font-mono text-xrb-text-secondary">{{ rawText }}</pre>
+            <pre
+                class="flex-1 overflow-auto p-4 text-xs leading-relaxed whitespace-pre-wrap break-words font-mono text-xrb-text-secondary">{{ rawText }}</pre>
         </div>
 
         <!-- Not previewable -->
@@ -141,8 +137,10 @@
                 {{ fileName }}
             </div>
             <div class="flex-1 flex flex-col items-center justify-center gap-2 text-xrb-text-secondary text-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="size-10 opacity-40">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
+                    stroke="currentColor" class="size-10 opacity-40">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
                 </svg>
                 <span>No preview available for this file type</span>
             </div>

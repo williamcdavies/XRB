@@ -31,23 +31,17 @@
 </script>
 
 <template>
-    <div class="flex items-center gap-1 flex-wrap border-b border-xrb-border bg-xrb-bg-2 px-4 py-2 text-sm text-xrb-text-1">
+    <div
+        class="flex items-center gap-1 flex-wrap border-b border-xrb-border bg-xrb-bg-2 px-4 py-2 text-sm text-xrb-text-1">
         <template v-for="(seg, i) in segments" :key="seg.path">
-            <button
-                v-if="i > 0"
-                type="button"
-                class="text-xrb-text-secondary cursor-default"
-                disabled
-                aria-hidden="true"
-            >
+            <button v-if="i > 0" type="button" class="text-xrb-text-secondary cursor-default" disabled
+                aria-hidden="true">
                 /
             </button>
-            <button
-                type="button"
+            <button type="button"
                 class="rounded px-2 py-1 hover:bg-xrb-bg-3 hover:text-xrb-accent-1 transition-colors truncate max-w-[8rem]"
                 :class="{ 'text-xrb-accent-1 font-medium': i === segments.length - 1 }"
-                @click="emit('navigate', seg.path)"
-            >
+                @click="emit('navigate', seg.path)">
                 {{ seg.name }}
             </button>
         </template>

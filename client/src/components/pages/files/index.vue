@@ -168,28 +168,20 @@
     <div class="h-screen flex flex-col bg-xrb-bg-1 text-xrb-text-1">
         <!-- Top bar: back link + tabs -->
         <div class="flex items-center border-b border-xrb-border bg-xrb-bg-2 shrink-0">
-            <router-link
-                to="/dashboard"
+            <router-link to="/dashboard"
                 class="px-4 py-3 text-xrb-text-secondary hover:text-xrb-accent-1 transition-colors shrink-0"
-                title="Back to Dashboard"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                title="Back to Dashboard">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
                 </svg>
             </router-link>
             <div class="w-px h-5 bg-xrb-border shrink-0"></div>
-            <button
-                v-for="tab in tabs"
-                :key="tab.id"
-                type="button"
-                class="px-6 py-3 text-sm font-medium border-b-2 transition-colors"
-                :class="
-                    activeTab === tab.id
+            <button v-for="tab in tabs" :key="tab.id" type="button"
+                class="px-6 py-3 text-sm font-medium border-b-2 transition-colors" :class="activeTab === tab.id
                         ? 'border-xrb-accent-1 text-xrb-accent-1'
                         : 'border-transparent text-xrb-text-secondary hover:text-xrb-text-1'
-                "
-                @click="activeTab = tab.id"
-            >
+                    " @click="activeTab = tab.id">
                 {{ tab.label }}
             </button>
         </div>
@@ -199,50 +191,38 @@
             <!-- Left panel -->
             <div class="w-1/3 flex flex-col border-r border-xrb-border min-h-0">
                 <!-- Parent directory button -->
-                <button
-                    v-if="currentPath && currentPath !== currentRootPath"
-                    type="button"
+                <button v-if="currentPath && currentPath !== currentRootPath" type="button"
                     class="flex items-center gap-2 px-4 py-2 text-sm text-xrb-text-secondary hover:text-xrb-accent-1 hover:bg-xrb-bg-3 border-b border-xrb-border transition-colors shrink-0"
-                    @click="loadParent"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+                    @click="loadParent">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-4">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
                     </svg>
                     ..
                 </button>
                 <div class="flex-1 min-h-0">
-                    <FileList
-                        :items="displayItems"
-                        :current-path="currentPath"
-                        :selected-path="selectedFile"
-                        :loading="loading"
-                        :error="error"
-                        @open="onOpen"
-                        @select="(path) => selectedFile = path"
-                        @download="handleDownload"
-                        @delete="handleDelete"
-                    />
+                    <FileList :items="displayItems" :current-path="currentPath" :selected-path="selectedFile"
+                        :loading="loading" :error="error" @open="onOpen" @select="(path) => selectedFile = path"
+                        @download="handleDownload" @delete="handleDelete" />
                 </div>
 
                 <!-- Actions bar -->
                 <div class="p-3 border-t border-xrb-border bg-xrb-bg-2 flex flex-wrap items-center gap-3 shrink-0">
-                    <button
-                        type="button"
+                    <button type="button"
                         class="btn btn-sm btn-outline border-xrb-border text-xrb-text-1 hover:bg-xrb-bg-3 hover:border-xrb-border"
-                        @click="openNewDirForm"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="size-4">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        @click="openNewDirForm">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
+                            stroke="currentColor" class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                         </svg>
                         New directory
                     </button>
                     <input ref="uploadInput" type="file" class="hidden" @change="onFileSelected" />
-                    <button
-                        type="button"
+                    <button type="button"
                         class="btn btn-sm btn-outline bg-xrb-highlight border-xrb-border text-xrb-text-1 hover:bg-xrb-text-1 hover:border-xrb-text-1 hover:text-xrb-text-2 disabled:opacity-50"
-                        :disabled="uploading"
-                        @click="uploadInput?.click"
-                    >
+                        :disabled="uploading" @click="uploadInput?.click">
                         <span v-if="uploading" class="loading loading-spinner loading-sm"></span>
                         <span v-else>Upload file</span>
                     </button>
@@ -262,32 +242,20 @@
         </div>
 
         <!-- New directory modal -->
-        <div
-            v-if="creatingDir"
-            class="fixed inset-0 z-10 flex items-center justify-center bg-black/50"
-            @click.self="cancelNewDir"
-        >
-            <div
-                class="bg-xrb-bg-2 border border-xrb-border rounded-lg p-4 shadow-xl flex flex-col gap-3 min-w-[280px]"
-                @click.stop
-            >
+        <div v-if="creatingDir" class="fixed inset-0 z-10 flex items-center justify-center bg-black/50"
+            @click.self="cancelNewDir">
+            <div class="bg-xrb-bg-2 border border-xrb-border rounded-lg p-4 shadow-xl flex flex-col gap-3 min-w-[280px]"
+                @click.stop>
                 <h3 class="text-xrb-text-1 font-medium">New directory</h3>
-                <input
-                    v-model="newDirName"
-                    type="text"
+                <input v-model="newDirName" type="text"
                     class="input input-bordered w-full bg-xrb-bg-3 border-xrb-border text-xrb-text-1"
-                    placeholder="Directory name"
-                    @keydown.enter="submitNewDir"
-                />
+                    placeholder="Directory name" @keydown.enter="submitNewDir" />
                 <p v-if="createDirError" class="text-xrb-error text-sm">{{ createDirError }}</p>
                 <div class="flex justify-end gap-2">
-                    <button type="button" class="btn btn-ghost text-xrb-text-secondary" @click="cancelNewDir">Cancel</button>
-                    <button
-                        type="button"
-                        class="btn bg-xrb-highlight border-xrb-border text-xrb-text-1"
-                        :disabled="!newDirName.trim()"
-                        @click="submitNewDir"
-                    >
+                    <button type="button" class="btn btn-ghost text-xrb-text-secondary"
+                        @click="cancelNewDir">Cancel</button>
+                    <button type="button" class="btn bg-xrb-highlight border-xrb-border text-xrb-text-1"
+                        :disabled="!newDirName.trim()" @click="submitNewDir">
                         Create
                     </button>
                 </div>
