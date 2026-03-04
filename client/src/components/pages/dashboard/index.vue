@@ -6,6 +6,7 @@
     import HomeComponent    from './content/Home.vue'
     import GroupsComponent  from './content/Groups.vue'
     import AccountComponent from './content/account/Account.vue'
+    import FilesComponent   from '../files/index.vue'
 
     const activeView = ref('home'); 
 
@@ -16,17 +17,18 @@
 
 
 <template>
-    <div class="relative min-h-screen ">
+    <div class="relative h-screen flex flex-col">
         <!-- Z0 -->
         <Hero class="absolute inset-0 z-0" />
 
         <!-- Z1 -->
-        <div class="flex flex-row relative z-1">
+        <div class="flex flex-row flex-1 min-h-0 relative z-1">
             <Drawer class="shrink-0 w-fit" @change-view="changeView" />
             
             <HomeComponent    v-if="activeView      === 'home'"    />
             <GroupsComponent  v-else-if="activeView === 'groups'"  />
             <AccountComponent v-else-if="activeView === 'account'" />
+            <FilesComponent   v-else-if="activeView === 'files'"   />
         </div>
     </div>
 </template>

@@ -199,18 +199,9 @@
 </script>
 
 <template>
-    <div class="h-screen flex flex-col bg-xrb-bg-1 text-xrb-text-1">
-        <!-- Top bar: back link + tabs -->
+    <div class="flex-1 flex flex-col min-h-0 bg-xrb-bg-1 text-xrb-text-1">
+        <!-- Top bar: tabs -->
         <div class="flex items-center border-b border-xrb-border bg-xrb-bg-2 shrink-0">
-            <router-link to="/dashboard"
-                class="px-4 py-3 text-xrb-text-secondary hover:text-xrb-accent-1 transition-colors shrink-0"
-                title="Back to Dashboard">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="size-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-                </svg>
-            </router-link>
-            <div class="w-px h-5 bg-xrb-border shrink-0"></div>
             <button v-for="tab in tabs" :key="tab.id" type="button"
                 class="px-6 py-3 text-sm font-medium border-b-2 transition-colors" :class="activeTab === tab.id
                         ? 'border-xrb-accent-1 text-xrb-accent-1'
