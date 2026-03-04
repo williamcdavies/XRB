@@ -199,7 +199,7 @@
 </script>
 
 <template>
-    <div class="flex-1 flex flex-col min-h-0 bg-xrb-bg-1 text-xrb-text-1">
+    <div class="flex-1 flex flex-col min-h-0 min-w-0 overflow-hidden bg-xrb-bg-1 text-xrb-text-1">
         <!-- Top bar: tabs -->
         <div class="flex items-center border-b border-xrb-border bg-xrb-bg-2 shrink-0">
             <button v-for="tab in tabs" :key="tab.id" type="button"
@@ -212,9 +212,9 @@
         </div>
 
         <!-- Split: left = file browser, right = preview -->
-        <div class="flex-1 flex min-h-0">
+        <div class="flex-1 flex min-h-0 overflow-hidden">
             <!-- Left panel -->
-            <div class="w-1/3 flex flex-col border-r border-xrb-border min-h-0">
+            <div class="w-1/3 min-w-0 flex flex-col border-r border-xrb-border min-h-0">
                 <!-- Personal directory missing prompt -->
                 <div
                     v-if="!dirExists && activeTab === 'user'"
@@ -279,7 +279,7 @@
             </div>
 
             <!-- Right panel: preview -->
-            <div class="w-2/3 min-h-0">
+            <div class="w-2/3 min-w-0 min-h-0 overflow-hidden">
                 <FilePreview :path="selectedFile" />
             </div>
         </div>
