@@ -37,7 +37,8 @@ def login(request):
     user, _ = User.objects.get_or_create(
         email=email,
         defaults={
-            'email': email, 
+            'username': email, 
+            'email': email,
             # 'type': role
         },
     )
