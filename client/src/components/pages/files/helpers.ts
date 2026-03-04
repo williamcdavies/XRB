@@ -8,6 +8,7 @@ export interface BrowseResult {
     items: BrowseItem[];
     path: string;
     username: string | null;
+    exists: boolean;
 }
 
 export async function browsePath(
@@ -20,6 +21,12 @@ export async function browsePath(
         : '/api/data/browse/';
     const res = await api.fetch(url);
     const data = await res.json();
+
+    // path doesn't exist, so return dummy BrowseResult with exists=false
+    if (res.status === 404) {
+        return { items: [], path, username: null, exists: false };
+    }
+    
     if (!res.ok) {
         throw new Error(data.error || `Error ${res.status}`);
     }
@@ -36,7 +43,7 @@ export async function browsePath(
             : null;
     }
 
-    return { items, path: data.path ?? path, username };
+    return { items, path: data.path ?? path, username, exists: true };
 }
 
 export async function downloadFile(

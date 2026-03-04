@@ -417,8 +417,8 @@ def browse_files(request):
         items = [{'name': 'public', 'path': 'public', 'type': 'directory'}]
         if user and user.is_authenticated:
             items.append({
-                'name': user.username,
-                'path': f'users/{user.username}',
+                'name': user.email,
+                'path': f'users/{user.email}',
                 'type': 'directory',
             })
             for group in user.groups.all().order_by('name'):
@@ -433,6 +433,11 @@ def browse_files(request):
 
     if not is_path_safe(str(full_path)):
         return Response({'error': 'Access denied: path outside allowed directories'}, status=status.HTTP_403_FORBIDDEN)
+
+    if base_path == 'users' and user and user.is_authenticated:
+        user_dir = full_path / user.email
+        user_items = [{'name': user.email, 'path': f'users/{user.email}', 'type': 'directory'}] if user_dir.is_dir() else []
+        return Response({'path': base_path, 'items': user_items, 'count': len(user_items)})
 
     if not full_path.exists():
         return Response({'error': 'Directory not found'}, status=status.HTTP_404_NOT_FOUND)

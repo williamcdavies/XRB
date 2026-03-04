@@ -23,6 +23,7 @@
     const items = ref<BrowseItem[]>([]);
     const loading = ref(false);
     const error = ref<string | null>(null);
+    const dirExists = ref(true);
     const uploading = ref(false);
     const uploadError = ref<string | null>(null);
     const uploadInput = ref<HTMLInputElement | null>(null);
@@ -75,10 +76,43 @@
         }
     }
 
-    function goToTabRoot() {
+    async function goToTabRoot() {
         selectedFile.value = null;
         currentPath.value = currentRootPath.value;
-        loadPath(currentRootPath.value);
+        if (activeTab.value === 'user' && username.value) {
+            loading.value = true;
+            error.value = null;
+            try {
+                const check = await browsePath(api, 'users');
+                dirExists.value = check.items.some((i) => i.path === `users/${username.value}`);
+                if (dirExists.value) {
+                    const result = await browsePath(api, currentRootPath.value);
+                    items.value = result.items;
+                    currentPath.value = result.path;
+                } else {
+                    items.value = [];
+                }
+            } catch (e) {
+                error.value = e instanceof Error ? e.message : 'Failed to load';
+                items.value = [];
+            } finally {
+                loading.value = false;
+            }
+        } else {
+            dirExists.value = true;
+            loadPath(currentRootPath.value);
+        }
+    }
+
+    async function initPersonalDir() {
+        if (!username.value) return;
+        error.value = null;
+        try {
+            await createDirectory(api, 'users', username.value);
+            await goToTabRoot();
+        } catch (e) {
+            error.value = e instanceof Error ? e.message : 'Failed to create personal directory';
+        }
     }
 
     watch(activeTab, () => {
@@ -190,6 +224,23 @@
         <div class="flex-1 flex min-h-0">
             <!-- Left panel -->
             <div class="w-1/3 flex flex-col border-r border-xrb-border min-h-0">
+                <!-- Personal directory missing prompt -->
+                <div
+                    v-if="!dirExists && activeTab === 'user'"
+                    class="flex-1 flex flex-col items-center justify-center gap-3 p-6 text-center"
+                >
+                    <p class="text-xrb-text-secondary text-sm">Your personal directory does not exist yet.</p>
+                    <button
+                        type="button"
+                        class="btn btn-sm bg-xrb-highlight border-xrb-border text-xrb-text-1"
+                        @click="initPersonalDir"
+                    >
+                        Create personal directory
+                    </button>
+                    <p v-if="error" class="text-xrb-error text-sm">{{ error }}</p>
+                </div>
+
+                <template v-else>
                 <!-- Parent directory button -->
                 <button v-if="currentPath && currentPath !== currentRootPath" type="button"
                     class="flex items-center gap-2 px-4 py-2 text-sm text-xrb-text-secondary hover:text-xrb-accent-1 hover:bg-xrb-bg-3 border-b border-xrb-border transition-colors shrink-0"
@@ -233,6 +284,7 @@
                 <div v-if="uploadError" class="px-3 pb-2 text-xrb-error text-sm bg-xrb-bg-2 shrink-0">
                     {{ uploadError }}
                 </div>
+                </template>
             </div>
 
             <!-- Right panel: preview -->
