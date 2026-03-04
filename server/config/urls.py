@@ -22,5 +22,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/auth/', include('modules.api.auth.urls')),
     path('api/data/', include('modules.api.data.urls')),
-    path('api/account/', include('modules.api.account.urls')),
 ]
