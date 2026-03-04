@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django_otp',
     'django_otp.plugins.otp_email',
     'modules.api',
+    'modules.api.account',
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
 ]
@@ -83,7 +84,7 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
@@ -200,3 +201,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# custom user model
+AUTH_USER_MODEL = 'api_account.User'
