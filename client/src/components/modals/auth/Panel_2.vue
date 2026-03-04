@@ -26,6 +26,8 @@
             return
         }
 
+        emit('go-forward')
+
         try {
             const response = await fetch('/api/auth/login/', {
                 method: 'POST',
@@ -42,7 +44,6 @@
             console.error(err)
         }
 
-        emit('go-forward')
         return
     }
 
