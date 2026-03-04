@@ -69,7 +69,7 @@
 
                     <!-- Files item -->
                     <li>
-                        <router-link to="/files" class="p-2 tooltip tooltip-right tooltip-neutral group" data-tip="Files">
+                        <router-link to="/files" class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group" data-tip="Files">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
                                 stroke="currentColor"
                                 class="group-hover:stroke-xrb-accent-1 size-6 transition-colors duration-300">
