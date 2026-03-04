@@ -6,12 +6,12 @@ class MkdirEndpointTests(DataEndpointTestBase):
     def test_mkdir_in_own_user_dir(self):
         response = self.authenticated_client.post(
             "/api/data/mkdir/",
-            {"path": "users/testuser", "name": "results"},
+            {"path": "users/test@example.com", "name": "results"},
             format="json",
         )
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.data["name"], "results")
-        self.assertTrue((self.tmp / "users" / "testuser" / "results").is_dir())
+        self.assertTrue((self.tmp / "users" / "test@example.com" / "results").is_dir())
 
     def test_mkdir_in_own_group_dir(self):
         response = self.authenticated_client.post(
@@ -82,11 +82,23 @@ class MkdirEndpointTests(DataEndpointTestBase):
     def test_mkdir_sanitizes_spaces(self):
         response = self.authenticated_client.post(
             "/api/data/mkdir/",
-            {"path": "users/testuser", "name": "my folder"},
+            {"path": "users/test@example.com", "name": "my folder"},
             format="json",
         )
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.data["name"], "my_folder")
+
+    def test_mkdir_creates_personal_dir(self):
+        import shutil
+        shutil.rmtree(self.tmp / "users" / "test@example.com")
+
+        response = self.authenticated_client.post(
+            "/api/data/mkdir/",
+            {"path": "users", "name": "test@example.com"},
+            format="json",
+        )
+        self.assertEqual(response.status_code, 201)
+        self.assertTrue((self.tmp / "users" / "test@example.com").is_dir())
 
     def test_mkdir_unauthenticated(self):
         response = self.unauthenticated_client.post(

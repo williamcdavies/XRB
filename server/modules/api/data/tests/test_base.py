@@ -16,7 +16,7 @@ class DataEndpointTestBase(APITestCase):
         self.patcher.start()
 
         (self.tmp / 'public').mkdir()
-        (self.tmp / 'users' / 'testuser').mkdir(parents=True)
+        (self.tmp / 'users' / 'test@example.com').mkdir(parents=True)
         (self.tmp / 'groups' / 'astro-lab').mkdir(parents=True)
 
         self.user = User.objects.create_user(username='testuser', email='test@example.com')

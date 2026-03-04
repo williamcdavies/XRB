@@ -9,12 +9,12 @@ class UploadEndpointTests(DataEndpointTestBase):
     def test_upload_to_own_user_dir(self):
         response = self.authenticated_client.post(
             "/api/data/upload/",
-            {"file": self._make_file(), "path": "users/testuser"},
+            {"file": self._make_file(), "path": "users/test@example.com"},
             format="multipart",
         )
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.data["name"], "test.txt")
-        self.assertTrue((self.tmp / "users" / "testuser" / "test.txt").exists())
+        self.assertTrue((self.tmp / "users" / "test@example.com" / "test.txt").exists())
 
     def test_upload_to_own_group_dir(self):
         response = self.authenticated_client.post(
@@ -78,7 +78,7 @@ class UploadEndpointTests(DataEndpointTestBase):
         f = self._make_file(name="my file.txt")
         response = self.authenticated_client.post(
             "/api/data/upload/",
-            {"file": f, "path": "users/testuser"},
+            {"file": f, "path": "users/test@example.com"},
             format="multipart",
         )
         self.assertEqual(response.status_code, 201)
@@ -87,7 +87,7 @@ class UploadEndpointTests(DataEndpointTestBase):
     def test_upload_response_fields(self):
         response = self.authenticated_client.post(
             "/api/data/upload/",
-            {"file": self._make_file(content=b"12345"), "path": "users/testuser"},
+            {"file": self._make_file(content=b"12345"), "path": "users/test@example.com"},
             format="multipart",
         )
         self.assertEqual(response.status_code, 201)

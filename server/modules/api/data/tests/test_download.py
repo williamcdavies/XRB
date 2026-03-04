@@ -18,9 +18,9 @@ class DownloadEndpointTests(DataEndpointTestBase):
         self.assertEqual(b"".join(response.streaming_content), b"file content")
 
     def test_download_from_own_user_dir(self):
-        self._create_file("users/testuser/data.csv")
+        self._create_file("users/test@example.com/data.csv")
         response = self.authenticated_client.get(
-            "/api/data/download/", {"path": "users/testuser/data.csv"}
+            "/api/data/download/", {"path": "users/test@example.com/data.csv"}
         )
         self.assertEqual(response.status_code, 200)
 
@@ -46,9 +46,9 @@ class DownloadEndpointTests(DataEndpointTestBase):
         self.assertEqual(response.status_code, 403)
 
     def test_download_user_dir_unauthenticated_denied(self):
-        self._create_file("users/testuser/file.txt")
+        self._create_file("users/test@example.com/file.txt")
         response = self.unauthenticated_client.get(
-            "/api/data/download/", {"path": "users/testuser/file.txt"}
+            "/api/data/download/", {"path": "users/test@example.com/file.txt"}
         )
         self.assertEqual(response.status_code, 403)
 

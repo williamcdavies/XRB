@@ -10,19 +10,19 @@ class DeleteEndpointTests(DataEndpointTestBase):
         return path
 
     def test_delete_own_file(self):
-        self._create_file("users/testuser/old.txt")
+        self._create_file("users/test@example.com/old.txt")
         response = self.authenticated_client.delete(
-            "/api/data/delete/?path=users/testuser/old.txt"
+            "/api/data/delete/?path=users/test@example.com/old.txt"
         )
         self.assertEqual(response.status_code, 204)
-        self.assertFalse((self.tmp / "users" / "testuser" / "old.txt").exists())
+        self.assertFalse((self.tmp / "users" / "test@example.com" / "old.txt").exists())
 
     def test_delete_own_directory(self):
-        subdir = self.tmp / "users" / "testuser" / "subdir"
+        subdir = self.tmp / "users" / "test@example.com" / "subdir"
         subdir.mkdir()
         (subdir / "file.txt").write_bytes(b"x")
         response = self.authenticated_client.delete(
-            "/api/data/delete/?path=users/testuser/subdir"
+            "/api/data/delete/?path=users/test@example.com/subdir"
         )
         self.assertEqual(response.status_code, 204)
         self.assertFalse(subdir.exists())
