@@ -1,7 +1,12 @@
 from rest_framework.decorators import api_view, permission_classes
+from django.core.validators import validate_email
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
+
+User = get_user_model()
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -30,9 +35,19 @@ def update_name(request):
 @permission_classes([IsAuthenticated])
 def update_email(request):
     user = request.user
-    email = request.data.get('email')
+    email = request.data.get('email', '').strip()
+
     if not email:
         return Response({'error': 'Email is required.'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    try:
+        validate_email(email)
+    except ValidationError:
+        return Response({'error': 'Enter a valid email address.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    if User.objects.filter(email=email).exclude(pk=user.pk).exists():
+        return Response({'error': 'Email already in use.'}, status=status.HTTP_400_BAD_REQUEST)
+    
     user.email    = email
     user.username = email
     user.save()

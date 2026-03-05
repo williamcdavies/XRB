@@ -18,6 +18,21 @@ const { api } = useApi()
 
 async function saveEmail() {
   error.value   = ''
+
+  //prevent malicious input
+  const invalidChars = /[;"'<>()\\]/;
+  if(invalidChars.test(email.value)) {
+    error.value = 'Email contains invalid characters.'
+    return
+  }
+
+  // prevent non-real email
+  const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if(!validEmail.test(email.value)) {
+    error.value = 'Please enter a valid email address.'
+    return
+  }
+
   loading.value = true
   try {
     const response = await api.fetch('/api/account/update_email/', {
@@ -26,8 +41,11 @@ async function saveEmail() {
       body: JSON.stringify({ email: email.value, username: email.value }),
     })
 
+    const data = await response.json()
+
     if (!response.ok) {
-      throw new Error(`${response.status}`)
+      error.value = data.error + ' Please try again.' || 'Failed to update email. Please try again.'
+      return
     }
 
     emit('saved')
