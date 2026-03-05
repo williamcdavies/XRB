@@ -301,9 +301,8 @@ def create_directory(request):
             {'error': 'Directory name must not contain slashes'},
             status=status.HTTP_400_BAD_REQUEST,
         )
-
-    safe_name = name.replace(' ', '_').replace('\\', '_')
-    target_path = f'{parent}/{safe_name}' if parent else safe_name
+    
+    target_path = f'{parent}/{name}' if parent else name
 
     allowed, reason = check_write_access(request.user, target_path)
     if not allowed:
@@ -322,7 +321,7 @@ def create_directory(request):
     try:
         full_path.mkdir(parents=True, exist_ok=False)
         return Response(
-            {'path': target_path, 'name': safe_name},
+            {'path': target_path, 'name': name},
             status=status.HTTP_201_CREATED,
         )
     except FileExistsError:
