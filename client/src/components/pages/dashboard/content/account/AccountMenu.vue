@@ -7,11 +7,11 @@ import { useUser } from '@/composables/account'
 import icon1 from '@/assets/images/profile-icons/profile-icon-1.jpg'
 import icon2 from '@/assets/images/profile-icons/profile-icon-2.jpg'
 import icon3 from '@/assets/images/profile-icons/profile-icon-3.jpg'
-import icon4 from '@/assets/images/profile-icons/profile-icon-3.jpg'
-import icon5 from '@/assets/images/profile-icons/profile-icon-3.jpg'
-import icon6 from '@/assets/images/profile-icons/profile-icon-3.jpg'
-import icon7 from '@/assets/images/profile-icons/profile-icon-3.jpg'
-import icon8 from '@/assets/images/profile-icons/profile-icon-3.jpg'
+import icon4 from '@/assets/images/profile-icons/profile-icon-4.jpg'
+import icon5 from '@/assets/images/profile-icons/profile-icon-5.jpg'
+import icon6 from '@/assets/images/profile-icons/profile-icon-6.jpg'
+import icon7 from '@/assets/images/profile-icons/profile-icon-7.jpg'
+import icon8 from '@/assets/images/profile-icons/profile-icon-8.jpg'
 
 const ICONS = [icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8]
 
