@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_otp',
     'django_otp.plugins.otp_email',
-    'modules.api',
+    #'modules.api',
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     'modules.api.account',
