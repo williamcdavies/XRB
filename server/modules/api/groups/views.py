@@ -157,3 +157,16 @@ def remove_member(request, group_id, user_id):
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_group(request, group_id):
+    try:
+        group = request.user.groups.get(id=group_id)
+    except AuthGroup.DoesNotExist:
+        return Response(
+            {'error': 'Group not found'},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+
+    group.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
