@@ -14,6 +14,22 @@ User = get_user_model()
 BASE_DATA_DIR = Path(os.environ.get('DATA_DIR', '/data'))
 
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def list_groups(request):
+    groups = request.user.groups.all().order_by('name')
+    return Response({
+        'groups': [
+            {
+                'id': g.id,
+                'name': g.name,
+                'member_count': g.user_set.count(),
+            }
+            for g in groups
+        ]
+    })
+
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_group(request):
@@ -47,6 +63,33 @@ def create_group(request):
         'name': group.name,
         'member_count': 1,
     }, status=status.HTTP_201_CREATED)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def group_detail(request, group_id):
+    try:
+        group = request.user.groups.get(id=group_id)
+    except AuthGroup.DoesNotExist:
+        return Response(
+            {'error': 'Group not found'},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+
+    members = group.user_set.all().order_by('email')
+    return Response({
+        'id': group.id,
+        'name': group.name,
+        'members': [
+            {
+                'id': m.id,
+                'email': m.email,
+                'first_name': m.first_name,
+                'last_name': m.last_name,
+            }
+            for m in members
+        ],
+    })
 
 
 @api_view(['POST'])
