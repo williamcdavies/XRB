@@ -50,7 +50,7 @@ async function saveName() {
 
 <template>
     <div class="fixed inset-0 flex items-center justify-center z-50" @click="$emit('close')">
-        <div class="bg-[#181818] rounded-xl min-w-[48rem] max-w-[48rem] min-h-[36rem] max-h-[36rem] p-6 z-50"
+        <div class="select-none relative bg-xrb-menu-background rounded-3xl min-w-[30rem] max-w-[30rem] h-[36rem] p-6 z-50 flex flex-col"
             @click.stop>
 
             <div class="relative flex rounded-3xl">
@@ -102,7 +102,5 @@ async function saveName() {
         </div>
     </div>
 </template>
-
-
 
 <style scoped></style>

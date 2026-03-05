@@ -120,6 +120,4 @@ async function saveAvatar() {
   </div>
 </template>
 
-
-
 <style scoped></style>

@@ -86,6 +86,4 @@ async function saveEmail() {
   </div>
 </template>
 
-
-
 <style scoped></style>

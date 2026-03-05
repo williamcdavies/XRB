@@ -141,6 +141,4 @@ async function saveLanguage() {
   </div>
 </template>
 
-
-
 <style scoped></style>

@@ -71,6 +71,4 @@ async function deleteAccount() {
   </div>
 </template>
 
-
-
 <style scoped></style>
