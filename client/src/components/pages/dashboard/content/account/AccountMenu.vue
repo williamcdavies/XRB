@@ -1,8 +1,19 @@
 <script setup lang="ts">
 import type { AccountModalType } from '../../../../modals/dashboard/account-modals'
 import { useAuth } from '@/composables/auth'
-import { onMounted } from 'vue'
+import { onMounted, computed } from 'vue'
 import { useUser } from '@/composables/account'
+
+import icon1 from '@/assets/images/profile-icons/profile-icon-1.jpg'
+import icon2 from '@/assets/images/profile-icons/profile-icon-2.jpg'
+import icon3 from '@/assets/images/profile-icons/profile-icon-3.jpg'
+import icon4 from '@/assets/images/profile-icons/profile-icon-3.jpg'
+import icon5 from '@/assets/images/profile-icons/profile-icon-3.jpg'
+import icon6 from '@/assets/images/profile-icons/profile-icon-3.jpg'
+import icon7 from '@/assets/images/profile-icons/profile-icon-3.jpg'
+import icon8 from '@/assets/images/profile-icons/profile-icon-3.jpg'
+
+const ICONS = [icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8]
 
 const emit = defineEmits<{
     (e: 'open-modal', modal: AccountModalType): void
@@ -10,6 +21,11 @@ const emit = defineEmits<{
 
 const { user, fetchUser } = useUser()
 const { isAuthenticated } = useAuth()
+
+const avatarSrc = computed(() => {
+  const index = (user.value?.preferred_avatar ?? 1) - 1
+  return ICONS[index] ?? ICONS[0]
+})
 
 onMounted(async () => {
   const authenticated = await isAuthenticated()
@@ -44,11 +60,9 @@ onMounted(async () => {
                 </div>
                 <div class="flex flex-col w-4/6 justify-center h-full select-none">
                     <h2 class="font-sans font-bold text-lg">Profile Picture</h2>
-                    <h2 class="font-sans font-bold text-lg">{{user?.preferred_avatar ?? ''}}</h2>
-                    
                 </div>
                 <div class="flex justify-center items-center w-1/6">
-                    <img class="w-20 h-20  rounded-full" src="" alt="Rounded avatar">
+                    <img class="w-20 h-20 rounded-full object-cover" :src="avatarSrc" alt="Rounded avatar">
                 </div>
             </li>
 

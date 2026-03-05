@@ -1,31 +1,34 @@
 <script setup lang="ts">
-    import { ref, computed }                        from 'vue'
-    import { accountModals, type AccountModalType } from '../../../../modals/dashboard/account-modals'
+import { ref, computed }                        from 'vue'
+import { accountModals, type AccountModalType } from '../../../../modals/dashboard/account-modals'
+import TintLayer                                from '../../../../layers/TintLayer.vue'
+import AccountMenu                              from './AccountMenu.vue'
+import { useUser }                              from '@/composables/account'
 
-    import TintLayer                                from '../../../../layers/TintLayer.vue'
-    import AccountMenu                              from './AccountMenu.vue'
-    
-    const activeModal = ref<AccountModalType | null>(null)
+const { fetchUser } = useUser()
 
-    const ActiveModalComponent = computed(() =>
-        activeModal.value ? accountModals[activeModal.value] : null
-    )
+const activeModal = ref<AccountModalType | null>(null)
+const ActiveModalComponent = computed(() =>
+    activeModal.value ? accountModals[activeModal.value] : null
+)
 
-    function closeModal() {
-        activeModal.value = null
-    }
+function closeModal() {
+    activeModal.value = null
+}
 </script>
-
 
 <template>
     <AccountMenu @open-modal="activeModal = $event" />
-
     <Transition name="fade">
         <TintLayer v-if="activeModal" />
     </Transition>
-
     <Transition name="pop">
-        <component v-if="ActiveModalComponent" :is="ActiveModalComponent" @close="closeModal" />
+        <component
+            v-if="ActiveModalComponent"
+            :is="ActiveModalComponent"
+            @close="closeModal"
+            @saved="fetchUser(true)"
+        />
     </Transition>
 </template>
 
