@@ -93,3 +93,67 @@ def group_detail(request, group_id):
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def add_member(request, group_id):
+    try:
+        group = request.user.groups.get(id=group_id)
+    except AuthGroup.DoesNotExist:
+        return Response(
+            {'error': 'Group not found'},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+
+    email = (request.data.get('email') or '').strip()
+    if not email:
+        return Response(
+            {'error': 'Missing required parameter: email'},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    try:
+        user_to_add = User.objects.get(email=email)
+    except User.DoesNotExist:
+        return Response(
+            {'error': f'No user found with email: {email}'},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+
+    if group.user_set.filter(id=user_to_add.id).exists():
+        return Response(
+            {'error': 'User is already a member of this group'},
+            status=status.HTTP_409_CONFLICT,
+        )
+
+    user_to_add.groups.add(group)
+
+    return Response({
+        'id': user_to_add.id,
+        'email': user_to_add.email,
+        'first_name': user_to_add.first_name,
+        'last_name': user_to_add.last_name,
+    }, status=status.HTTP_201_CREATED)
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def remove_member(request, group_id, user_id):
+    try:
+        group = request.user.groups.get(id=group_id)
+    except AuthGroup.DoesNotExist:
+        return Response(
+            {'error': 'Group not found'},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+
+    try:
+        user_to_remove = group.user_set.get(id=user_id)
+    except User.DoesNotExist:
+        return Response(
+            {'error': 'User is not a member of this group'},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+
+    user_to_remove.groups.remove(group)
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+
