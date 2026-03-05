@@ -45,9 +45,9 @@ INSTALLED_APPS = [
     'django_otp',
     'django_otp.plugins.otp_email',
     'modules.api',
-    'modules.api.account',
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
+    'modules.api.account',
 ]
 
 # Ref : https://simplejwt-test.readthedocs.io/en/latest/settings.html
