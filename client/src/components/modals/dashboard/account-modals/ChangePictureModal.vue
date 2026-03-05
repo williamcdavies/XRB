@@ -71,7 +71,7 @@ async function saveAvatar() {
       <div class="mt-6 rounded-xl flex-1 min-h-0 overflow-auto flex flex-col items-center justify-center space-y-4">
         <!-- Main preview -->
         <img
-          class="w-48 h-48 rounded-full object-cover ring-4 ring-white"
+          class="w-48 h-48 rounded-full object-cover"
           :src="currentIcon()"
           alt="Selected avatar"
         />
@@ -82,7 +82,7 @@ async function saveAvatar() {
             v-for="i in [1, 2, 3, 4]"
             :key="i"
             class="w-18 h-18 rounded-full object-cover cursor-pointer transition-all"
-            :class="selected === i ? 'ring-4 ring-white' : 'ring-2 ring-transparent'"
+            :class="selected === i ? 'ring-2 ring-white' : 'ring-2 ring-transparent'"
             :src="ICONS[i - 1]"
             :alt="`Profile icon ${i}`"
             @click="selected = i"
@@ -95,7 +95,7 @@ async function saveAvatar() {
             v-for="i in [5, 6, 7, 8]"
             :key="i"
             class="w-18 h-18 rounded-full object-cover cursor-pointer transition-all"
-            :class="selected === i ? 'ring-4 ring-white' : 'ring-2 ring-transparent'"
+            :class="selected === i ? 'ring-2 ring-white' : 'ring-2 ring-transparent'"
             :src="ICONS[i - 1]"
             :alt="`Profile icon ${i}`"
             @click="selected = i"
