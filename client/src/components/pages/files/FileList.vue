@@ -74,8 +74,8 @@
                         class="text-xs text-xrb-text-secondary shrink-0">
                         {{ formatSize(item.size) }}
                     </span>
-                    <div v-if="item.type === 'file'" class="flex items-center gap-1 shrink-0">
-                        <button type="button"
+                    <div class="flex items-center gap-1 shrink-0">
+                        <button v-if="item.type === 'file'" type="button"
                             class="p-1 rounded hover:bg-xrb-bg-2 text-xrb-text-secondary hover:text-xrb-accent-1 transition-colors"
                             title="Download" @click.stop="emit('download', item.path)">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
