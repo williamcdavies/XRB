@@ -91,6 +91,8 @@ EMAIL_USE_SSL = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
+GOOGLE_OAUTH_CLIENT_ID = os.environ.get('GOOGLE_OAUTH_CLIENT_ID')
+
 OTP_EMAIL_SUBJECT = "Your one-time login code"
 OTP_EMAIL_BODY_TEMPLATE = """
 Your one-time login code is:
