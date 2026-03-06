@@ -6,8 +6,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group as AuthGroup
+from django.core.mail import send_mail
 
 User = get_user_model()
 
@@ -125,6 +127,21 @@ def add_member(request, group_id):
         )
 
     user_to_add.groups.add(group)
+
+    try:
+        send_mail(
+            subject=f'You have been added to "{group.name}"',
+            message=(
+                f'Hi,\n\n'
+                f'{request.user.email} has added you to the group "{group.name}".\n\n'
+                f'You now have access to the group\'s shared files.'
+            ),
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[user_to_add.email],
+            fail_silently=True,
+        )
+    except Exception:
+        pass
 
     return Response({
         'id': user_to_add.id,
