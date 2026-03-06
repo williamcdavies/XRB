@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { ref, onMounted } from 'vue';
+    import { ref, computed, onMounted } from 'vue';
     import { useApi } from '@/composables/api';
     import {
         type GroupSummary,
@@ -28,6 +28,7 @@
 
     const addEmail = ref('');
     const addError = ref<string | null>(null);
+    const isEmailValid = computed(() => !!addEmail.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/));
 
     async function fetchGroups() {
         loading.value = true;
@@ -195,8 +196,9 @@
                         />
                         <button
                             type="submit"
-                            class="btn btn-sm bg-xrb-highlight border-xrb-border text-xrb-text-1"
-                            :disabled="!addEmail.trim()"
+                            class="btn btn-sm border-xrb-border text-xrb-text-1"
+                            :class="isEmailValid ? 'bg-xrb-highlight' : 'bg-xrb-disabled'"
+                            :disabled="!isEmailValid"
                         >
                             Add
                         </button>

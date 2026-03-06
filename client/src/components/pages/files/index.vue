@@ -12,9 +12,7 @@
         uploadFile,
         createDirectory,
     } from './helpers';
-import { useAuth } from '@/composables/auth';
 
-    const { accessToken } = useAuth();
     const { api } = useApi();
     const { isAuthenticated } = useAuth()
     const authenticated = ref(false)
@@ -308,7 +306,6 @@ import { useAuth } from '@/composables/auth';
                 <div v-if="uploadError" class="px-3 pb-2 text-xrb-error text-sm bg-xrb-bg-2 shrink-0">
                     {{ uploadError }}
                 </div>
-                </template>
                 </template>
             </div>
 
