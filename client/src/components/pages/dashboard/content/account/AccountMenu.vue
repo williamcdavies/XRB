@@ -1,32 +1,73 @@
 <script setup lang="ts">
-    import type { AccountModalType } from '../../../../modals/dashboard/account-modals'
+import type { AccountModalType } from '../../../../modals/dashboard/account-modals'
+import { useAuth } from '@/composables/auth'
+import { onMounted, computed } from 'vue'
+import { useUser } from '@/composables/account'
 
-    const emit = defineEmits<{
-        (e: 'open-modal', modal: AccountModalType): void
-    }>()
+import icon1 from '@/assets/images/profile-icons/profile-icon-1.jpg'
+import icon2 from '@/assets/images/profile-icons/profile-icon-2.jpg'
+import icon3 from '@/assets/images/profile-icons/profile-icon-3.jpg'
+import icon4 from '@/assets/images/profile-icons/profile-icon-4.jpg'
+import icon5 from '@/assets/images/profile-icons/profile-icon-5.jpg'
+import icon6 from '@/assets/images/profile-icons/profile-icon-6.jpg'
+import icon7 from '@/assets/images/profile-icons/profile-icon-7.jpg'
+import icon8 from '@/assets/images/profile-icons/profile-icon-8.jpg'
+
+const ICONS = [icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8]
+
+const emit = defineEmits<{
+    (e: 'open-modal', modal: AccountModalType): void
+}>()
+
+const { user, fetchUser } = useUser()
+const { isAuthenticated } = useAuth()
+
+const avatarSrc = computed(() => {
+  const index = (user.value?.preferred_avatar ?? 1) - 1
+  return ICONS[index] ?? ICONS[0]
+})
+
+onMounted(async () => {
+  const authenticated = await isAuthenticated()
+  if (authenticated) {
+    await fetchUser()
+  } else {
+    console.log('No valid token found')
+  }
+})
 </script>
 
 <template>
-        <div class="flex flex-col min-h-screen hero justify-center items-center space-y-6 rounded-none">
-        <div class="text-2xl font-bold w-full min-w-[48rem] max-w-[48rem] mx-auto">Personal Information</div>
+    <div class="flex flex-col min-h-screen hero justify-center items-center space-y-6 rounded-none">
+        <div class="w-full min-w-[48rem] max-w-[48rem] mx-auto">
+            <h1 class="text-3xl font-display mb-2 ml-3">Personal Information</h1>
+            <p class = "font-sans text-m ml-3">Let's customize your personal information to make sure we work best for you.</p>
+        </div>
         <!-- <div class="flex text-l w-3/4 min-w-[36rem] max-w-[48rem]">Manage details that work best for you</div> -->
         <ul
-            class="list w-full min-w-[48rem] max-w-[48rem] h-full min-h-[36rem] max-h-[48rem] mx-auto rounded-none bg-xrb-menu-background rounded-t-3xl rounded-b-3xl hover:cursor-pointer">
+            class="list w-full min-w-[48rem] max-w-[48rem] h-full min-h-[36rem] max-h-[48rem] mx-auto rounded-none rounded-t-3xl rounded-b-3xl hover:cursor-pointer">
 
             <li @click="emit('open-modal', 'picture')"
-                class="flex list-row h-full rounded-t-3xl rounded-b-none hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary">
+                class="mb-1 border-1 border-xrb-border-1 flex list-row h-full rounded-t-3xl rounded-b-l bg-xrb-menu-background hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary">
                 <div class="flex justify-center items-center w-1/6">
-                    <img class="w-20 h-20  rounded-full"
-                        src="" alt="Rounded avatar">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z" />
+                    </svg>
                 </div>
-                <div class="flex flex-col w-5/6 justify-center h-full select-none">
-                    <div class="font-bold text-lg">Ethan Claire</div>
-                    <div class="py-0 text-md">Student</div>
+                <div class="flex flex-col w-4/6 justify-center h-full select-none">
+                    <h2 class="font-sans font-bold text-lg">Profile Picture</h2>
+                </div>
+                <div class="flex justify-center items-center w-1/6">
+                    <img class="w-20 h-20 rounded-full object-cover" :src="avatarSrc" alt="Rounded avatar">
                 </div>
             </li>
 
             <li @click="emit('open-modal', 'name')"
-                class="flex list-row h-full rounded-t-none rounded-b-none hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary">
+                class="mb-1 border-1 border-xrb-border-1 flex list-row h-full rounded-t-l rounded-b-l bg-xrb-menu-background hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
@@ -35,13 +76,13 @@
                     </svg>
                 </div>
                 <div class="flex flex-col w-5/6 justify-center h-full select-none">
-                    <div class="font-bold text-lg">Name</div>
-                    <div class="py-0 text-md">Ethan Claire</div>
+                    <h2 class="font-sans font-bold text-lg">Name</h2>
+                    <p class="font-sans py-0 text-md">{{ user?.first_name ?? '' }} {{user?.last_name ?? ''}}</p>
                 </div>
             </li>
 
             <li @click="emit('open-modal', 'email')"
-                class="flex list-row h-full rounded-t-none rounded-b-none hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary">
+                class="mb-1 border-1 border-xrb-border-1 flex list-row h-full rounded-t-l rounded-b-l bg-xrb-menu-background hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
@@ -50,13 +91,13 @@
                     </svg>
                 </div>
                 <div class="flex flex-col w-5/6 justify-center h-full select-none">
-                    <div class="font-bold text-lg">Email</div>
-                    <div class="py-0 text-md">eclaire@unr.edu</div>
+                    <h2 class="font-sans font-bold text-lg">Email</h2>
+                     <p class="font-sans py-0 text-md">{{user?.email ?? ''}}</p>
                 </div>
             </li>
 
             <li @click="emit('open-modal', 'type')"
-                class="flex list-row h-full rounded-t-none rounded-b-none hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary">
+                class="mb-1 border-1 border-xrb-border-1 flex list-row h-full rounded-t-l rounded-b-l bg-xrb-menu-background hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
@@ -65,13 +106,13 @@
                     </svg>
                 </div>
                 <div class="flex flex-col w-5/6 justify-center h-full select-none">
-                    <div class="font-bold text-lg">Account Type</div>
-                    <div class="py-0 text-md">Student</div>
+                    <h2 class="font-sans font-bold text-lg">Account Type</h2>
+                    <p class="font-sans py-0 text-md">{{user?.type ?? ''}}</p>
                 </div>
             </li>
 
             <li @click="emit('open-modal', 'language')"
-                class="flex list-row h-full rounded-t-none rounded-b-none hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary">
+                class="mb-1 border-1 border-xrb-border-1 flex list-row h-full rounded-t-l rounded-b-l bg-xrb-menu-background hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
@@ -80,13 +121,13 @@
                     </svg>
                 </div>
                 <div class="flex flex-col w-5/6 justify-center h-full select-none">
-                    <div class="font-bold text-lg">Language</div>
-                    <div class="py-0 text-md">English</div>
+                    <h2 class="font-sans font-bold text-lg">Language</h2>
+                    <p class="font-sans py-0 text-md">{{user?.preferred_language ?? ''}}</p>
                 </div>
             </li>
 
             <li @click="emit('open-modal', 'delete')"
-                class="flex list-row h-full rounded-t-none rounded-b-3xl hover:bg-xrb-menu-background-warning text-xrb-text-secondary hover:text-xrb-text-primary">
+                class="border-1 border-xrb-border-1 flex list-row h-full rounded-t-l rounded-b-3xl bg-xrb-menu-background hover:bg-xrb-menu-background-accent hover:border-xrb-text-warning-2 text-xrb-text-secondary hover:text-xrb-text-primary">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
@@ -95,7 +136,7 @@
                     </svg>
                 </div>
                 <div class="flex flex-col w-5/6 justify-center h-full select-none">
-                    <div class="font-bold text-lg">Delete Account</div>
+                    <h2 class="font-sans font-bold text-lg">Delete Account</h2>
                 </div>
             </li>
 
