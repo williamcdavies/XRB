@@ -117,12 +117,14 @@ ROOT_URLCONF = 'config.urls'
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
     'http://localhost:8080',
+    'https://xrb.unr.dev',
 ]
 CORS_ALLOW_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8080',
-    'http://localhost:5173'
+    'http://localhost:5173',
+    'https://xrb.unr.dev',
 ]
 
 TEMPLATES = [
