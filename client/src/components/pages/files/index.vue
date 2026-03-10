@@ -11,8 +11,11 @@
         uploadFile,
         createDirectory,
     } from './helpers';
+import { useAuth } from '@/composables/auth';
 
     const { api } = useApi();
+    const { isAuthenticated } = useAuth()
+    const authenticated = ref(false)
 
     type TabId = 'public' | 'user';
 
@@ -190,7 +193,8 @@
         }
     }
 
-    onMounted(() => {
+    onMounted(async () => {
+        authenticated.value = await isAuthenticated();
         loadPath('', true).then(() => {
             currentPath.value = currentRootPath.value;
             loadPath(currentRootPath.value);
@@ -250,7 +254,7 @@
                 </div>
 
                 <!-- Actions bar -->
-                <div class="p-3 border-t border-xrb-border bg-xrb-bg-2 flex flex-wrap items-center gap-3 shrink-0">
+                <div v-if="authenticated" class="p-3 border-t border-xrb-border bg-xrb-bg-2 flex flex-wrap items-center gap-3 shrink-0">
                     <button type="button"
                         class="btn btn-sm btn-outline border-xrb-border text-xrb-text-1 hover:bg-xrb-bg-3 hover:border-xrb-border"
                         @click="openNewDirForm">
