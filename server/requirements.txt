@@ -12,4 +12,6 @@ djangorestframework-simplejwt[blacklist]==5.5.1 # JWT Authentication
 gunicorn==23.0.0
 psycopg==3.2.12
 psycopg-binary==3.2.12
+google-auth==2.38.0                            # Google OAuth token verification
+requests==2.32.3                               # Required by google-auth
 whitenoise==6.11.0

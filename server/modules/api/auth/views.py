@@ -1,6 +1,8 @@
 from django_otp.plugins.otp_email.models import EmailDevice
 from django.conf                         import settings
 from django.contrib.auth                 import get_user_model
+from google.oauth2                       import id_token
+from google.auth.transport               import requests as google_requests
 from rest_framework.decorators           import api_view, permission_classes, throttle_classes
 from rest_framework.permissions          import AllowAny
 from rest_framework.response             import Response
@@ -153,7 +155,7 @@ def refresh(request):
     old_refresh_token.blacklist()
     
     response = Response({'access': str(new_access_token)})
-    
+
     # ref: https://docs.djangoproject.com/en/6.0/ref/request-response/
     # store refresh token as httponly cookie:
     #   prevents refresh token from being read by client-side javascript
@@ -169,6 +171,56 @@ def refresh(request):
         secure=False,
         httponly=True,
         samesite='Lax'
+    )
+
+    return response
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def google_login(request):
+    credential = request.data.get('credential')
+    if not credential:
+        return Response({'error': 'No credential provided'}, status=400)
+
+    # verify the Google ID token through Google's servers:
+    #   if valid, returns a dict with user info (email, name, etc.)
+    #   if invalid, raises ValueError
+    try:
+        idinfo = id_token.verify_oauth2_token(
+            credential,
+            google_requests.Request(),
+            settings.GOOGLE_OAUTH_CLIENT_ID,
+        )
+    except ValueError:
+        return Response({'error': 'Invalid token'}, status=401)
+
+    email = idinfo['email']
+
+    # lookup or create user by email
+    user, _ = User.objects.get_or_create(
+        email=email,
+        defaults={
+            'username': email,
+            'first_name': idinfo.get('given_name', ''),
+            'last_name': idinfo.get('family_name', ''),
+        },
+    )
+
+    refresh_token = RefreshToken.for_user(user)
+    access_token = refresh_token.access_token
+
+    response = Response({'access': str(access_token)})
+
+    response.delete_cookie('refresh_token', path='/', samesite='Lax')
+    response.set_cookie(
+        key='refresh_token',
+        value=str(refresh_token),
+        max_age=int(settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'].total_seconds()),
+        path='/',
+        secure=False,
+        httponly=True,
+        samesite='Lax',
     )
 
     return response

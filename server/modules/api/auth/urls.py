@@ -7,4 +7,5 @@ urlpatterns = [
     path('login/', views.login, name='login'),
     path('verify/', views.verify, name='verify'),
     path('refresh/', views.refresh, name='refresh'),
+    path('google/', views.google_login, name='google-login'),
 ]

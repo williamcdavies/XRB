@@ -6,12 +6,15 @@ const api = {
     // wrapper for window.fetch
     //  enforces Authorization: `Bearer ${getAccessToken()}`
     //  enforces credentials: 'include',
+    // NOTE: to prevent mishapen authorization headers, bearer 
+    // token only added if getAccessToken is not null
     async fetch(input: RequestInfo, init?: RequestInit) {
         const { getAccessToken, refreshAccessToken } = useAuth()
 
+        const token = getAccessToken()
         let headers: HeadersInit = {
             ...(init?.headers || {}),
-            Authorization: `Bearer ${getAccessToken()}`,
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
         }
 
         let response = await fetch(input, {
@@ -27,9 +30,10 @@ const api = {
                 return response
             }
 
-            headers =  {
+            const newToken = getAccessToken()
+            headers = {
                 ...(init?.headers || {}),
-                Authorization: `Bearer ${getAccessToken()}`,
+                ...(newToken ? { Authorization: `Bearer ${newToken}` } : {}),
             }
 
             response = await fetch(input, {

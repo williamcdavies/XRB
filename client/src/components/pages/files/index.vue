@@ -11,8 +11,11 @@
         uploadFile,
         createDirectory,
     } from './helpers';
+import { useAuth } from '@/composables/auth';
 
     const { api } = useApi();
+    const { isAuthenticated } = useAuth()
+    const authenticated = ref(false)
 
     type TabId = 'public' | 'user';
 
@@ -190,7 +193,8 @@
         }
     }
 
-    onMounted(() => {
+    onMounted(async () => {
+        authenticated.value = await isAuthenticated();
         loadPath('', true).then(() => {
             currentPath.value = currentRootPath.value;
             loadPath(currentRootPath.value);
@@ -245,12 +249,12 @@
                 </button>
                 <div class="flex-1 min-h-0">
                     <FileList :items="displayItems" :current-path="currentPath" :selected-path="selectedFile"
-                        :loading="loading" :error="error" @open="onOpen" @select="(path) => selectedFile = path"
+                        :loading="loading" :error="error" :authenticated="authenticated" @open="onOpen" @select="(path) => selectedFile = path"
                         @download="handleDownload" @delete="handleDelete" />
                 </div>
 
                 <!-- Actions bar -->
-                <div class="p-3 border-t border-xrb-border bg-xrb-bg-2 flex flex-wrap items-center gap-3 shrink-0">
+                <div v-if="authenticated" class="p-3 border-t border-xrb-border bg-xrb-bg-2 flex flex-wrap items-center gap-3 shrink-0">
                     <button type="button"
                         class="btn btn-sm btn-outline border-xrb-border text-xrb-text-1 hover:bg-xrb-bg-3 hover:border-xrb-border"
                         @click="openNewDirForm">

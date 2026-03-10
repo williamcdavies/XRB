@@ -1,10 +1,22 @@
 <script setup lang="ts">
+    import { useAuth }   from '@/composables/auth'
+    import { useRouter } from 'vue-router'
+
     // Ref: https://vuejs.org/guide/components/events.html
     const emit = defineEmits<{
         (e: 'go-forward'):            void
         (e: 'go-forward-as-guest'):   void
         (e: 'go-forward-as-student'): void
     }>()
+
+    const { googleLogin } = useAuth()
+    const router           = useRouter()
+
+    async function handleGoogleLogin() {
+        if (await googleLogin()) {
+            router.push('/dashboard')
+        }
+    }
 </script>
 
 
@@ -19,8 +31,8 @@
         <div class="flex flex-col gap-4">
 
             <!-- Continue w/ Google -->
-            <button
-                class="group btn btn-outline btn-disabled justify-start bg-xrb-disabled border-xrb-border text-xrb-text-1 hover:bg-xrb-text-1  hover:border-xrb-text-1 hover:text-xrb-bg-1">
+            <button @click="handleGoogleLogin"
+                class="group btn btn-outline justify-start bg-xrb-bg-2 border-xrb-border text-xrb-text-1 hover:bg-xrb-text-1 hover:border-xrb-text-1 hover:text-xrb-bg-1">
                 <span class="flex items-center justify-center h-full w-8">
                     <img class="h-4 w-4" src="../../../assets/icons/google.svg" />
                 </span>
