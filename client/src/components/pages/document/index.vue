@@ -62,9 +62,21 @@
     async function onFileReceived(file: File) {
         const text  = await file.text()
         table.value = parseCSV(text)
-
-        console.log(table.value)
     }
+
+
+    // graph stuff
+    const graph = ref<InstanceType<typeof Graph> | null>(null)
+
+
+    function clearFit():                    void { graph.value?.clearFit()            }
+    function fitExponential():              void { graph.value?.fitExponential()      }
+    function fitLinear():                   void { graph.value?.fitLinear()           }
+    function fitLogistic():                 void { graph.value?.fitLogistic()         }
+    function fitLogarithmic():              void { graph.value?.fitLogarithmic()      }
+    function fitPolynomial(degree: number): void { graph.value?.fitPolynomial(degree) }
+    function fitPower():                    void { graph.value?.fitPower()            }
+    function fitSinusoidal():               void { graph.value?.fitSinusoidal()       }
     
 
     // mounting stuff
@@ -83,10 +95,12 @@
     <div class="grid grid-rows-[auto_1fr] h-screen w-screen bg-xrb-bg-1"
         :style="{ gridTemplateColumns: `${leftbarWidth}px ${HANDLE_WIDTH}px 1fr` }">
         <!-- Z0 -->
-        <Topbar @file-selected="onFileReceived" class="col-span-3" />
+        <Topbar @file-selected="onFileReceived" @clear-fit="clearFit" @fit-exponential="fitExponential"
+            @fit-linear="fitLinear" @fit-logistic="fitLogistic" @fit-logarithmic="fitLogarithmic"
+            @fit-polynomial="fitPolynomial" @fit-power="fitPower" @fit-sinusoidal="fitSinusoidal" class="col-span-3" />
         <Leftbar class="row-start-2" />
         <Handle @mousedown="onMouseDown" class="row-start-2" :class="handleClass" />
-        <Graph :table="table" @ready="isContentReady = true" class="row-start-2" />
+        <Graph ref="graph" :table="table" @ready="isContentReady = true" class="row-start-2" />
 
         <!-- Z1 -->
         <transition name="fade">

@@ -1,9 +1,11 @@
+import { DGC_IDS } from "./ids"
+
+
 export class DesmosGraphingCalculator {
     private calculator: any
     
     private exprv:      string[]
-    private exprc:      number
-    
+    private exprc:      number    
 
     constructor(elt: HTMLElement, options?: any) {
         if(!(window as any).Desmos) {
@@ -834,6 +836,99 @@ export class DesmosGraphingCalculator {
     // behaviour methods
     // ------------------------------------------
 
+    fitExponential(): void {
+        if(!this.calculator)        return
+        if(this.exprv.length === 0) return
+
+        this.calculator.setExpression({
+            id:    DGC_IDS.FIT_EXPONENTIAL,
+            latex: `y_1~ab^{x_1}`
+        })
+    }
+
+
+    fitLinear(): void {
+        if(!this.calculator)        return
+        if(this.exprv.length === 0) return
+
+        this.calculator.setExpression({
+            id:    DGC_IDS.FIT_LINEAR,
+            latex: 'y_1~mx_1+b'
+        })
+    }
+
+    
+    fitLogarithmic(): void {
+        if(!this.calculator)        return
+        if(this.exprv.length === 0) return
+
+        this.calculator.setExpression({
+            id:    DGC_IDS.FIT_LOGARITHMIC,
+            latex: `y_1~a\\ln(x_1)+b`
+        })
+    }
+
+    
+    fitLogistic(): void {
+        if(!this.calculator)        return
+        if(this.exprv.length === 0) return
+
+        this.calculator.setExpression({
+            id:    DGC_IDS.FIT_LOGISTIC,
+            latex: `y_1~\\frac{L}{1+e^{-k(x_1-x_0)}}`
+        })
+    }
+
+
+    fitPolynomial(degree: number): void {
+        if(!this.calculator)        return
+        if(this.exprv.length === 0) return
+
+        const terms = Array.from({ length: degree + 1 }, (_, i) => {
+            const power = degree - i
+            const coeff = String.fromCharCode(97 + i) // a, b, c, ...
+            return power === 0 ? coeff
+                : power === 1 ? `${coeff}x_1`
+                :               `${coeff}x_1^{${power}}`
+        }).join('+')
+
+        this.calculator.setExpression({
+            id:    DGC_IDS.FIT_POLYNOMIAL,
+            latex: `y_1~${terms}`
+        })
+    }
+
+
+    fitPower(): void {
+        if(!this.calculator)        return
+        if(this.exprv.length === 0) return
+
+        this.calculator.setExpression({
+            id:    DGC_IDS.FIT_POWER,
+            latex: `y_1~ax_1^{b}`
+        })
+    }
+
+
+    fitSinusoidal(): void {
+        if(!this.calculator)        return
+        if(this.exprv.length === 0) return
+
+        this.calculator.setExpression({
+            id:    DGC_IDS.FIT_SINUSOIDAL,
+            latex: `y_1~a\\sin(bx_1+c)+d`
+        })
+    }
+
+
+    clearFit(): void {
+        if(!this.calculator) return
+
+        Object.values(DGC_IDS)
+            .filter(id => id.startsWith('fit-'))
+            .forEach(id => this.calculator.removeExpression({ id }))
+    }
+
     // add new dataset
     add(x: number[], 
         y: number[]): void {
@@ -847,8 +942,8 @@ export class DesmosGraphingCalculator {
             id,
             type: 'table',
             columns: [
-                { latex: 'x', values: x },
-                { latex: 'y', values: y }
+                { latex: 'x_1', values: x },
+                { latex: 'y_1', values: y }
             ]
         })
 
