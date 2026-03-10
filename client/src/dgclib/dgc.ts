@@ -836,6 +836,9 @@ export class DesmosGraphingCalculator {
     // behaviour methods
     // ------------------------------------------
 
+    // fit methods
+    // -----------------
+
     fitExponential(): void {
         if(!this.calculator)        return
         if(this.exprv.length === 0) return
@@ -928,6 +931,10 @@ export class DesmosGraphingCalculator {
             .filter(id => id.startsWith('fit-'))
             .forEach(id => this.calculator.removeExpression({ id }))
     }
+
+
+    // core methods
+    // -----------------
 
     // add new dataset
     add(x: number[], 
