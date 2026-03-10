@@ -52,15 +52,7 @@
     const isFitMenuOpen   = ref(false)
     const isPolyMenuOpen  = ref(false)
 
-    function toggleDropdown(): void {
-        isDropdownOpen.value = !isDropdownOpen.value
-        
-        if(!isDropdownOpen.value) {
-            isPolyMenuOpen.value = false
-            isFitMenuOpen.value  = false
-        }
-    }
-
+    
     function closeAll(): void {
         isDropdownOpen.value = false
         isPolyMenuOpen.value = false
