@@ -25,7 +25,7 @@ function clearAccessToken() {
 
 async function refreshAccessToken(): Promise<boolean> {
     try {
-        const response = await fetch('http://localhost:8000/api/auth/refresh/', {
+        const response = await fetch('/api/auth/refresh/', {
             method: 'POST',
             credentials: 'include'
         })
