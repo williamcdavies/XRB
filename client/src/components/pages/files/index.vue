@@ -249,7 +249,7 @@ import { useAuth } from '@/composables/auth';
                 </button>
                 <div class="flex-1 min-h-0">
                     <FileList :items="displayItems" :current-path="currentPath" :selected-path="selectedFile"
-                        :loading="loading" :error="error" @open="onOpen" @select="(path) => selectedFile = path"
+                        :loading="loading" :error="error" :authenticated="authenticated" @open="onOpen" @select="(path) => selectedFile = path"
                         @download="handleDownload" @delete="handleDelete" />
                 </div>
 
