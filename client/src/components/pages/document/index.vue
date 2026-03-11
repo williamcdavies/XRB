@@ -19,7 +19,7 @@
     const MIN_GRAPH_WIDTH   = 200
     const HANDLE_WIDTH      = 10
     
-    const leftbarWidth      = ref(200)
+    const leftbarWidth      = ref(Math.floor(window.innerWidth / 2))
     const handleClass       = ref('bg-transparent')
 
 
@@ -98,7 +98,7 @@
         <Topbar @file-selected="onFileReceived" @clear-fit="clearFit" @fit-exponential="fitExponential"
             @fit-linear="fitLinear" @fit-logistic="fitLogistic" @fit-logarithmic="fitLogarithmic"
             @fit-polynomial="fitPolynomial" @fit-power="fitPower" @fit-sinusoidal="fitSinusoidal" class="col-span-3" />
-        <Leftbar class="row-start-2" />
+        <Leftbar :table="table" class="row-start-2" />
         <Handle @mousedown="onMouseDown" class="row-start-2" :class="handleClass" />
         <Graph ref="graph" :table="table" @ready="isContentReady = true" class="row-start-2" />
 
