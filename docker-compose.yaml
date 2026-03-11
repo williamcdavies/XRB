@@ -3,6 +3,8 @@ services:
     build:
       context: client
       network: host
+      args:
+        - VITE_GOOGLE_OAUTH_CLIENT_ID=${GOOGLE_OAUTH_CLIENT_ID}
     container_name: xrb-nginx
     depends_on:
       postgres:
