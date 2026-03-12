@@ -1,6 +1,7 @@
 <script setup lang="ts">
     import {ref} from 'vue';
-    
+    import { useAuth } from '@/composables/auth';
+
     import Hero             from './Hero.vue';
     import Drawer           from './Drawer.vue';
     import HomeComponent    from './content/Home.vue'
@@ -8,7 +9,8 @@
     import AccountComponent from './content/account/Account.vue'
     import FilesComponent   from '../files/index.vue'
 
-    const activeView = ref('home'); 
+    const { accessToken } = useAuth();
+    const activeView = ref('home');
 
     const changeView = (view: string) => {
         activeView.value = view;
@@ -26,8 +28,8 @@
             <Drawer class="shrink-0 w-fit" @change-view="changeView" />
             
             <HomeComponent    v-if="activeView      === 'home'"    />
-            <GroupsComponent  v-else-if="activeView === 'groups'"  />
-            <AccountComponent v-else-if="activeView === 'account'" />
+            <GroupsComponent  v-else-if="activeView === 'groups' && accessToken"  />
+            <AccountComponent v-else-if="activeView === 'account' && accessToken" />
             <FilesComponent   v-else-if="activeView === 'files'"   />
         </div>
     </div>

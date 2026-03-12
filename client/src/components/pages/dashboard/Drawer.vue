@@ -1,12 +1,14 @@
 <script setup lang="ts">
     import { useRouter } from 'vue-router';
- 
+    import { useAuth } from '@/composables/auth';
+
+    const router = useRouter();
+    const { accessToken } = useAuth();
+
     // Ref: https://vuejs.org/guide/components/events.html
     const emit = defineEmits<{
         changeView: [view: string]
     }>();
- 
-    const router = useRouter();
  
     const handleNavigation = (view: string) => {
         if (view === 'document') {
@@ -44,7 +46,7 @@
                     </li>
 
                     <!-- New item -->
-                    <li>
+                    <li v-if="accessToken">
                         <button @click="handleNavigation('document')" class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group" data-tip="New">
                             <!-- New item icon -->
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
@@ -91,7 +93,7 @@
                     </li>
 
                     <!-- Groups item -->
-                    <li>
+                    <li v-if="accessToken">
                         <button @click="handleNavigation('groups')"
                             class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group" data-tip="Groups">
                             <!-- Groups icon -->
@@ -116,7 +118,7 @@
                     <!-- Force to Bottom -->
                     <div class="mt-auto border-t-1 border-xrb-border-1">
                         <!-- Account item -->
-                        <li>
+                        <li v-if="accessToken">
                             <button @click="handleNavigation('account')"
                                 class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group" data-tip="Account">
                                 <!-- Account icon -->

@@ -1,5 +1,6 @@
 <script setup lang="ts">
     import { ref, computed, watch, onMounted } from 'vue';
+    import { useAuth } from '@/composables/auth';
     import { useApi } from '@/composables/api';
     import FileList from './FileList.vue';
     import FilePreview from './FilePreview.vue';
@@ -11,16 +12,16 @@
         uploadFile,
         createDirectory,
     } from './helpers';
-import { useAuth } from '@/composables/auth';
 
     const { api } = useApi();
     const { isAuthenticated } = useAuth()
     const authenticated = ref(false)
 
-    type TabId = 'public' | 'user';
+    type TabId = string;
 
     const activeTab = ref<TabId>('public');
     const username = ref<string | null>(null);
+    const userGroups = ref<{ name: string; path: string }[]>([]);
 
     const currentPath = ref('');
     const items = ref<BrowseItem[]>([]);
@@ -42,6 +43,9 @@ import { useAuth } from '@/composables/auth';
         ];
         if (username.value) {
             t.push({ id: 'user', label: 'User', rootPath: `users/${username.value}` });
+        }
+        for (const g of userGroups.value) {
+            t.push({ id: `group:${g.name}`, label: g.name, rootPath: g.path });
         }
         return t;
     });
@@ -101,6 +105,21 @@ import { useAuth } from '@/composables/auth';
             } finally {
                 loading.value = false;
             }
+        } else if (activeTab.value.startsWith('group:')) {
+            dirExists.value = true;
+            loading.value = true;
+            error.value = null;
+            try {
+                const result = await browsePath(api, currentRootPath.value);
+                dirExists.value = result.exists;
+                items.value = result.items;
+                currentPath.value = result.path;
+            } catch (e) {
+                error.value = e instanceof Error ? e.message : 'Failed to load';
+                items.value = [];
+            } finally {
+                loading.value = false;
+            }
         } else {
             dirExists.value = true;
             loadPath(currentRootPath.value);
@@ -137,7 +156,12 @@ import { useAuth } from '@/composables/auth';
     }
 
     async function handleDelete(path: string, name: string) {
-        if (!confirm(`Delete "${name}"?`)) return;
+        const item = items.value.find((i) => i.path === path);
+        const isDir = item?.type === 'directory';
+        const msg = isDir
+            ? `Delete directory "${name}" and all its contents?`
+            : `Delete "${name}"?`;
+        if (!confirm(msg)) return;
         try {
             await deleteItem(api, path);
             if (selectedFile.value === path) {
@@ -195,10 +219,13 @@ import { useAuth } from '@/composables/auth';
 
     onMounted(async () => {
         authenticated.value = await isAuthenticated();
-        loadPath('', true).then(() => {
-            currentPath.value = currentRootPath.value;
-            loadPath(currentRootPath.value);
-        });
+        const result = await browsePath(api, '', true);
+        username.value = result.username;
+        userGroups.value = result.items
+            .filter((i) => i.type === 'directory' && i.path.startsWith('groups/'))
+            .map((i) => ({ name: i.name, path: i.path }));
+        currentPath.value = currentRootPath.value;
+        await loadPath(currentRootPath.value);
     });
 </script>
 
