@@ -45,10 +45,10 @@ onMounted(async () => {
         </div>
         <!-- <div class="flex text-l w-3/4 min-w-[36rem] max-w-[48rem]">Manage details that work best for you</div> -->
         <ul
-            class="list w-full min-w-[48rem] max-w-[48rem] h-full min-h-[36rem] max-h-[48rem] mx-auto rounded-none rounded-t-3xl rounded-b-3xl hover:cursor-pointer">
+            class="list w-full min-w-[48rem] max-w-[48rem] h-full min-h-[36rem] max-h-[48rem] mx-auto rounded-none divide-y divide-xrb-border hover:cursor-pointer">
 
             <li @click="emit('open-modal', 'picture')"
-                class="mb-1 border-1 border-xrb-border-1 flex list-row h-full rounded-t-3xl rounded-b-l bg-xrb-menu-background hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary">
+                class="flex list-row h-full hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary rounded-none">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
@@ -67,7 +67,7 @@ onMounted(async () => {
             </li>
 
             <li @click="emit('open-modal', 'name')"
-                class="mb-1 border-1 border-xrb-border-1 flex list-row h-full rounded-t-l rounded-b-l bg-xrb-menu-background hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary">
+                class="flex list-row h-full hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary rounded-none">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
@@ -82,7 +82,7 @@ onMounted(async () => {
             </li>
 
             <li @click="emit('open-modal', 'email')"
-                class="mb-1 border-1 border-xrb-border-1 flex list-row h-full rounded-t-l rounded-b-l bg-xrb-menu-background hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary">
+                class="flex list-row h-full hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary rounded-none">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
@@ -97,7 +97,7 @@ onMounted(async () => {
             </li>
 
             <li @click="emit('open-modal', 'type')"
-                class="mb-1 border-1 border-xrb-border-1 flex list-row h-full rounded-t-l rounded-b-l bg-xrb-menu-background hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary">
+                class="flex list-row h-full hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary rounded-none">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
@@ -112,7 +112,7 @@ onMounted(async () => {
             </li>
 
             <li @click="emit('open-modal', 'language')"
-                class="mb-1 border-1 border-xrb-border-1 flex list-row h-full rounded-t-l rounded-b-l bg-xrb-menu-background hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary">
+                class="flex list-row h-full hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary rounded-none">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
@@ -127,7 +127,7 @@ onMounted(async () => {
             </li>
 
             <li @click="emit('open-modal', 'delete')"
-                class="border-1 border-xrb-border-1 flex list-row h-full rounded-t-l rounded-b-3xl bg-xrb-menu-background hover:bg-xrb-menu-background-accent hover:border-xrb-text-warning-2 text-xrb-text-secondary hover:text-xrb-text-primary">
+                class="flex list-row h-full hover:bg-xrb-menu-background-accent hover:border-xrb-text-warning-2 text-xrb-text-secondary hover:text-xrb-text-primary rounded-none">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
