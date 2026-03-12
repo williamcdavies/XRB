@@ -1,11 +1,19 @@
 <script setup lang="ts">
+    import { useRouter } from 'vue-router';
+ 
     // Ref: https://vuejs.org/guide/components/events.html
     const emit = defineEmits<{
         changeView: [view: string]
     }>();
-
+ 
+    const router = useRouter();
+ 
     const handleNavigation = (view: string) => {
-        emit('changeView', view);
+        if (view === 'document') {
+            router.push('/document');
+        } else {
+            emit('changeView', view);
+        }
     };
 </script>
 
@@ -37,7 +45,7 @@
 
                     <!-- New item -->
                     <li>
-                        <button class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group" data-tip="New">
+                        <button @click="handleNavigation('document')" class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group" data-tip="New">
                             <!-- New item icon -->
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
                                 stroke="currentColor"
