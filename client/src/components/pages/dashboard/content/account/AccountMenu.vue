@@ -4,6 +4,8 @@ import { useAuth } from '@/composables/auth'
 import { onMounted, computed } from 'vue'
 import { useUser } from '@/composables/account'
 
+const loading = computed(() => user.value === null)
+
 import icon1 from '@/assets/images/profile-icons/profile-icon-1.jpg'
 import icon2 from '@/assets/images/profile-icons/profile-icon-2.jpg'
 import icon3 from '@/assets/images/profile-icons/profile-icon-3.jpg'
@@ -23,25 +25,29 @@ const { user, fetchUser } = useUser()
 const { isAuthenticated } = useAuth()
 
 const avatarSrc = computed(() => {
-  const index = (user.value?.preferred_avatar ?? 1) - 1
-  return ICONS[index] ?? ICONS[0]
+    const index = (user.value?.preferred_avatar ?? 1) - 1
+    return ICONS[index] ?? ICONS[0]
 })
 
 onMounted(async () => {
-  const authenticated = await isAuthenticated()
-  if (authenticated) {
-    await fetchUser()
-  } else {
-    console.log('No valid token found')
-  }
+    const authenticated = await isAuthenticated()
+    if (authenticated) {
+        await fetchUser()
+    } else {
+        console.log('No valid token found')
+    }
 })
 </script>
 
 <template>
     <div class="flex flex-col min-h-screen hero justify-center items-center space-y-6 rounded-none">
         <div class="w-full min-w-[48rem] max-w-[48rem] mx-auto">
-            <h1 class="text-3xl font-display mb-2 ml-3">Personal Information</h1>
-            <p class = "font-sans text-m ml-3">Let's customize your personal information to make sure we work best for you.</p>
+            <h1 class="text-3xl font-display mb-2 ml-3">
+                <span v-if="loading" class="inline-block w-48 h-8 bg-xrb-text-secondary/20 rounded animate-pulse"></span>
+                <span v-else>{{ user?.first_name ? `Hello, ${user.first_name}!` : 'Hello!' }}</span>
+            </h1>
+            <p class="font-sans text-m ml-3">Let's customize your personal information to make sure we work best for
+                you.</p>
         </div>
         <!-- <div class="flex text-l w-3/4 min-w-[36rem] max-w-[48rem]">Manage details that work best for you</div> -->
         <ul
@@ -62,7 +68,8 @@ onMounted(async () => {
                     <h2 class="font-sans font-bold text-lg">Profile Picture</h2>
                 </div>
                 <div class="flex justify-center items-center w-1/6">
-                    <img class="w-20 h-20 rounded-full object-cover" :src="avatarSrc" alt="Rounded avatar">
+                    <div v-if="loading" class="w-20 h-20 rounded-full bg-xrb-text-secondary/20 animate-pulse" />
+                    <img v-else class="w-20 h-20 rounded-full object-cover" :src="avatarSrc" alt="Rounded avatar">
                 </div>
             </li>
 
@@ -77,7 +84,11 @@ onMounted(async () => {
                 </div>
                 <div class="flex flex-col w-5/6 justify-center h-full select-none">
                     <h2 class="font-sans font-bold text-lg">Name</h2>
-                    <p class="font-sans py-0 text-md">{{ user?.first_name ?? '' }} {{user?.last_name ?? ''}}</p>
+                    <p class="font-sans py-0 text-md">
+                        <span v-if="loading"
+                            class="inline-block w-32 h-4 bg-xrb-text-secondary/20 rounded animate-pulse"></span>
+                        <span v-else>{{ user?.first_name ?? '' }} {{ user?.last_name ?? '' }}</span>
+                    </p>
                 </div>
             </li>
 
@@ -92,7 +103,11 @@ onMounted(async () => {
                 </div>
                 <div class="flex flex-col w-5/6 justify-center h-full select-none">
                     <h2 class="font-sans font-bold text-lg">Email</h2>
-                     <p class="font-sans py-0 text-md">{{user?.email ?? ''}}</p>
+                    <p class="font-sans py-0 text-md">
+                        <span v-if="loading"
+                            class="inline-block w-32 h-4 bg-xrb-text-secondary/20 rounded animate-pulse"></span>
+                        <span v-else>{{ user?.email ?? '' }}</span>
+                    </p>
                 </div>
             </li>
 
@@ -107,7 +122,11 @@ onMounted(async () => {
                 </div>
                 <div class="flex flex-col w-5/6 justify-center h-full select-none">
                     <h2 class="font-sans font-bold text-lg">Account Type</h2>
-                    <p class="font-sans py-0 text-md">{{user?.type ?? ''}}</p>
+                    <p class="font-sans py-0 text-md">
+                        <span v-if="loading"
+                            class="inline-block w-32 h-4 bg-xrb-text-secondary/20 rounded animate-pulse"></span>
+                        <span v-else>{{ user?.type ?? '' }}</span>
+                    </p>
                 </div>
             </li>
 
@@ -122,7 +141,11 @@ onMounted(async () => {
                 </div>
                 <div class="flex flex-col w-5/6 justify-center h-full select-none">
                     <h2 class="font-sans font-bold text-lg">Language</h2>
-                    <p class="font-sans py-0 text-md">{{user?.preferred_language ?? ''}}</p>
+                    <p class="font-sans py-0 text-md">
+                        <span v-if="loading"
+                            class="inline-block w-32 h-4 bg-xrb-text-secondary/20 rounded animate-pulse"></span>
+                        <span v-else>{{ user?.preferred_language ?? '' }}</span>
+                    </p>
                 </div>
             </li>
 
