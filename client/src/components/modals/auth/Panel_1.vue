@@ -1,4 +1,5 @@
 <script setup lang="ts">
+    import { ref, onMounted } from 'vue'
     import { useAuth }   from '@/composables/auth'
     import { useRouter } from 'vue-router'
 
@@ -9,13 +10,26 @@
         (e: 'go-forward-as-student'): void
     }>()
 
-    const { googleLogin } = useAuth()
-    const router           = useRouter()
+    const { initGoogleSignIn } = useAuth()
+    const router                = useRouter()
+    const googleButtonRef       = ref<HTMLElement>()
 
-    async function handleGoogleLogin() {
-        if (await googleLogin()) {
-            router.push('/dashboard')
+    onMounted(() => {
+        if (googleButtonRef.value) {
+            initGoogleSignIn(googleButtonRef.value, () => {
+                router.push('/dashboard')
+            })
         }
+    })
+
+    function handleGoogleClick() {
+        const iframe = googleButtonRef.value?.querySelector('iframe')
+        if (iframe) {
+            iframe.contentWindow?.postMessage({ type: 'click' }, '*')
+        }
+        // Fallback: click the rendered Google button div
+        const btn = googleButtonRef.value?.querySelector('[role="button"]') as HTMLElement | null
+        btn?.click()
     }
 </script>
 
@@ -30,8 +44,9 @@
         <!-- Body -->
         <div class="flex flex-col gap-4">
 
-            <!-- Continue w/ Google -->
-            <button @click="handleGoogleLogin"
+            <!-- Continue w/ Google (hidden rendered button for cross-browser support) -->
+            <div ref="googleButtonRef" class="hidden"></div>
+            <button @click="handleGoogleClick"
                 class="group btn btn-outline justify-start bg-xrb-bg-2 border-xrb-border text-xrb-text-1 hover:bg-xrb-text-1 hover:border-xrb-text-1 hover:text-xrb-bg-1">
                 <span class="flex items-center justify-center h-full w-8">
                     <img class="h-4 w-4" src="../../../assets/icons/google.svg" />
