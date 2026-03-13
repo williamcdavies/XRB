@@ -13,11 +13,13 @@ export interface Member {
     email: string;
     first_name: string;
     last_name: string;
+    role: 'admin' | 'user';
 }
 
 export interface GroupDetail {
     id: number;
     name: string;
+    current_user_role: 'admin' | 'user';
     members: Member[];
 }
 
@@ -64,6 +66,21 @@ export async function removeMemberRequest(api: Api, groupId: number, memberId: n
     if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         throw new Error(data.error || 'Failed to remove member');
+    }
+}
+
+export async function updateRoleRequest(api: Api, groupId: number, userId: number, role: 'admin' | 'user'): Promise<void> {
+    const res = await api.fetch(
+        `/api/groups/${groupId}/members/${userId}/role/`,
+        {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ role }),
+        },
+    );
+    if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || 'Failed to update role');
     }
 }
 
