@@ -11,23 +11,36 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group as AuthGroup
 from django.core.mail import send_mail
 
+from .models import GroupMembership
+
 User = get_user_model()
 
 BASE_DATA_DIR = Path(os.environ.get('DATA_DIR', '/data'))
 
 
+def _get_membership(user, group_id):
+    """Return (group, membership) or None if the user is not a member."""
+    try:
+        membership = GroupMembership.objects.select_related('group').get(
+            user=user, group_id=group_id,
+        )
+        return membership.group, membership
+    except GroupMembership.DoesNotExist:
+        return None, None
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def list_groups(request):
-    groups = request.user.groups.all().order_by('name')
+    memberships = GroupMembership.objects.filter(user=request.user).select_related('group').order_by('group__name')
     return Response({
         'groups': [
             {
-                'id': g.id,
-                'name': g.name,
-                'member_count': g.user_set.count(),
+                'id': m.group.id,
+                'name': m.group.name,
+                'member_count': m.group.memberships.count(),
             }
-            for g in groups
+            for m in memberships
         ]
     })
 
@@ -56,6 +69,9 @@ def create_group(request):
 
     group = AuthGroup.objects.create(name=name)
     request.user.groups.add(group)
+    GroupMembership.objects.create(
+        user=request.user, group=group, role=GroupMembership.ROLE_ADMIN,
+    )
 
     group_dir = BASE_DATA_DIR / 'groups' / name
     group_dir.mkdir(parents=True, exist_ok=True)
@@ -70,26 +86,27 @@ def create_group(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def group_detail(request, group_id):
-    try:
-        group = request.user.groups.get(id=group_id)
-    except AuthGroup.DoesNotExist:
+    group, membership = _get_membership(request.user, group_id)
+    if group is None:
         return Response(
             {'error': 'Group not found'},
             status=status.HTTP_404_NOT_FOUND,
         )
 
-    members = group.user_set.all().order_by('email')
+    memberships = group.memberships.select_related('user').order_by('user__email')
     return Response({
         'id': group.id,
         'name': group.name,
+        'current_user_role': membership.role,
         'members': [
             {
-                'id': m.id,
-                'email': m.email,
-                'first_name': m.first_name,
-                'last_name': m.last_name,
+                'id': m.user.id,
+                'email': m.user.email,
+                'first_name': m.user.first_name,
+                'last_name': m.user.last_name,
+                'role': m.role,
             }
-            for m in members
+            for m in memberships
         ],
     })
 
@@ -97,12 +114,17 @@ def group_detail(request, group_id):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def add_member(request, group_id):
-    try:
-        group = request.user.groups.get(id=group_id)
-    except AuthGroup.DoesNotExist:
+    group, membership = _get_membership(request.user, group_id)
+    if group is None:
         return Response(
             {'error': 'Group not found'},
             status=status.HTTP_404_NOT_FOUND,
+        )
+
+    if membership.role != GroupMembership.ROLE_ADMIN:
+        return Response(
+            {'error': 'Only admins can add members'},
+            status=status.HTTP_403_FORBIDDEN,
         )
 
     email = (request.data.get('email') or '').strip()
@@ -120,13 +142,16 @@ def add_member(request, group_id):
             status=status.HTTP_404_NOT_FOUND,
         )
 
-    if group.user_set.filter(id=user_to_add.id).exists():
+    if group.memberships.filter(user=user_to_add).exists():
         return Response(
             {'error': 'User is already a member of this group'},
             status=status.HTTP_409_CONFLICT,
         )
 
     user_to_add.groups.add(group)
+    GroupMembership.objects.create(
+        user=user_to_add, group=group, role=GroupMembership.ROLE_USER,
+    )
 
     try:
         send_mail(
@@ -148,41 +173,99 @@ def add_member(request, group_id):
         'email': user_to_add.email,
         'first_name': user_to_add.first_name,
         'last_name': user_to_add.last_name,
+        'role': GroupMembership.ROLE_USER,
     }, status=status.HTTP_201_CREATED)
 
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def remove_member(request, group_id, user_id):
-    try:
-        group = request.user.groups.get(id=group_id)
-    except AuthGroup.DoesNotExist:
+    group, membership = _get_membership(request.user, group_id)
+    if group is None:
         return Response(
             {'error': 'Group not found'},
             status=status.HTTP_404_NOT_FOUND,
         )
 
+    # Non-admins can only remove themselves
+    if membership.role != GroupMembership.ROLE_ADMIN and user_id != request.user.id:
+        return Response(
+            {'error': 'Only admins can remove other members'},
+            status=status.HTTP_403_FORBIDDEN,
+        )
+
     try:
-        user_to_remove = group.user_set.get(id=user_id)
-    except User.DoesNotExist:
+        target_membership = group.memberships.select_related('user').get(user_id=user_id)
+    except GroupMembership.DoesNotExist:
         return Response(
             {'error': 'User is not a member of this group'},
             status=status.HTTP_404_NOT_FOUND,
         )
 
-    user_to_remove.groups.remove(group)
+    target_membership.user.groups.remove(group)
+    target_membership.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
+def update_role(request, group_id, user_id):
+    group, membership = _get_membership(request.user, group_id)
+    if group is None:
+        return Response(
+            {'error': 'Group not found'},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+
+    if membership.role != GroupMembership.ROLE_ADMIN:
+        return Response(
+            {'error': 'Only admins can change roles'},
+            status=status.HTTP_403_FORBIDDEN,
+        )
+
+    role = request.data.get('role')
+    if role not in (GroupMembership.ROLE_ADMIN, GroupMembership.ROLE_USER):
+        return Response(
+            {'error': 'Invalid role. Must be "admin" or "user"'},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    if user_id == request.user.id:
+        return Response(
+            {'error': 'You cannot change your own role'},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    try:
+        target_membership = group.memberships.get(user_id=user_id)
+    except GroupMembership.DoesNotExist:
+        return Response(
+            {'error': 'User is not a member of this group'},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+
+    target_membership.role = role
+    target_membership.save()
+    return Response({
+        'id': user_id,
+        'role': role,
+    })
 
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def delete_group(request, group_id):
-    try:
-        group = request.user.groups.get(id=group_id)
-    except AuthGroup.DoesNotExist:
+    group, membership = _get_membership(request.user, group_id)
+    if group is None:
         return Response(
             {'error': 'Group not found'},
             status=status.HTTP_404_NOT_FOUND,
+        )
+
+    if membership.role != GroupMembership.ROLE_ADMIN:
+        return Response(
+            {'error': 'Only admins can delete groups'},
+            status=status.HTTP_403_FORBIDDEN,
         )
 
     group.delete()

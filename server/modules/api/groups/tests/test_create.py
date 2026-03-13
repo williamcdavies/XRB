@@ -1,4 +1,5 @@
 from django.contrib.auth.models import Group
+from modules.api.groups.models import GroupMembership
 from modules.api.groups.tests.test_base import GroupEndpointTestBase
 
 
@@ -15,6 +16,17 @@ class CreateGroupTests(GroupEndpointTestBase):
         self.assertEqual(response.data['member_count'], 1)
         self.assertTrue(Group.objects.filter(name='new-group').exists())
         self.assertTrue(self.user.groups.filter(name='new-group').exists())
+
+    def test_creator_is_admin(self):
+        response = self.authenticated_client.post(
+            '/api/groups/create/',
+            {'name': 'admin-test'},
+            format='json',
+        )
+        self.assertEqual(response.status_code, 201)
+        group = Group.objects.get(name='admin-test')
+        membership = GroupMembership.objects.get(user=self.user, group=group)
+        self.assertEqual(membership.role, GroupMembership.ROLE_ADMIN)
 
     def test_create_group_creates_directory(self):
         self.authenticated_client.post(

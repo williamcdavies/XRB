@@ -10,6 +10,7 @@
         createGroupRequest,
         addMemberRequest,
         removeMemberRequest,
+        updateRoleRequest,
         deleteGroupRequest,
     } from './helpers';
 
@@ -29,6 +30,18 @@
     const addEmail = ref('');
     const addError = ref<string | null>(null);
     const isEmailValid = computed(() => !!addEmail.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/));
+
+    const isAdmin = computed(() => selectedGroup.value?.current_user_role === 'admin');
+
+    const openMenuMemberId = ref<number | null>(null);
+
+    function toggleMenu(memberId: number) {
+        openMenuMemberId.value = openMenuMemberId.value === memberId ? null : memberId;
+    }
+
+    function closeMenu() {
+        openMenuMemberId.value = null;
+    }
 
     async function fetchGroups() {
         loading.value = true;
@@ -96,6 +109,19 @@
         }
     }
 
+    async function toggleRole(member: Member) {
+        if (!selectedGroup.value) return;
+        const newRole = member.role === 'admin' ? 'user' : 'admin';
+        const action = newRole === 'admin' ? 'Promote' : 'Demote';
+        if (!confirm(`${action} ${member.email} to ${newRole}?`)) return;
+        try {
+            await updateRoleRequest(api, selectedGroup.value.id, member.id, newRole);
+            await selectGroup(selectedGroup.value);
+        } catch (e) {
+            error.value = e instanceof Error ? e.message : 'Failed to update role';
+        }
+    }
+
     async function deleteGroup() {
         if (!selectedGroup.value) return;
         if (!confirm(`Delete group "${selectedGroup.value.name}"? This cannot be undone.`)) return;
@@ -119,7 +145,7 @@
 
 
 <template>
-    <div class="flex-1 flex min-h-0 min-w-0 overflow-hidden bg-xrb-bg-1 text-xrb-text-1">
+    <div class="flex-1 flex min-h-0 min-w-0 overflow-hidden bg-xrb-bg-1 text-xrb-text-1" @click="closeMenu">
         <!-- Left: group list -->
         <div class="w-1/3 min-w-[240px] flex flex-col border-r border-xrb-border min-h-0">
             <div class="flex items-center justify-between px-4 py-3 border-b border-xrb-border bg-xrb-bg-2 shrink-0">
@@ -177,6 +203,7 @@
                 <div class="flex items-center justify-between px-6 py-4 border-b border-xrb-border bg-xrb-bg-2 shrink-0">
                     <h2 class="text-lg font-medium">{{ selectedGroup.name }}</h2>
                     <button
+                        v-if="isAdmin"
                         type="button"
                         class="btn btn-sm btn-outline border-red-500/30 text-red-400 hover:bg-red-500/10 hover:border-red-500/50"
                         @click="deleteGroup"
@@ -185,8 +212,8 @@
                     </button>
                 </div>
 
-                <!-- Add member -->
-                <div class="px-6 py-3 border-b border-xrb-border bg-xrb-bg-2 shrink-0">
+                <!-- Add member (admin only) -->
+                <div v-if="isAdmin" class="px-6 py-3 border-b border-xrb-border bg-xrb-bg-2 shrink-0">
                     <form class="flex items-center gap-2" @submit.prevent="addMember">
                         <input
                             v-model="addEmail"
@@ -217,21 +244,68 @@
                             :key="member.id"
                             class="flex items-center justify-between px-6 py-3 border-b border-xrb-border hover:bg-xrb-bg-3 transition-colors"
                         >
-                            <div>
-                                <div class="text-sm">{{ member.email }}</div>
-                                <div v-if="member.first_name || member.last_name" class="text-xs text-xrb-text-secondary">
-                                    {{ member.first_name }} {{ member.last_name }}
+                            <div class="flex items-center gap-2">
+                                <div>
+                                    <div class="text-sm">{{ member.email }}</div>
+                                    <div v-if="member.first_name || member.last_name" class="text-xs text-xrb-text-secondary">
+                                        {{ member.first_name }} {{ member.last_name }}
+                                    </div>
+                                </div>
+                                <span
+                                    class="text-xs px-1.5 py-0.5 rounded"
+                                    :class="member.role === 'admin' ? 'bg-amber-500/20 text-amber-400' : 'bg-xrb-bg-3 text-xrb-text-secondary'"
+                                >
+                                    {{ member.role }}
+                                </span>
+                            </div>
+                            <div v-if="isAdmin" class="relative">
+                                <button
+                                    type="button"
+                                    class="btn btn-xs btn-ghost text-xrb-text-secondary hover:text-xrb-text-1"
+                                    @click.stop="toggleMenu(member.id)"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+                                    </svg>
+                                </button>
+                                <div
+                                    v-if="openMenuMemberId === member.id"
+                                    class="absolute right-0 top-full mt-1 z-20 bg-xrb-bg-2 border border-xrb-border rounded-lg shadow-xl py-1 min-w-[160px]"
+                                >
+                                    <button
+                                        v-if="member.role === 'user'"
+                                        type="button"
+                                        class="w-full px-3 py-1.5 text-left text-sm hover:bg-xrb-bg-3 text-amber-400 flex items-center gap-2"
+                                        @click="closeMenu(); toggleRole(member)"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+                                        </svg>
+                                        Promote to admin
+                                    </button>
+                                    <button
+                                        v-else-if="member.role === 'admin'"
+                                        type="button"
+                                        class="w-full px-3 py-1.5 text-left text-sm hover:bg-xrb-bg-3 text-blue-400 flex items-center gap-2"
+                                        @click="closeMenu(); toggleRole(member)"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                        </svg>
+                                        Demote to user
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="w-full px-3 py-1.5 text-left text-sm hover:bg-xrb-bg-3 text-red-400 flex items-center gap-2"
+                                        @click="closeMenu(); removeMember(member)"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                        </svg>
+                                        Remove member
+                                    </button>
                                 </div>
                             </div>
-                            <button
-                                type="button"
-                                class="btn btn-xs btn-ghost text-xrb-text-secondary hover:text-red-400"
-                                @click="removeMember(member)"
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                                </svg>
-                            </button>
                         </li>
                     </ul>
                 </div>

@@ -1,4 +1,3 @@
-from django.contrib.auth.models import Group
 from modules.api.groups.tests.test_base import GroupEndpointTestBase
 
 
@@ -10,9 +9,8 @@ class ListGroupsTests(GroupEndpointTestBase):
         self.assertEqual(response.data['groups'], [])
 
     def test_list_returns_user_groups(self):
-        g1 = Group.objects.create(name='alpha')
-        g2 = Group.objects.create(name='beta')
-        self.user.groups.add(g1, g2)
+        self._create_group_with_admin('alpha', self.user)
+        self._create_group_with_admin('beta', self.user)
 
         response = self.authenticated_client.get('/api/groups/')
         self.assertEqual(response.status_code, 200)
@@ -20,17 +18,15 @@ class ListGroupsTests(GroupEndpointTestBase):
         self.assertEqual(names, ['alpha', 'beta'])
 
     def test_list_excludes_other_user_groups(self):
-        g = Group.objects.create(name='secret')
-        self.other_user.groups.add(g)
+        self._create_group_with_admin('secret', self.other_user)
 
         response = self.authenticated_client.get('/api/groups/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['groups'], [])
 
     def test_list_includes_member_count(self):
-        g = Group.objects.create(name='team')
-        self.user.groups.add(g)
-        self.other_user.groups.add(g)
+        group = self._create_group_with_admin('team', self.user)
+        self._add_member(group, self.other_user)
 
         response = self.authenticated_client.get('/api/groups/')
         self.assertEqual(response.status_code, 200)
