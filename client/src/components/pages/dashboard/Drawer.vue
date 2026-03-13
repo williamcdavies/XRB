@@ -127,7 +127,7 @@ const isActive = (view: string) => activeView.value === view
                     </li>
 
                     <!-- Groups item -->
-                    <li v-if="accessToken">
+                    <li v-if="authenticated">
                         <button @click="handleNavigation('groups')"
                             :class="isActive('groups') ? 'text-xrb-text-primary' : 'text-xrb-text-secondary hover:text-xrb-text-primary'"
                             class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group"
