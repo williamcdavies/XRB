@@ -37,6 +37,40 @@
 
     const selectedFile = ref<string | null>(null);
 
+    const mainTabs = computed(() => {
+        const t: { id: string; label: string }[] = [
+            { id: 'public', label: 'Public' },
+        ];
+        if (username.value) {
+            t.push({ id: 'user', label: 'User' });
+        }
+        if (userGroups.value.length > 0) {
+            t.push({ id: 'groups', label: 'Groups' });
+        }
+        return t;
+    });
+
+    const activeMainTab = computed(() => {
+        if (activeTab.value.startsWith('group:')) return 'groups';
+        return activeTab.value;
+    });
+
+    const activeGroupName = computed(() => {
+        if (!activeTab.value.startsWith('group:')) return null;
+        return activeTab.value.slice('group:'.length);
+    });
+
+    function selectMainTab(id: string) {
+        if (id === 'groups') {
+            // Select the first group, or the previously selected group if already on groups
+            if (!activeTab.value.startsWith('group:') && userGroups.value.length > 0) {
+                activeTab.value = `group:${userGroups.value[0]!.name}`;
+            }
+        } else {
+            activeTab.value = id;
+        }
+    }
+
     const tabs = computed(() => {
         const t: { id: TabId; label: string; rootPath: string }[] = [
             { id: 'public', label: 'Public', rootPath: 'public' },
@@ -231,14 +265,26 @@
 
 <template>
     <div class="flex-1 flex flex-col min-h-0 min-w-0 overflow-hidden bg-xrb-bg-1 text-xrb-text-1">
-        <!-- Top bar: tabs -->
+        <!-- Top bar: main tabs -->
         <div class="flex items-center border-b border-xrb-border bg-xrb-bg-2 shrink-0">
-            <button v-for="tab in tabs" :key="tab.id" type="button"
-                class="px-6 py-3 text-sm font-medium border-b-2 transition-colors" :class="activeTab === tab.id
+            <button v-for="tab in mainTabs" :key="tab.id" type="button"
+                class="px-6 py-3 text-sm font-medium border-b-2 transition-colors" :class="activeMainTab === tab.id
                         ? 'border-xrb-accent-1 text-xrb-accent-1'
                         : 'border-transparent text-xrb-text-secondary hover:text-xrb-text-1'
-                    " @click="activeTab = tab.id">
+                    " @click="selectMainTab(tab.id)">
                 {{ tab.label }}
+            </button>
+        </div>
+
+        <!-- Secondary bar: group sub-tabs -->
+        <div v-if="activeMainTab === 'groups'"
+            class="flex items-center border-b border-xrb-border bg-xrb-bg-2 shrink-0">
+            <button v-for="g in userGroups" :key="g.name" type="button"
+                class="px-6 py-2 text-xs font-medium border-b-2 transition-colors" :class="activeGroupName === g.name
+                        ? 'border-xrb-accent-1 text-xrb-accent-1'
+                        : 'border-transparent text-xrb-text-secondary hover:text-xrb-text-1'
+                    " @click="activeTab = `group:${g.name}`">
+                {{ g.name }}
             </button>
         </div>
 
