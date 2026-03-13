@@ -2,7 +2,9 @@ from rest_framework.decorators import api_view, permission_classes
 from django.core.validators import validate_email
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework_simplejwt.tokens     import RefreshToken
+from rest_framework_simplejwt.exceptions import TokenError
 from django.db import IntegrityError
 from django_otp.plugins.otp_email.models import EmailDevice
 from rest_framework.response import Response
@@ -131,6 +133,21 @@ def update_type(request):
     user.type = request.data.get('type', user.type)
     user.save()
     return Response({'type': user.type})
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def logout(request):
+    old_refresh_token_str = request.COOKIES.get('refresh_token')
+    if old_refresh_token_str:
+        try:
+            token = RefreshToken(old_refresh_token_str)
+            token.blacklist()
+        except TokenError:
+            pass
+
+    response = Response(status=200)
+    response.delete_cookie('refresh_token', path='/', samesite='Lax')
+    return response
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])

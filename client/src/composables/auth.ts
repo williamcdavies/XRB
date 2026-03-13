@@ -107,5 +107,6 @@ export function useAuth() {
         refreshAccessToken,
         googleLogin,
         isAuthenticated,
+        clearAccessToken
     }
 }

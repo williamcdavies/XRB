@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { useAuth } from '@/composables/auth';
 
+const { isAuthenticated } = useAuth()
+const authenticated = ref(false)
+
+onMounted(async () => {
+    authenticated.value = await isAuthenticated()
+})
 
 const activeView = ref('home')
 
@@ -150,7 +157,7 @@ const isActive = (view: string) => activeView.value === view
                     <!-- Force to Bottom -->
                     <div class="mt-auto border-t-1 border-xrb-border-1">
                         <!-- Account item -->
-                        <li>
+                        <li v-if="authenticated">
                             <button @click="handleNavigation('account')"
                                 :class="isActive('account') ? 'text-xrb-text-primary' : 'text-xrb-text-secondary hover:text-xrb-text-primary'"
                                 class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group" data-tip="Account">
