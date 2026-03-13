@@ -4,6 +4,7 @@ import ChangeNameModal        from './ChangeNameModal.vue'
 import ChangePictureModal     from './ChangePictureModal.vue'
 import ChangeAccountTypeModal from './ChangeAccountTypeModal.vue'
 import DeleteAccountModal     from './DeleteAccountModal.vue'
+import LogoutModal from './LogoutModal.vue'
 
 export const accountModals = {
     email:    ChangeEmailModal,
@@ -11,6 +12,7 @@ export const accountModals = {
     name:     ChangeNameModal,
     picture:  ChangePictureModal,
     type:     ChangeAccountTypeModal,
+    logout:   LogoutModal,
     delete:   DeleteAccountModal
 } as const
 
