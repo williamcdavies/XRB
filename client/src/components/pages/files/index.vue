@@ -1,5 +1,6 @@
 <script setup lang="ts">
     import { ref, computed, watch, onMounted } from 'vue';
+    import { useAuth } from '@/composables/auth';
     import { useApi } from '@/composables/api';
     import FileList from './FileList.vue';
     import FilePreview from './FilePreview.vue';
@@ -11,16 +12,16 @@
         uploadFile,
         createDirectory,
     } from './helpers';
-import { useAuth } from '@/composables/auth';
 
     const { api } = useApi();
     const { isAuthenticated } = useAuth()
     const authenticated = ref(false)
 
-    type TabId = 'public' | 'user';
+    type TabId = string;
 
     const activeTab = ref<TabId>('public');
     const username = ref<string | null>(null);
+    const userGroups = ref<{ name: string; path: string }[]>([]);
 
     const currentPath = ref('');
     const items = ref<BrowseItem[]>([]);
@@ -36,12 +37,49 @@ import { useAuth } from '@/composables/auth';
 
     const selectedFile = ref<string | null>(null);
 
+    const mainTabs = computed(() => {
+        const t: { id: string; label: string }[] = [
+            { id: 'public', label: 'Public' },
+        ];
+        if (username.value) {
+            t.push({ id: 'user', label: 'User' });
+        }
+        if (userGroups.value.length > 0) {
+            t.push({ id: 'groups', label: 'Groups' });
+        }
+        return t;
+    });
+
+    const activeMainTab = computed(() => {
+        if (activeTab.value.startsWith('group:')) return 'groups';
+        return activeTab.value;
+    });
+
+    const activeGroupName = computed(() => {
+        if (!activeTab.value.startsWith('group:')) return null;
+        return activeTab.value.slice('group:'.length);
+    });
+
+    function selectMainTab(id: string) {
+        if (id === 'groups') {
+            // Select the first group, or the previously selected group if already on groups
+            if (!activeTab.value.startsWith('group:') && userGroups.value.length > 0) {
+                activeTab.value = `group:${userGroups.value[0]!.name}`;
+            }
+        } else {
+            activeTab.value = id;
+        }
+    }
+
     const tabs = computed(() => {
         const t: { id: TabId; label: string; rootPath: string }[] = [
             { id: 'public', label: 'Public', rootPath: 'public' },
         ];
         if (username.value) {
             t.push({ id: 'user', label: 'User', rootPath: `users/${username.value}` });
+        }
+        for (const g of userGroups.value) {
+            t.push({ id: `group:${g.name}`, label: g.name, rootPath: g.path });
         }
         return t;
     });
@@ -101,6 +139,21 @@ import { useAuth } from '@/composables/auth';
             } finally {
                 loading.value = false;
             }
+        } else if (activeTab.value.startsWith('group:')) {
+            dirExists.value = true;
+            loading.value = true;
+            error.value = null;
+            try {
+                const result = await browsePath(api, currentRootPath.value);
+                dirExists.value = result.exists;
+                items.value = result.items;
+                currentPath.value = result.path;
+            } catch (e) {
+                error.value = e instanceof Error ? e.message : 'Failed to load';
+                items.value = [];
+            } finally {
+                loading.value = false;
+            }
         } else {
             dirExists.value = true;
             loadPath(currentRootPath.value);
@@ -137,7 +190,12 @@ import { useAuth } from '@/composables/auth';
     }
 
     async function handleDelete(path: string, name: string) {
-        if (!confirm(`Delete "${name}"?`)) return;
+        const item = items.value.find((i) => i.path === path);
+        const isDir = item?.type === 'directory';
+        const msg = isDir
+            ? `Delete directory "${name}" and all its contents?`
+            : `Delete "${name}"?`;
+        if (!confirm(msg)) return;
         try {
             await deleteItem(api, path);
             if (selectedFile.value === path) {
@@ -195,23 +253,38 @@ import { useAuth } from '@/composables/auth';
 
     onMounted(async () => {
         authenticated.value = await isAuthenticated();
-        loadPath('', true).then(() => {
-            currentPath.value = currentRootPath.value;
-            loadPath(currentRootPath.value);
-        });
+        const result = await browsePath(api, '', true);
+        username.value = result.username;
+        userGroups.value = result.items
+            .filter((i) => i.type === 'directory' && i.path.startsWith('groups/'))
+            .map((i) => ({ name: i.name, path: i.path }));
+        currentPath.value = currentRootPath.value;
+        await loadPath(currentRootPath.value);
     });
 </script>
 
 <template>
     <div class="flex-1 flex flex-col min-h-0 min-w-0 overflow-hidden bg-xrb-bg-1 text-xrb-text-1">
-        <!-- Top bar: tabs -->
+        <!-- Top bar: main tabs -->
         <div class="flex items-center border-b border-xrb-border bg-xrb-bg-2 shrink-0">
-            <button v-for="tab in tabs" :key="tab.id" type="button"
-                class="px-6 py-3 text-sm font-medium border-b-2 transition-colors" :class="activeTab === tab.id
+            <button v-for="tab in mainTabs" :key="tab.id" type="button"
+                class="px-6 py-3 text-sm font-medium border-b-2 transition-colors" :class="activeMainTab === tab.id
                         ? 'border-xrb-accent-1 text-xrb-accent-1'
                         : 'border-transparent text-xrb-text-secondary hover:text-xrb-text-1'
-                    " @click="activeTab = tab.id">
+                    " @click="selectMainTab(tab.id)">
                 {{ tab.label }}
+            </button>
+        </div>
+
+        <!-- Secondary bar: group sub-tabs -->
+        <div v-if="activeMainTab === 'groups'"
+            class="flex items-center border-b border-xrb-border bg-xrb-bg-2 shrink-0">
+            <button v-for="g in userGroups" :key="g.name" type="button"
+                class="px-6 py-2 text-xs font-medium border-b-2 transition-colors" :class="activeGroupName === g.name
+                        ? 'border-xrb-accent-1 text-xrb-accent-1'
+                        : 'border-transparent text-xrb-text-secondary hover:text-xrb-text-1'
+                    " @click="activeTab = `group:${g.name}`">
+                {{ g.name }}
             </button>
         </div>
 

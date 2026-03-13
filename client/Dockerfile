@@ -3,6 +3,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY ./ .
+ARG VITE_GOOGLE_OAUTH_CLIENT_ID
 RUN npm run build
 
 FROM nginx AS production-stage

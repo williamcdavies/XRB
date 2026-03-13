@@ -213,6 +213,104 @@ def download_file(request):
         )
 
 
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def preview_table(request):
+    """
+    Return CSV or Excel file contents as JSON for table preview.
+
+    query parameters:
+    -----------------
+    path : str (required)
+    sheet : str (optional) – sheet name for Excel files, defaults to first sheet
+    """
+    relative_path = request.query_params.get('path')
+
+    if not relative_path:
+        return Response(
+            {'error': 'Missing required parameter: path'},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    user = request.user if request.user.is_authenticated else None
+    allowed, reason = check_path_access(user, relative_path)
+    if not allowed:
+        return Response(
+            {'error': f'Access denied: {reason}'},
+            status=status.HTTP_403_FORBIDDEN,
+        )
+
+    file_path = BASE_DATA_DIR / relative_path
+    if not is_path_safe(str(file_path)):
+        return Response(
+            {'error': 'Access denied: path outside allowed directories'},
+            status=status.HTTP_403_FORBIDDEN,
+        )
+
+    if not file_path.exists():
+        return Response(
+            {'error': f'File not found: {relative_path}'},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+
+    if not file_path.is_file():
+        return Response(
+            {'error': 'Not a file'},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    ext = file_path.suffix.lower()
+    if ext not in ('.xlsx', '.xls', '.csv'):
+        return Response(
+            {'error': 'Unsupported file type. Must be .csv, .xlsx, or .xls'},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    try:
+        if ext == '.csv':
+            with open(file_path, newline='', encoding='utf-8') as f:
+                reader = csv.reader(f)
+                rows = [[cell for cell in row] for row in reader]
+
+            headers = rows[0] if rows else []
+            data = rows[1:] if len(rows) > 1 else []
+
+            return Response({
+                'headers': headers,
+                'rows': data,
+                'sheets': [],
+                'active_sheet': '',
+            })
+        else:
+            from openpyxl import load_workbook
+
+            wb = load_workbook(file_path, read_only=True, data_only=True)
+            sheet_name = request.query_params.get('sheet')
+            ws = wb[sheet_name] if sheet_name and sheet_name in wb.sheetnames else wb.active
+
+            rows = []
+            for row in ws.iter_rows(values_only=True):
+                rows.append([str(cell) if cell is not None else '' for cell in row])
+
+            headers = rows[0] if rows else []
+            data = rows[1:] if len(rows) > 1 else []
+            sheet_names = wb.sheetnames
+            active_sheet = ws.title
+            wb.close()
+
+            return Response({
+                'headers': headers,
+                'rows': data,
+                'sheets': sheet_names,
+                'active_sheet': active_sheet,
+            })
+    except Exception as e:
+        return Response(
+            {'error': f'Error reading file: {str(e)}'},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
+
+
 @api_view(['POST'])
 def upload_file(request):
     """
@@ -301,9 +399,8 @@ def create_directory(request):
             {'error': 'Directory name must not contain slashes'},
             status=status.HTTP_400_BAD_REQUEST,
         )
-
-    safe_name = name.replace(' ', '_').replace('\\', '_')
-    target_path = f'{parent}/{safe_name}' if parent else safe_name
+    
+    target_path = f'{parent}/{name}' if parent else name
 
     allowed, reason = check_write_access(request.user, target_path)
     if not allowed:
@@ -322,7 +419,7 @@ def create_directory(request):
     try:
         full_path.mkdir(parents=True, exist_ok=False)
         return Response(
-            {'path': target_path, 'name': safe_name},
+            {'path': target_path, 'name': name},
             status=status.HTTP_201_CREATED,
         )
     except FileExistsError:

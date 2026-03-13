@@ -1,7 +1,69 @@
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from django.core.validators import validate_email
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework_simplejwt.tokens     import RefreshToken
+from rest_framework_simplejwt.exceptions import TokenError
+from django.db import IntegrityError
+from django_otp.plugins.otp_email.models import EmailDevice
 from rest_framework.response import Response
 from rest_framework import status
+
+User = get_user_model()
+
+#Email Change Authentication
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def send_email_change(request):
+    new_email = request.data.get('email', '').strip().lower()
+    if not new_email:
+        return Response({'error': 'Email is required'}, status=400)
+
+    email_device, _ = EmailDevice.objects.get_or_create(
+        user=request.user,
+        name='email_change',
+        defaults={'email': new_email, 'confirmed': True},
+    )
+    email_device.email = new_email
+    email_device.save()
+    email_device.generate_challenge()
+
+    return Response(status=200)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def verify_email_change(request):
+    token = request.data.get('token', '')
+    new_email = request.data.get('email', '').strip().lower()
+
+    try:
+        email_device = EmailDevice.objects.get(
+            user=request.user,
+            name='email_change',
+        )
+    except EmailDevice.DoesNotExist:
+        return Response(status=401)
+
+    if not email_device.verify_token(token):
+        return Response(status=401)
+
+    try:
+        request.user.email = new_email
+        request.user.username = new_email
+        request.user.save()
+    except IntegrityError:
+        return Response({'error': 'An account with this email already exists.'}, status=400)
+
+    try:
+        login_device = EmailDevice.objects.get(user=request.user, name='default')
+        login_device.email = new_email
+        login_device.save()
+    except EmailDevice.DoesNotExist:
+        pass
+
+    email_device.delete()
+    return Response(status=200)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -30,9 +92,19 @@ def update_name(request):
 @permission_classes([IsAuthenticated])
 def update_email(request):
     user = request.user
-    email = request.data.get('email')
+    email = request.data.get('email', '').strip()
+
     if not email:
         return Response({'error': 'Email is required.'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    try:
+        validate_email(email)
+    except ValidationError:
+        return Response({'error': 'Enter a valid email address.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    if User.objects.filter(email=email).exclude(pk=user.pk).exists():
+        return Response({'error': 'Email already in use.'}, status=status.HTTP_400_BAD_REQUEST)
+    
     user.email    = email
     user.username = email
     user.save()
@@ -61,6 +133,21 @@ def update_type(request):
     user.type = request.data.get('type', user.type)
     user.save()
     return Response({'type': user.type})
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def logout(request):
+    old_refresh_token_str = request.COOKIES.get('refresh_token')
+    if old_refresh_token_str:
+        try:
+            token = RefreshToken(old_refresh_token_str)
+            token.blacklist()
+        except TokenError:
+            pass
+
+    response = Response(status=200)
+    response.delete_cookie('refresh_token', path='/', samesite='Lax')
+    return response
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])

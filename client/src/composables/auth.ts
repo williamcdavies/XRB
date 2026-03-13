@@ -50,35 +50,38 @@ async function refreshAccessToken(): Promise<boolean> {
 }
 
 
-async function googleLogin(): Promise<boolean> {
-    return new Promise((resolve) => {
-        google.accounts.id.initialize({
-            client_id: import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_ID,
-            callback: async (response: google.accounts.id.CredentialResponse) => {
-                try {
-                    const res = await fetch('/api/auth/google/', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ credential: response.credential }),
-                        credentials: 'include',
-                    })
+function initGoogleSignIn(buttonContainer: HTMLElement, onSuccess: () => void) {
+    google.accounts.id.initialize({
+        client_id: import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_ID,
+        callback: async (response: google.accounts.id.CredentialResponse) => {
+            try {
+                const res = await fetch('/api/auth/google/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ credential: response.credential }),
+                    credentials: 'include',
+                })
 
-                    if (!res.ok) {
-                        console.error(res.status)
-                        resolve(false)
-                        return
-                    }
-
-                    const data = await res.json()
-                    setAccessToken(data.access)
-                    resolve(true)
-                } catch (err) {
-                    console.error(err)
-                    resolve(false)
+                if (!res.ok) {
+                    console.error(res.status)
+                    return
                 }
-            },
-        })
-        google.accounts.id.prompt()
+
+                const data = await res.json()
+                setAccessToken(data.access)
+                onSuccess()
+            } catch (err) {
+                console.error(err)
+            }
+        },
+    })
+    google.accounts.id.renderButton(buttonContainer, {
+        type: 'standard',
+        theme: 'outline',
+        size: 'large',
+        text: 'continue_with',
+        shape: 'rectangular',
+        width: '100%',
     })
 }
 
@@ -105,7 +108,8 @@ export function useAuth() {
         getAccessToken,
         setAccessToken,
         refreshAccessToken,
-        googleLogin,
+        initGoogleSignIn,
         isAuthenticated,
+        clearAccessToken
     }
 }

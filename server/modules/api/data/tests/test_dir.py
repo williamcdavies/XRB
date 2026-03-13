@@ -86,7 +86,7 @@ class MkdirEndpointTests(DataEndpointTestBase):
             format="json",
         )
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(response.data["name"], "my_folder")
+        self.assertEqual(response.data["name"], "my folder")
 
     def test_mkdir_creates_personal_dir(self):
         import shutil

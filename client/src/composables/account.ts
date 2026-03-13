@@ -1,7 +1,9 @@
 import { ref } from 'vue'
 import { useAuth } from '@/composables/auth'
+import { useApi } from '@/composables/api'
 
-const { getAccessToken, isAuthenticated } = useAuth()
+const { isAuthenticated } = useAuth()
+const { api } = useApi()
 
 const user = ref<null | {
     first_name: string
@@ -23,19 +25,8 @@ export function useUser() {
         try {
             const authenticated = await isAuthenticated()
             if (!authenticated) throw new Error('Not authenticated')
-            const token = getAccessToken()
-            console.log('Token:', token)
-            const response = await fetch('/api/account/get_user_info', {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                }
-            })
-            const text = await response.text()
-            console.log('Raw response text:', text)
-            const data = JSON.parse(text)
-            console.log('Raw response data:', data)
+            const response = await api.fetch('/api/account/get_user_info')
+            const data = await response.json()
             user.value = data
         } catch (err: any) {
             error.value = err.message

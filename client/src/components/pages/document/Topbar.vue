@@ -62,7 +62,7 @@
 
 
 <template>
-    <div class="flex flex-row items-center h-10 w-full border-b border-xrb-border px-3 gap-2">
+    <div class="flex flex-row items-center h-10 w-full bg-xrb-bg-2 border-b border-xrb-border px-3 gap-2">
         <input ref="fileInput" type="file" accept=".csv" class="hidden" @change="handleFileInput" />
         <div class="dropdown">
             <button tabindex="0"

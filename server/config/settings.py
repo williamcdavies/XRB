@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     'modules.api.account',
+    'modules.api.groups',
 ]
 
 # Ref : https://simplejwt-test.readthedocs.io/en/latest/settings.html

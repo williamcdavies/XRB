@@ -55,6 +55,11 @@ def login(request):
         defaults={'email': email, 'confirmed': True},
     )
 
+    # added for updated email
+    if email_device.email != email:
+        email_device.email = email
+        email_device.save()
+
     email_device.generate_challenge()
 
     return Response(status=200)
