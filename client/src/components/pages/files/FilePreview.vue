@@ -13,24 +13,52 @@
     const csvRows = ref<string[][]>([]);
     const csvHeaders = ref<string[]>([]);
     const rawText = ref<string | null>(null);
+    const excelSheets = ref<string[]>([]);
+    const activeSheet = ref<string>('');
 
     const fileName = computed(() => props.path?.split('/').pop() ?? '');
 
-    const TEXT_EXTENSIONS = ['csv', 'txt', 'json', 'md', 'log', 'py', 'js', 'ts', 'yml', 'yaml', 'toml', 'cfg', 'ini', 'sh'];
-
-    function parseCsv(text: string) {
-        const lines = text.trim().split(/\r?\n/);
-        const header = lines[0];
-        if (!header) return;
-        csvHeaders.value = header.split(',').map((h) => h.trim());
-        csvRows.value = lines.slice(1).map((line) => line.split(',').map((c) => c.trim()));
-    }
+    const TEXT_EXTENSIONS = ['txt', 'json', 'md', 'log', 'py', 'js', 'ts', 'yml', 'yaml', 'toml', 'cfg', 'ini', 'sh'];
+    const TABLE_EXTENSIONS = ['csv', 'xlsx', 'xls'];
 
     function reset() {
         csvRows.value = [];
         csvHeaders.value = [];
         rawText.value = null;
         error.value = null;
+        excelSheets.value = [];
+        activeSheet.value = '';
+    }
+
+    async function loadTable(filePath: string, sheet?: string) {
+        let url = `/api/data/preview/table/?path=${encodeURIComponent(filePath)}`;
+        if (sheet) url += `&sheet=${encodeURIComponent(sheet)}`;
+
+        const res = await api.fetch(url);
+        if (!res.ok) {
+            error.value = `Error ${res.status}`;
+            return;
+        }
+        const data = await res.json();
+        csvHeaders.value = data.headers;
+        csvRows.value = data.rows;
+        excelSheets.value = data.sheets;
+        activeSheet.value = data.active_sheet;
+    }
+
+    async function switchSheet(sheet: string) {
+        if (!props.path || sheet === activeSheet.value) return;
+        loading.value = true;
+        csvHeaders.value = [];
+        csvRows.value = [];
+        error.value = null;
+        try {
+            await loadTable(props.path, sheet);
+        } catch (e) {
+            error.value = e instanceof Error ? e.message : 'Failed to load sheet';
+        } finally {
+            loading.value = false;
+        }
     }
 
     async function loadPreview(filePath: string) {
@@ -39,23 +67,21 @@
 
         const ext = filePath.split('.').pop()?.toLowerCase() ?? '';
 
-        if (!TEXT_EXTENSIONS.includes(ext)) {
+        if (!TEXT_EXTENSIONS.includes(ext) && !TABLE_EXTENSIONS.includes(ext)) {
             loading.value = false;
             return;
         }
 
         try {
-            const res = await api.fetch(`/api/data/download/?path=${encodeURIComponent(filePath)}`);
-            if (!res.ok) {
-                error.value = `Error ${res.status}`;
-                return;
-            }
-            const text = await res.text();
-
-            if (ext === 'csv') {
-                parseCsv(text);
+            if (TABLE_EXTENSIONS.includes(ext)) {
+                await loadTable(filePath);
             } else {
-                rawText.value = text;
+                const res = await api.fetch(`/api/data/download/?path=${encodeURIComponent(filePath)}`);
+                if (!res.ok) {
+                    error.value = `Error ${res.status}`;
+                    return;
+                }
+                rawText.value = await res.text();
             }
         } catch (e) {
             error.value = e instanceof Error ? e.message : 'Failed to load preview';
@@ -93,12 +119,24 @@
             <div class="p-4 text-xrb-error text-sm">{{ error }}</div>
         </div>
 
-        <!-- CSV table preview -->
+        <!-- CSV / Excel table preview -->
         <div v-else-if="csvHeaders.length > 0" class="flex flex-col flex-1 min-h-0">
             <div
                 class="px-4 py-3 border-b border-xrb-border bg-xrb-bg-2 text-sm font-medium truncate flex items-center gap-2">
                 <span class="truncate">{{ fileName }}</span>
                 <span class="text-xs text-xrb-text-secondary shrink-0">{{ csvRows.length }} rows</span>
+            </div>
+            <!-- Sheet tabs for Excel files -->
+            <div v-if="excelSheets.length > 1"
+                class="flex gap-0 border-b border-xrb-border bg-xrb-bg-2 px-2 overflow-x-auto">
+                <button v-for="sheet in excelSheets" :key="sheet" @click="switchSheet(sheet)" :class="[
+                    'px-3 py-1.5 text-xs border-b-2 whitespace-nowrap transition-colors',
+                    sheet === activeSheet
+                        ? 'border-xrb-accent text-xrb-accent font-medium'
+                        : 'border-transparent text-xrb-text-secondary hover:text-xrb-text-1',
+                ]">
+                    {{ sheet }}
+                </button>
             </div>
             <div class="flex-1 overflow-auto">
                 <table class="table table-xs table-pin-rows w-full">

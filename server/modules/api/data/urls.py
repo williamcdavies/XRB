@@ -12,4 +12,5 @@ urlpatterns = [
     path('mkdir/', views.create_directory, name='create_directory'),
     path('delete/', views.delete_file, name='delete_file'),
     path('browse/', views.browse_files, name='browse_files'),
+    path('preview/table/', views.preview_table, name='preview_table'),
 ]
