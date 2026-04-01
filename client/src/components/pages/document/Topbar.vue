@@ -3,15 +3,15 @@
 
     // Ref: https://vuejs.org/guide/components/events.html
     const emit = defineEmits<{
-        (e: 'clear-fit'):                        void
-        (e: 'file-selected',    file:   File):   void
-        (e: 'fit-exponential'):                  void
-        (e: 'fit-linear'):                       void
-        (e: 'fit-logistic'):                     void
-        (e: 'fit-logarithmic'):                  void
-        (e: 'fit-polynomial',   degree: number): void
-        (e: 'fit-power'):                        void
-        (e: 'fit-sinusoidal'):                   void
+        (e: 'clear-fit'):                           void
+        (e: 'file-selected',    file:   File):      void
+        (e: 'toggle-exponential'):                  void
+        (e: 'toggle-linear'):                       void
+        (e: 'toggle-logistic'):                     void
+        (e: 'toggle-logarithmic'):                  void
+        (e: 'toggle-polynomial',   degree: number): void
+        (e: 'toggle-power'):                        void
+        (e: 'toggle-sinusoidal'):                   void
     }>()
 
 
@@ -37,14 +37,14 @@
 
 
     // graph stuff
-    function clearFit():                    void { emit('clear-fit')                   }
-    function fitExponential():              void { emit('fit-exponential')             }
-    function fitLinear():                   void { emit('fit-linear')                  }
-    function fitLogistic():                 void { emit('fit-logistic')                }
-    function fitLogarithmic():              void { emit('fit-logarithmic')             }
-    function fitPolynomial(degree: number): void { emit('fit-polynomial', degree)      }
-    function fitPower():                    void { emit('fit-power')                   }
-    function fitSinusoidal():               void { emit('fit-sinusoidal')              }
+    function clearFit():                       void { emit('clear-fit')                 }
+    function toggleExponential():              void { emit('toggle-exponential')        }
+    function toggleLinear():                   void { emit('toggle-linear')             }
+    function toggleLogistic():                 void { emit('toggle-logistic')           }
+    function toggleLogarithmic():              void { emit('toggle-logarithmic')        }
+    function togglePolynomial(degree: number): void { emit('toggle-polynomial', degree) }
+    function togglePower():                    void { emit('toggle-power')              }
+    function toggleSinusoidal():               void { emit('toggle-sinusoidal')         }
 
 
     // menu stuff
@@ -73,22 +73,22 @@
                 <li class="divider my-0.5" />
                 <li>
                     <details>
-                        <summary>Fit</summary>
+                        <summary>Toggle Fit</summary>
                         <ul>
-                            <li><a @click="fitLinear(); closeAll()">Linear</a></li>
-                            <li><a @click="fitExponential(); closeAll()">Exponential</a></li>
-                            <li><a @click="fitLogarithmic(); closeAll()">Logarithmic</a></li>
-                            <li><a @click="fitPower(); closeAll()">Power</a></li>
-                            <li><a @click="fitSinusoidal(); closeAll()">Sinusoidal</a></li>
-                            <li><a @click="fitLogistic(); closeAll()">Logistic</a></li>
+                            <li><a @click="toggleLinear(); closeAll()">Linear</a></li>
+                            <li><a @click="toggleExponential(); closeAll()">Exponential</a></li>
+                            <li><a @click="toggleLogarithmic(); closeAll()">Logarithmic</a></li>
+                            <li><a @click="togglePower(); closeAll()">Power</a></li>
+                            <li><a @click="toggleSinusoidal(); closeAll()">Sinusoidal</a></li>
+                            <li><a @click="toggleLogistic(); closeAll()">Logistic</a></li>
                             <li>
                                 <details>
                                     <summary>Polynomial</summary>
                                     <ul>
-                                        <li><a @click="fitPolynomial(2); closeAll()">Degree 2</a></li>
-                                        <li><a @click="fitPolynomial(3); closeAll()">Degree 3</a></li>
-                                        <li><a @click="fitPolynomial(4); closeAll()">Degree 4</a></li>
-                                        <li><a @click="fitPolynomial(5); closeAll()">Degree 5</a></li>
+                                        <li><a @click="togglePolynomial(2); closeAll()">Degree 2</a></li>
+                                        <li><a @click="togglePolynomial(3); closeAll()">Degree 3</a></li>
+                                        <li><a @click="togglePolynomial(4); closeAll()">Degree 4</a></li>
+                                        <li><a @click="togglePolynomial(5); closeAll()">Degree 5</a></li>
                                     </ul>
                                 </details>
                             </li>

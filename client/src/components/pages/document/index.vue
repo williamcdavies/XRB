@@ -69,14 +69,14 @@
     const graph = ref<InstanceType<typeof Graph> | null>(null)
 
 
-    function clearFit():                    void { graph.value?.clearFit()            }
-    function fitExponential():              void { graph.value?.fitExponential()      }
-    function fitLinear():                   void { graph.value?.fitLinear()           }
-    function fitLogistic():                 void { graph.value?.fitLogistic()         }
-    function fitLogarithmic():              void { graph.value?.fitLogarithmic()      }
-    function fitPolynomial(degree: number): void { graph.value?.fitPolynomial(degree) }
-    function fitPower():                    void { graph.value?.fitPower()            }
-    function fitSinusoidal():               void { graph.value?.fitSinusoidal()       }
+    function clearFit():                       void { graph.value?.clearFit()            }
+    function toggleExponential():              void { graph.value?.toggleExponential()      }
+    function toggleLinear():                   void { graph.value?.toggleLinear()           }
+    function toggleLogistic():                 void { graph.value?.toggleLogistic()         }
+    function toggleLogarithmic():              void { graph.value?.toggleLogarithmic()      }
+    function togglePolynomial(degree: number): void { graph.value?.togglePolynomial(degree) }
+    function togglePower():                    void { graph.value?.togglePower()            }
+    function toggleSinusoidal():               void { graph.value?.toggleSinusoidal()    }
     
 
     // mounting stuff
@@ -95,9 +95,9 @@
     <div class="grid grid-rows-[auto_1fr] h-screen w-screen bg-xrb-bg-1"
         :style="{ gridTemplateColumns: `${leftbarWidth}px ${HANDLE_WIDTH}px 1fr` }">
         <!-- Z0 -->
-        <Topbar @file-selected="onFileReceived" @clear-fit="clearFit" @fit-exponential="fitExponential"
-            @fit-linear="fitLinear" @fit-logistic="fitLogistic" @fit-logarithmic="fitLogarithmic"
-            @fit-polynomial="fitPolynomial" @fit-power="fitPower" @fit-sinusoidal="fitSinusoidal" class="col-span-3" />
+        <Topbar @file-selected="onFileReceived" @clear-fit="clearFit" @toggle-exponential="toggleExponential"
+            @toggle-linear="toggleLinear" @toggle-logistic="toggleLogistic" @toggle-logarithmic="toggleLogarithmic"
+            @toggle-polynomial="togglePolynomial" @toggle-power="togglePower" @toggle-sinusoidal="toggleSinusoidal" class="col-span-3" />
         <Leftbar :table="table" class="row-start-2" />
         <Handle @mousedown="onMouseDown" class="row-start-2" :class="handleClass" />
         <Graph ref="graph" :table="table" @ready="isContentReady = true" class="row-start-2" />

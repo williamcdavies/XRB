@@ -850,6 +850,16 @@ export class DesmosGraphingCalculator {
     }
 
 
+    clearExponential(): void {
+        if(!this.calculator)        return
+        if(this.exprv.length === 0) return
+
+        Object.values(DGC_IDS)
+            .filter(id => id.startsWith(DGC_IDS.FIT_EXPONENTIAL))
+            .forEach(id => this.calculator.removeExpression({ id }))
+    }
+
+
     fitLinear(): void {
         if(!this.calculator)        return
         if(this.exprv.length === 0) return
@@ -858,6 +868,16 @@ export class DesmosGraphingCalculator {
             id:    DGC_IDS.FIT_LINEAR,
             latex: 'y_1~mx_1+b'
         })
+    }
+
+
+    clearLinear(): void {
+        if(!this.calculator)        return
+        if(this.exprv.length === 0) return
+
+        Object.values(DGC_IDS)
+            .filter(id => id.startsWith(DGC_IDS.FIT_LINEAR))
+            .forEach(id => this.calculator.removeExpression({ id }))
     }
 
     
@@ -871,6 +891,16 @@ export class DesmosGraphingCalculator {
         })
     }
 
+
+    clearLogarithmic(): void {
+        if(!this.calculator)        return
+        if(this.exprv.length === 0) return
+
+        Object.values(DGC_IDS)
+            .filter(id => id.startsWith(DGC_IDS.FIT_LOGARITHMIC))
+            .forEach(id => this.calculator.removeExpression({ id }))
+    }
+
     
     fitLogistic(): void {
         if(!this.calculator)        return
@@ -880,6 +910,16 @@ export class DesmosGraphingCalculator {
             id:    DGC_IDS.FIT_LOGISTIC,
             latex: `y_1~\\frac{L}{1+e^{-k(x_1-x_0)}}`
         })
+    }
+
+
+    clearLogistic(): void {
+        if(!this.calculator)        return
+        if(this.exprv.length === 0) return
+
+        Object.values(DGC_IDS)
+            .filter(id => id.startsWith(DGC_IDS.FIT_LOGISTIC))
+            .forEach(id => this.calculator.removeExpression({ id }))
     }
 
 
@@ -902,6 +942,16 @@ export class DesmosGraphingCalculator {
     }
 
 
+    clearPolynomial(): void {
+        if(!this.calculator)        return
+        if(this.exprv.length === 0) return
+
+        Object.values(DGC_IDS)
+            .filter(id => id.startsWith(DGC_IDS.FIT_POLYNOMIAL))
+            .forEach(id => this.calculator.removeExpression({ id }))
+    }
+
+
     fitPower(): void {
         if(!this.calculator)        return
         if(this.exprv.length === 0) return
@@ -910,6 +960,16 @@ export class DesmosGraphingCalculator {
             id:    DGC_IDS.FIT_POWER,
             latex: `y_1~ax_1^{b}`
         })
+    }
+
+
+    clearPower(): void {
+        if(!this.calculator)        return
+        if(this.exprv.length === 0) return
+
+        Object.values(DGC_IDS)
+            .filter(id => id.startsWith(DGC_IDS.FIT_POWER))
+            .forEach(id => this.calculator.removeExpression({ id }))
     }
 
 
@@ -924,12 +984,30 @@ export class DesmosGraphingCalculator {
     }
 
 
+    clearSinusoidal(): void {
+        if(!this.calculator)        return
+        if(this.exprv.length === 0) return
+
+        Object.values(DGC_IDS)
+            .filter(id => id.startsWith(DGC_IDS.FIT_SINUSOIDAL))
+            .forEach(id => this.calculator.removeExpression({ id }))
+    }
+
+
     clearFit(): void {
         if(!this.calculator) return
 
         Object.values(DGC_IDS)
             .filter(id => id.startsWith('fit-'))
             .forEach(id => this.calculator.removeExpression({ id }))
+    }
+
+
+    hasFit(target_id: string): boolean {
+        if(!this.calculator) return false
+
+        return this.calculator.getExpressions()
+            .some((expr: ReturnType<typeof this.calculator.getExpressions>[number]) => expr.id?.startsWith(target_id))
     }
 
 
