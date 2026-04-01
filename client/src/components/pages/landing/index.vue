@@ -1,5 +1,6 @@
 <script setup lang="ts">
     import { ref }       from 'vue';
+    import { useAuth }   from '@/composables/auth';
     import { useRouter } from 'vue-router';
 
     import TintLayer     from '../../layers/TintLayer.vue';
@@ -7,8 +8,18 @@
     import Hero          from './Hero.vue';
     import Navbar        from './Navbar.vue'
     
+    const auth            = useAuth();
     const router          = useRouter();
     const renderAuthModal = ref(false)
+
+
+    async function handleAuth() {
+        if(await auth.isAuthenticated()) {
+            goToDashboard()
+        } else {
+            renderAuthModal.value = true;
+        }
+    }
 
 
     async function goToLanding() {
@@ -19,13 +30,18 @@
     async function goToAbout() {
         router.push('/about')
     }
+
+
+    async function goToDashboard() {
+        router.push('/dashboard')
+    }
 </script>
 
 
 <template>
     <div class="bg-xrb-bg-1">
         <!-- Z0 -->
-        <Navbar @auth="renderAuthModal = true" @goto-landing="goToLanding" @goto-about="goToAbout" />
+        <Navbar @auth="handleAuth" @goto-landing="goToLanding" @goto-about="goToAbout" />
         <Hero />
 
         <!-- Z1 -->
