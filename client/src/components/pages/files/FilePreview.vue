@@ -2,8 +2,11 @@
     import { ref, watch, computed } from 'vue';
     import { useApi } from '@/composables/api';
 
+    const LARGE_FILE_THRESHOLD = 100 * 1024 * 1024; // 100 MB
+
     const props = defineProps<{
         path: string | null;
+        fileSize?: number;
     }>();
 
     const { api } = useApi();
@@ -74,6 +77,13 @@
 
         try {
             if (TABLE_EXTENSIONS.includes(ext)) {
+                if (props.fileSize != null && props.fileSize > LARGE_FILE_THRESHOLD) {
+                    needsRowRange.value = true;
+                    rowStart.value = 1;
+                    rowEnd.value = 1000;
+                    loading.value = false;
+                    return;
+                }
                 await loadTable(filePath);
             } else {
                 const res = await api.fetch(`/api/data/download/?path=${encodeURIComponent(filePath)}`);

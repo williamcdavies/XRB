@@ -342,6 +342,13 @@ def upload_file(request):
 
     uploaded_file = request.FILES['file']
 
+    max_size = 5 * 1024 * 1024 * 1024  # 5 GB
+    if uploaded_file.size > max_size:
+        return Response(
+            {'error': 'File exceeds maximum upload size of 5 GB'},
+            status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+        )
+
     try:
         upload_dir = BASE_DATA_DIR / target_dir
         upload_dir.mkdir(parents=True, exist_ok=True)

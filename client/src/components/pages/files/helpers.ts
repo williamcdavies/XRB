@@ -84,11 +84,18 @@ export async function deleteItem(
     return true;
 }
 
+const MAX_UPLOAD_SIZE = 5 * 1024 * 1024 * 1024; // 5 GB
+
 export async function uploadFile(
     api: ApiFetcher,
     file: File,
     path: string,
 ): Promise<void> {
+    if (file.size > MAX_UPLOAD_SIZE) {
+        throw new Error('File exceeds maximum upload size of 5 GB');
+    }
+
+    // Use XMLHttpRequest for progress tracking
     const form = new FormData();
     form.append('file', file);
     form.append('path', path);
@@ -121,5 +128,6 @@ export async function createDirectory(
 export function formatSize(bytes: number): string {
     if (bytes < 1024) return `${bytes} B`;
     if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+    if (bytes < 1024 * 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+    return `${(bytes / (1024 * 1024 * 1024)).toFixed(1)} GB`;
 }

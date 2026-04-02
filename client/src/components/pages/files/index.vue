@@ -226,6 +226,12 @@
 
     const uploadTargetPath = computed(() => currentPath.value || currentRootPath.value);
 
+    const selectedFileSize = computed(() => {
+        if (!selectedFile.value) return undefined;
+        const item = items.value.find((i) => i.path === selectedFile.value);
+        return item?.size;
+    });
+
     function openNewDirForm() {
         newDirName.value = '';
         createDirError.value = null;
@@ -357,7 +363,7 @@
 
             <!-- Right panel: preview -->
             <div class="w-2/3 min-w-0 min-h-0 overflow-hidden">
-                <FilePreview :path="selectedFile" />
+                <FilePreview :path="selectedFile" :file-size="selectedFileSize" />
             </div>
         </div>
 
