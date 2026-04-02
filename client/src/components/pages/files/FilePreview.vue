@@ -18,6 +18,10 @@
     const rawText = ref<string | null>(null);
     const excelSheets = ref<string[]>([]);
     const activeSheet = ref<string>('');
+    const needsRowRange = ref(false);
+    const rowStart = ref(1);
+    const rowEnd = ref(1000);
+    const totalRows = ref<number | null>(null);
 
     const fileName = computed(() => props.path?.split('/').pop() ?? '');
 
@@ -31,11 +35,15 @@
         error.value = null;
         excelSheets.value = [];
         activeSheet.value = '';
+        needsRowRange.value = false;
+        totalRows.value = null;
     }
 
-    async function loadTable(filePath: string, sheet?: string) {
+    async function loadTable(filePath: string, sheet?: string, startRow?: number, endRow?: number) {
         let url = `/api/data/preview/table/?path=${encodeURIComponent(filePath)}`;
         if (sheet) url += `&sheet=${encodeURIComponent(sheet)}`;
+        if (startRow != null) url += `&start_row=${startRow}`;
+        if (endRow != null) url += `&end_row=${endRow}`;
 
         const res = await api.fetch(url);
         if (!res.ok) {
@@ -45,8 +53,9 @@
         const data = await res.json();
         csvHeaders.value = data.headers;
         csvRows.value = data.rows;
-        excelSheets.value = data.sheets;
-        activeSheet.value = data.active_sheet;
+        excelSheets.value = data.sheets ?? [];
+        activeSheet.value = data.active_sheet ?? '';
+        if (data.total_rows != null) totalRows.value = data.total_rows;
     }
 
     async function switchSheet(sheet: string) {
@@ -59,6 +68,20 @@
             await loadTable(props.path, sheet);
         } catch (e) {
             error.value = e instanceof Error ? e.message : 'Failed to load sheet';
+        } finally {
+            loading.value = false;
+        }
+    }
+
+    async function loadRowRange() {
+        if (!props.path) return;
+        loading.value = true;
+        error.value = null;
+        needsRowRange.value = false;
+        try {
+            await loadTable(props.path, undefined, rowStart.value, rowEnd.value);
+        } catch (e) {
+            error.value = e instanceof Error ? e.message : 'Failed to load preview';
         } finally {
             loading.value = false;
         }
@@ -121,6 +144,37 @@
             <span class="loading loading-dots loading-lg"></span>
         </div>
 
+        <!-- Large file row range prompt -->
+        <div v-else-if="needsRowRange" class="flex flex-col flex-1">
+            <div class="px-4 py-3 border-b border-xrb-border bg-xrb-bg-2 text-sm font-medium truncate">
+                {{ fileName }}
+            </div>
+            <div class="flex-1 flex flex-col items-center justify-center gap-4 p-6 text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
+                    stroke="currentColor" class="size-10 opacity-40 text-xrb-text-secondary">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                </svg>
+                <p class="text-xrb-text-secondary text-sm">
+                    This file is larger than 100 MB. Select a range of rows to preview.
+                </p>
+                <div class="flex items-center gap-2">
+                    <label class="text-xs text-xrb-text-secondary">Rows</label>
+                    <input v-model.number="rowStart" type="number" min="1"
+                        class="input input-sm input-bordered w-24 bg-xrb-bg-3 border-xrb-border text-xrb-text-1" />
+                    <span class="text-xrb-text-secondary">to</span>
+                    <input v-model.number="rowEnd" type="number" :min="rowStart"
+                        class="input input-sm input-bordered w-24 bg-xrb-bg-3 border-xrb-border text-xrb-text-1" />
+                </div>
+                <button type="button"
+                    class="btn btn-sm bg-xrb-highlight border-xrb-border text-xrb-text-1 hover:bg-xrb-text-1 hover:text-xrb-text-2"
+                    :disabled="rowStart < 1 || rowEnd < rowStart"
+                    @click="loadRowRange">
+                    Load preview
+                </button>
+            </div>
+        </div>
+
         <!-- Error -->
         <div v-else-if="error" class="flex flex-col flex-1">
             <div class="px-4 py-3 border-b border-xrb-border bg-xrb-bg-2 text-sm font-medium truncate">
@@ -134,7 +188,9 @@
             <div
                 class="px-4 py-3 border-b border-xrb-border bg-xrb-bg-2 text-sm font-medium truncate flex items-center gap-2">
                 <span class="truncate">{{ fileName }}</span>
-                <span class="text-xs text-xrb-text-secondary shrink-0">{{ csvRows.length }} rows</span>
+                <span class="text-xs text-xrb-text-secondary shrink-0">
+                    {{ csvRows.length }} rows{{ totalRows != null ? ` (of ${totalRows} total)` : '' }}
+                </span>
             </div>
             <!-- Sheet tabs for Excel files -->
             <div v-if="excelSheets.length > 1"
