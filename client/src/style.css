@@ -27,6 +27,9 @@
   --color-xrb-text-primary:            oklch(1 0 0);                /* for main text in body, pure white */
   --color-xrb-text-secondary:          oklch(0.7871 0.0044 236.52); /* for secondary text, pre-selection emphasis. */
   --color-xrb-text-warning-1:          oklch(63% 0.17 26);
+
+  --color-xrb-yellow: oklch(0.8382 0.1727 93.18); /* light mode */
+  --color-xrb-blue: oklch(0.5533 0.1727 261.53); /* dark mode */
   
 
   --font-sans: Inter, system-ui, sans-serif;
