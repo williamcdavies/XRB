@@ -11,7 +11,9 @@
         deleteItem,
         uploadFile,
         createDirectory,
+        formatSize,
     } from './helpers';
+    import type { UploadProgress } from './helpers';
 
     const { api } = useApi();
     const { isAuthenticated } = useAuth()
@@ -31,6 +33,7 @@
     const uploading = ref(false);
     const uploadError = ref<string | null>(null);
     const uploadInput = ref<HTMLInputElement | null>(null);
+    const uploadProgress = ref<UploadProgress | null>(null);
     const creatingDir = ref(false);
     const newDirName = ref('');
     const createDirError = ref<string | null>(null);
@@ -214,13 +217,17 @@
         if (!file) return;
         uploading.value = true;
         uploadError.value = null;
+        uploadProgress.value = null;
         try {
-            await uploadFile(api, file, currentPath.value || currentRootPath.value);
+            await uploadFile(api, file, currentPath.value || currentRootPath.value, (p) => {
+                uploadProgress.value = p;
+            });
             await loadPath(currentPath.value || currentRootPath.value);
         } catch (e) {
             uploadError.value = e instanceof Error ? e.message : 'Upload failed';
         } finally {
             uploading.value = false;
+            uploadProgress.value = null;
         }
     }
 
@@ -354,6 +361,22 @@
                     <span v-if="uploadTargetPath" class="text-xs text-xrb-text-secondary break-all">
                         into {{ uploadTargetPath }}
                     </span>
+                </div>
+                <div v-if="uploading && uploadProgress" class="px-3 pb-2 bg-xrb-bg-2 shrink-0">
+                    <div v-if="uploadProgress.percent >= 100" class="flex items-center gap-2 text-xs text-xrb-text-secondary">
+                        <span class="loading loading-spinner loading-xs"></span>
+                        <span>Server is processing the file...</span>
+                    </div>
+                    <template v-else>
+                        <div class="flex items-center justify-between text-xs text-xrb-text-secondary mb-1">
+                            <span>{{ formatSize(uploadProgress.loaded) }} / {{ formatSize(uploadProgress.total) }}</span>
+                            <span>{{ uploadProgress.percent }}%</span>
+                        </div>
+                        <div class="w-full bg-xrb-bg-3 rounded-full h-2 overflow-hidden">
+                            <div class="bg-xrb-accent-1 h-full rounded-full transition-all duration-200"
+                                :style="{ width: `${uploadProgress.percent}%` }"></div>
+                        </div>
+                    </template>
                 </div>
                 <div v-if="uploadError" class="px-3 pb-2 text-xrb-error text-sm bg-xrb-bg-2 shrink-0">
                     {{ uploadError }}

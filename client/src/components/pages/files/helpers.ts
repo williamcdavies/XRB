@@ -86,10 +86,17 @@ export async function deleteItem(
 
 const MAX_UPLOAD_SIZE = 5 * 1024 * 1024 * 1024; // 5 GB
 
+export interface UploadProgress {
+    loaded: number;
+    total: number;
+    percent: number;
+}
+
 export async function uploadFile(
     api: ApiFetcher,
     file: File,
     path: string,
+    onProgress?: (progress: UploadProgress) => void,
 ): Promise<void> {
     if (file.size > MAX_UPLOAD_SIZE) {
         throw new Error('File exceeds maximum upload size of 5 GB');
@@ -99,14 +106,44 @@ export async function uploadFile(
     const form = new FormData();
     form.append('file', file);
     form.append('path', path);
-    const res = await api.fetch('/api/data/upload/', {
-        method: 'POST',
-        body: form,
+
+    // Ensure token is fresh by triggering the api wrapper's auto-refresh
+    await api.fetch('/api/data/browse/', { method: 'HEAD' }).catch(() => null);
+    const { useAuth } = await import('@/composables/auth');
+    const { getAccessToken } = useAuth();
+    const token = getAccessToken();
+
+    return new Promise<void>((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/api/data/upload/');
+        if (token) {
+            xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+        }
+
+        xhr.upload.addEventListener('progress', (e) => {
+            if (e.lengthComputable && onProgress) {
+                onProgress({
+                    loaded: e.loaded,
+                    total: e.total,
+                    percent: Math.round((e.loaded / e.total) * 100),
+                });
+            }
+        });
+
+        xhr.addEventListener('load', () => {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                resolve();
+            } else {
+                const data = JSON.parse(xhr.responseText || '{}');
+                reject(new Error(data.error || `Upload failed ${xhr.status}`));
+            }
+        });
+
+        xhr.addEventListener('error', () => reject(new Error('Upload failed: network error')));
+        xhr.addEventListener('abort', () => reject(new Error('Upload cancelled')));
+
+        xhr.send(form);
     });
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok) {
-        throw new Error(data.error || `Upload failed ${res.status}`);
-    }
 }
 
 export async function createDirectory(

@@ -223,6 +223,8 @@ def preview_table(request):
     -----------------
     path : str (required)
     sheet : str (optional) – sheet name for Excel files, defaults to first sheet
+    start_row : int (optional) – first data row to return (1-based, default 1)
+    end_row : int (optional) – last data row to return (inclusive)
     """
     relative_path = request.query_params.get('path')
 
@@ -266,20 +268,40 @@ def preview_table(request):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
+    start_row = request.query_params.get('start_row')
+    end_row = request.query_params.get('end_row')
+    start_row = int(start_row) if start_row else None
+    end_row = int(end_row) if end_row else None
+
     try:
         if ext == '.csv':
             with open(file_path, newline='', encoding='utf-8') as f:
                 reader = csv.reader(f)
-                rows = [[cell for cell in row] for row in reader]
+                headers = next(reader, [])
 
-            headers = rows[0] if rows else []
-            data = rows[1:] if len(rows) > 1 else []
+                if start_row is not None and end_row is not None:
+                    # Stream through the file, only keeping the rows we need
+                    data = []
+                    total_rows = 0
+                    for i, row in enumerate(reader, start=1):
+                        total_rows = i
+                        if start_row <= i <= end_row:
+                            data.append(row)
+                        elif i > end_row:
+                            # Count remaining rows without storing them
+                            for total_rows, _ in enumerate(reader, start=i + 1):
+                                pass
+                            break
+                else:
+                    data = list(reader)
+                    total_rows = len(data)
 
             return Response({
                 'headers': headers,
                 'rows': data,
                 'sheets': [],
                 'active_sheet': '',
+                'total_rows': total_rows,
             })
         else:
             from openpyxl import load_workbook
@@ -288,12 +310,27 @@ def preview_table(request):
             sheet_name = request.query_params.get('sheet')
             ws = wb[sheet_name] if sheet_name and sheet_name in wb.sheetnames else wb.active
 
-            rows = []
-            for row in ws.iter_rows(values_only=True):
-                rows.append([str(cell) if cell is not None else '' for cell in row])
+            row_iter = ws.iter_rows(values_only=True)
+            first_row = next(row_iter, None)
+            headers = [str(cell) if cell is not None else '' for cell in first_row] if first_row else []
 
-            headers = rows[0] if rows else []
-            data = rows[1:] if len(rows) > 1 else []
+            if start_row is not None and end_row is not None:
+                data = []
+                total_rows = 0
+                for i, row in enumerate(row_iter, start=1):
+                    total_rows = i
+                    if start_row <= i <= end_row:
+                        data.append([str(cell) if cell is not None else '' for cell in row])
+                    elif i > end_row:
+                        for total_rows, _ in enumerate(row_iter, start=i + 1):
+                            pass
+                        break
+            else:
+                data = []
+                for row in row_iter:
+                    data.append([str(cell) if cell is not None else '' for cell in row])
+                total_rows = len(data)
+
             sheet_names = wb.sheetnames
             active_sheet = ws.title
             wb.close()
@@ -303,6 +340,7 @@ def preview_table(request):
                 'rows': data,
                 'sheets': sheet_names,
                 'active_sheet': active_sheet,
+                'total_rows': total_rows,
             })
     except Exception as e:
         return Response(
