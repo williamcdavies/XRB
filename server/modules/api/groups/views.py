@@ -11,7 +11,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group as AuthGroup
 from django.core.mail import send_mail
 
-from .models import GroupMembership
+from .models import GroupMembership, FileAccessControl
 
 User = get_user_model()
 
@@ -250,6 +250,101 @@ def update_role(request, group_id, user_id):
         'id': user_id,
         'role': role,
     })
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def list_file_permissions(request, group_id):
+    """List all file access controls for a group."""
+    group, membership = _get_membership(request.user, group_id)
+    if group is None:
+        return Response({'error': 'Group not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    if membership.role != GroupMembership.ROLE_ADMIN:
+        return Response({'error': 'Only admins can view file permissions'}, status=status.HTTP_403_FORBIDDEN)
+
+    controls = FileAccessControl.objects.filter(group=group).prefetch_related('allowed_users')
+    return Response({
+        'permissions': [
+            {
+                'id': ctrl.id,
+                'path': ctrl.path,
+                'allowed_users': [
+                    {'id': u.id, 'email': u.email}
+                    for u in ctrl.allowed_users.all()
+                ],
+            }
+            for ctrl in controls
+        ],
+    })
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def set_file_permission(request, group_id):
+    """
+    create or update a file access control record for a path within the group
+    """
+    group, membership = _get_membership(request.user, group_id)
+    if group is None:
+        return Response({'error': 'Group not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    if membership.role != GroupMembership.ROLE_ADMIN:
+        return Response({'error': 'Only admins can manage file permissions'}, status=status.HTTP_403_FORBIDDEN)
+
+    path = (request.data.get('path') or '').strip().strip('/')
+    allowed_user_ids = request.data.get('allowed_user_ids', [])
+
+    if not path:
+        return Response({'error': 'Missing required parameter: path'}, status=status.HTTP_400_BAD_REQUEST)
+
+    if not isinstance(allowed_user_ids, list):
+        return Response({'error': 'allowed_user_ids must be a list'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Verify all users are members of the group
+    member_ids = set(group.memberships.values_list('user_id', flat=True))
+    invalid_ids = [uid for uid in allowed_user_ids if uid not in member_ids]
+    if invalid_ids:
+        return Response(
+            {'error': f'Users not in group: {invalid_ids}'},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    ctrl, _ = FileAccessControl.objects.get_or_create(group=group, path=path)
+    ctrl.allowed_users.set(allowed_user_ids)
+
+    return Response({
+        'id': ctrl.id,
+        'path': ctrl.path,
+        'allowed_users': [
+            {'id': u.id, 'email': u.email}
+            for u in ctrl.allowed_users.all()
+        ],
+    })
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_file_permission(request, group_id):
+    """
+    remove individual file access control
+    """
+    group, membership = _get_membership(request.user, group_id)
+    if group is None:
+        return Response({'error': 'Group not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    if membership.role != GroupMembership.ROLE_ADMIN:
+        return Response({'error': 'Only admins can manage file permissions'}, status=status.HTTP_403_FORBIDDEN)
+
+    path = (request.query_params.get('path') or '').strip().strip('/')
+    if not path:
+        return Response({'error': 'Missing required parameter: path'}, status=status.HTTP_400_BAD_REQUEST)
+
+    deleted, _ = FileAccessControl.objects.filter(group=group, path=path).delete()
+    if not deleted:
+        return Response({'error': 'No restriction found for that path'}, status=status.HTTP_404_NOT_FOUND)
+
+    return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['DELETE'])

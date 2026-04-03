@@ -2,7 +2,7 @@ import csv
 import math
 import os
 import shutil
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -14,7 +14,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group as AuthGroup
 from django.http import FileResponse
 
-from .permissions import check_path_access, check_write_access
+from .permissions import check_path_access, check_write_access, filter_group_items
 
 User = get_user_model()
 
@@ -596,6 +596,11 @@ def browse_files(request):
                 entry['size'] = item.stat().st_size
                 entry['extension'] = item.suffix.lower()
             items.append(entry)
+
+        # Apply per-file access controls for group directories
+        parts = PurePosixPath(base_path).parts
+        if len(parts) >= 2 and parts[0] == 'groups' and user:
+            items = filter_group_items(user, parts[1], items)
 
         return Response({'path': base_path, 'items': items, 'count': len(items)})
 

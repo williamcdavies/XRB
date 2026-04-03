@@ -84,6 +84,46 @@ export async function updateRoleRequest(api: Api, groupId: number, userId: numbe
     }
 }
 
+export interface FilePermission {
+    id: number;
+    path: string;
+    allowed_users: { id: number; email: string }[];
+}
+
+export async function fetchFilePermissions(api: Api, groupId: number): Promise<FilePermission[]> {
+    const res = await api.fetch(`/api/groups/${groupId}/file-permissions/`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Failed to load file permissions');
+    return data.permissions;
+}
+
+export async function setFilePermission(
+    api: Api,
+    groupId: number,
+    path: string,
+    allowedUserIds: number[],
+): Promise<FilePermission> {
+    const res = await api.fetch(`/api/groups/${groupId}/file-permissions/set/`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ path, allowed_user_ids: allowedUserIds }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Failed to set file permission');
+    return data;
+}
+
+export async function deleteFilePermission(api: Api, groupId: number, path: string): Promise<void> {
+    const res = await api.fetch(
+        `/api/groups/${groupId}/file-permissions/delete/?path=${encodeURIComponent(path)}`,
+        { method: 'DELETE' },
+    );
+    if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || 'Failed to delete file permission');
+    }
+}
+
 export async function deleteGroupRequest(api: Api, groupId: number): Promise<void> {
     const res = await api.fetch(
         `/api/groups/${groupId}/delete/`,
