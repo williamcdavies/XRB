@@ -280,21 +280,34 @@ def preview_table(request):
                 headers = next(reader, [])
 
                 if start_row is not None and end_row is not None:
-                    # Stream through the file, only keeping the rows we need
                     data = []
-                    total_rows = 0
+                    total_rows = end_row  # provisional; refined below
+                    total_rows_estimated = False
                     for i, row in enumerate(reader, start=1):
-                        total_rows = i
-                        if start_row <= i <= end_row:
-                            data.append(row)
-                        elif i > end_row:
-                            # Count remaining rows without storing them
-                            for total_rows, _ in enumerate(reader, start=i + 1):
-                                pass
+                        if i < start_row:
+                            continue
+                        if i > end_row:
                             break
+                        data.append(row)
+                        total_rows = i
+
+                    # Estimate total rows from file size and average row
+                    # bytes so we never stream through the whole file.
+                    if data:
+                        sample_bytes = sum(
+                            sum(len(c.encode('utf-8')) for c in row) + len(row)
+                            for row in data
+                        )
+                        avg_row_bytes = sample_bytes / len(data)
+                        if avg_row_bytes > 0:
+                            estimated = int(file_path.stat().st_size / avg_row_bytes)
+                            if estimated > total_rows:
+                                total_rows = estimated
+                                total_rows_estimated = True
                 else:
                     data = list(reader)
                     total_rows = len(data)
+                    total_rows_estimated = False
 
             return Response({
                 'headers': headers,
@@ -302,6 +315,7 @@ def preview_table(request):
                 'sheets': [],
                 'active_sheet': '',
                 'total_rows': total_rows,
+                'total_rows_estimated': total_rows_estimated,
             })
         else:
             from openpyxl import load_workbook
@@ -316,20 +330,25 @@ def preview_table(request):
 
             if start_row is not None and end_row is not None:
                 data = []
-                total_rows = 0
+                total_rows = end_row
+                total_rows_estimated = False
                 for i, row in enumerate(row_iter, start=1):
-                    total_rows = i
-                    if start_row <= i <= end_row:
-                        data.append([str(cell) if cell is not None else '' for cell in row])
-                    elif i > end_row:
-                        for total_rows, _ in enumerate(row_iter, start=i + 1):
-                            pass
+                    if i < start_row:
+                        continue
+                    if i > end_row:
                         break
+                    data.append([str(cell) if cell is not None else '' for cell in row])
+                    total_rows = i
+
+                # openpyxl read-only sheets expose max_row when available
+                if ws.max_row and ws.max_row > total_rows:
+                    total_rows = ws.max_row - 1  # subtract header row
             else:
                 data = []
                 for row in row_iter:
                     data.append([str(cell) if cell is not None else '' for cell in row])
                 total_rows = len(data)
+                total_rows_estimated = False
 
             sheet_names = wb.sheetnames
             active_sheet = ws.title
@@ -341,6 +360,7 @@ def preview_table(request):
                 'sheets': sheet_names,
                 'active_sheet': active_sheet,
                 'total_rows': total_rows,
+                'total_rows_estimated': total_rows_estimated,
             })
     except Exception as e:
         return Response(
