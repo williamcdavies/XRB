@@ -22,7 +22,7 @@
     const rowStart = ref(1);
     const rowEnd = ref(1000);
     const totalRows = ref<number | null>(null);
-    const totalRowsEstimated = ref(false);
+
 
     const fileName = computed(() => props.path?.split('/').pop() ?? '');
 
@@ -38,7 +38,7 @@
         activeSheet.value = '';
         needsRowRange.value = false;
         totalRows.value = null;
-        totalRowsEstimated.value = false;
+
     }
 
     async function loadTable(filePath: string, sheet?: string, startRow?: number, endRow?: number) {
@@ -58,7 +58,7 @@
         excelSheets.value = data.sheets ?? [];
         activeSheet.value = data.active_sheet ?? '';
         if (data.total_rows != null) totalRows.value = data.total_rows;
-        totalRowsEstimated.value = !!data.total_rows_estimated;
+
     }
 
     async function switchSheet(sheet: string) {
@@ -192,7 +192,7 @@
                 class="px-4 py-3 border-b border-xrb-border bg-xrb-bg-2 text-sm font-medium truncate flex items-center gap-2">
                 <span class="truncate">{{ fileName }}</span>
                 <span class="text-xs text-xrb-text-secondary shrink-0">
-                    {{ csvRows.length }} rows{{ totalRows != null ? ` (of ${totalRowsEstimated ? '~' : ''}${totalRows.toLocaleString()} total${totalRowsEstimated ? ', estimated' : ''})` : '' }}
+                    {{ csvRows.length }} rows{{ totalRows != null ? ` (of ${totalRows.toLocaleString()} total)` : '' }}
                 </span>
             </div>
             <!-- Sheet tabs for Excel files -->

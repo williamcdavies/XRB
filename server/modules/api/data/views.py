@@ -19,6 +19,7 @@ from .permissions import check_path_access, check_write_access, filter_group_ite
 User = get_user_model()
 
 BASE_DATA_DIR = Path(os.environ.get('DATA_DIR', '/data'))
+MAX_UPLOAD_SIZE = 5 * 1024 * 1024 * 1024  # 5 GB
 
 def is_path_safe(file_path: str) -> bool:
     try:
@@ -281,33 +282,17 @@ def preview_table(request):
 
                 if start_row is not None and end_row is not None:
                     data = []
-                    total_rows = end_row  # provisional; refined below
-                    total_rows_estimated = False
+                    total_rows = 0
                     for i, row in enumerate(reader, start=1):
-                        if i < start_row:
-                            continue
-                        if i > end_row:
-                            break
-                        data.append(row)
                         total_rows = i
-
-                    # Estimate total rows from file size and average row
-                    # bytes so we never stream through the whole file.
-                    if data:
-                        sample_bytes = sum(
-                            sum(len(c.encode('utf-8')) for c in row) + len(row)
-                            for row in data
-                        )
-                        avg_row_bytes = sample_bytes / len(data)
-                        if avg_row_bytes > 0:
-                            estimated = int(file_path.stat().st_size / avg_row_bytes)
-                            if estimated > total_rows:
-                                total_rows = estimated
-                                total_rows_estimated = True
+                        if start_row <= i <= end_row:
+                            data.append(row)
+                    # Skip remaining rows cheaply to get accurate count
+                    # (rows past end_row were already broken out of above
+                    #  only if we stored them — here we just count)
                 else:
                     data = list(reader)
                     total_rows = len(data)
-                    total_rows_estimated = False
 
             return Response({
                 'headers': headers,
@@ -315,7 +300,6 @@ def preview_table(request):
                 'sheets': [],
                 'active_sheet': '',
                 'total_rows': total_rows,
-                'total_rows_estimated': total_rows_estimated,
             })
         else:
             from openpyxl import load_workbook
@@ -330,25 +314,16 @@ def preview_table(request):
 
             if start_row is not None and end_row is not None:
                 data = []
-                total_rows = end_row
-                total_rows_estimated = False
+                total_rows = 0
                 for i, row in enumerate(row_iter, start=1):
-                    if i < start_row:
-                        continue
-                    if i > end_row:
-                        break
-                    data.append([str(cell) if cell is not None else '' for cell in row])
                     total_rows = i
-
-                # openpyxl read-only sheets expose max_row when available
-                if ws.max_row and ws.max_row > total_rows:
-                    total_rows = ws.max_row - 1  # subtract header row
+                    if start_row <= i <= end_row:
+                        data.append([str(cell) if cell is not None else '' for cell in row])
             else:
                 data = []
                 for row in row_iter:
                     data.append([str(cell) if cell is not None else '' for cell in row])
                 total_rows = len(data)
-                total_rows_estimated = False
 
             sheet_names = wb.sheetnames
             active_sheet = ws.title
@@ -360,7 +335,6 @@ def preview_table(request):
                 'sheets': sheet_names,
                 'active_sheet': active_sheet,
                 'total_rows': total_rows,
-                'total_rows_estimated': total_rows_estimated,
             })
     except Exception as e:
         return Response(
@@ -400,8 +374,7 @@ def upload_file(request):
 
     uploaded_file = request.FILES['file']
 
-    max_size = 5 * 1024 * 1024 * 1024  # 5 GB
-    if uploaded_file.size > max_size:
+    if uploaded_file.size > MAX_UPLOAD_SIZE:
         return Response(
             {'error': 'File exceeds maximum upload size of 5 GB'},
             status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
