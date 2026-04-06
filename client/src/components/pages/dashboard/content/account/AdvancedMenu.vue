@@ -8,6 +8,7 @@ const loading = computed(() => user.value === null)
 
 const emit = defineEmits<{
     (e: 'open-modal', modal: AccountModalType): void
+    (e: 'change-view', view: 'main' | 'advanced'): void
 }>()
 
 const { user, fetchUser } = useUser()
@@ -29,10 +30,13 @@ onMounted(async () => {
             <h1 class="text-3xl font-display mb-2 ml-3">
                 <span>Advanced Settings</span>
             </h1>
+            <p class="font-sans text-m ml-3">Let's customize your personal information to make sure we work best for
+                you.
+            </p>
         </div>
         <ul class="list w-full min-w-[48rem] max-w-[48rem] h-full min-h-[36rem] max-h-[48rem] mx-auto rounded-none divide-y divide-xrb-border hover:cursor-pointer">
 
-            <li @click="emit('open-modal', 'name')"
+            <li @click="emit('change-view', 'main')"
                 class="flex list-row h-full hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary rounded-none">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -97,7 +101,6 @@ onMounted(async () => {
                     <h2 class="font-sans font-bold text-lg">Delete Account</h2>
                 </div>
             </li>
-
         </ul>
     </div>
 </template>

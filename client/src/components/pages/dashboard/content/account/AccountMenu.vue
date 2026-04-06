@@ -19,6 +19,7 @@ const ICONS = [icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8]
 
 const emit = defineEmits<{
     (e: 'open-modal', modal: AccountModalType): void
+    (e: 'change-view', view: 'main' | 'advanced'): void
 }>()
 
 const { user, fetchUser } = useUser()
@@ -49,7 +50,6 @@ onMounted(async () => {
             <p class="font-sans text-m ml-3">Let's customize your personal information to make sure we work best for
                 you.</p>
         </div>
-        <!-- <div class="flex text-l w-3/4 min-w-[36rem] max-w-[48rem]">Manage details that work best for you</div> -->
         <ul
             class="list w-full min-w-[48rem] max-w-[48rem] h-full min-h-[36rem] max-h-[48rem] mx-auto rounded-none divide-y divide-xrb-border hover:cursor-pointer">
 
@@ -111,7 +111,7 @@ onMounted(async () => {
                 </div>
             </li>
 
-            <li
+            <li 
                 class="flex list-row h-full hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary rounded-none">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -141,7 +141,7 @@ onMounted(async () => {
 
             </li>
 
-            <li
+            <li @click.stop="emit('change-view', 'advanced')" @click="console.log('clicked')"
                 class="flex list-row h-full hover:bg-xrb-menu-background-accent hover:border-xrb-text-warning-2 text-xrb-text-secondary hover:text-xrb-text-primary rounded-none">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

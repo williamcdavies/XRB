@@ -4,8 +4,11 @@ import { accountModals, type AccountModalType } from '../../../../modals/dashboa
 import TintLayer                                from '../../../../layers/TintLayer.vue'
 import AccountMenu                              from './AccountMenu.vue'
 import { useUser }                              from '@/composables/account'
+import AdvancedMenu from './AdvancedMenu.vue'
 
 const { fetchUser } = useUser()
+
+const activeView = ref<'main' | 'advanced'>('main')
 
 const activeModal = ref<AccountModalType | null>(null)
 const ActiveModalComponent = computed(() =>
@@ -18,7 +21,16 @@ function closeModal() {
 </script>
 
 <template>
-    <AccountMenu @open-modal="activeModal = $event" />
+    <AdvancedMenu
+        v-if="activeView === 'advanced'"
+        @open-modal="activeModal = $event"
+        @change-view="activeView = $event"
+    />
+    <AccountMenu
+        v-else
+        @open-modal="activeModal = $event"
+        @change-view="activeView = $event"
+    />
     <Transition name="fade">
         <TintLayer v-if="activeModal" />
     </Transition>
