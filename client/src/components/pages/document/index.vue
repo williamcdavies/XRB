@@ -66,17 +66,26 @@
 
 
     // graph stuff
-    const graph = ref<InstanceType<typeof Graph> | null>(null)
+    const graph           = ref<InstanceType<typeof Graph> | null>(null)
 
 
-    function clearFit():                       void { graph.value?.clearFit()            }
+    function clearFit():                       void { graph.value?.clearFit()               }
     function toggleExponential():              void { graph.value?.toggleExponential()      }
     function toggleLinear():                   void { graph.value?.toggleLinear()           }
     function toggleLogistic():                 void { graph.value?.toggleLogistic()         }
     function toggleLogarithmic():              void { graph.value?.toggleLogarithmic()      }
     function togglePolynomial(degree: number): void { graph.value?.togglePolynomial(degree) }
     function togglePower():                    void { graph.value?.togglePower()            }
-    function toggleSinusoidal():               void { graph.value?.toggleSinusoidal()    }
+    function toggleSinusoidal():               void { graph.value?.toggleSinusoidal()       }
+
+
+    // header stuff
+    const selectedHeaders = ref<{ x: number | null, y: number | null, z: number | null }>({ x: null, y: null, z: null })
+
+
+    function onSelectedHeaders(headers: { x: number | null, y: number | null, z: number | null }): void {
+        selectedHeaders.value = headers
+    }
     
 
     // mounting stuff
@@ -98,9 +107,9 @@
         <Topbar @file-selected="onFileReceived" @clear-fit="clearFit" @toggle-exponential="toggleExponential"
             @toggle-linear="toggleLinear" @toggle-logistic="toggleLogistic" @toggle-logarithmic="toggleLogarithmic"
             @toggle-polynomial="togglePolynomial" @toggle-power="togglePower" @toggle-sinusoidal="toggleSinusoidal" class="col-span-3" />
-        <Leftbar :table="table" class="row-start-2" />
+        <Leftbar @selected-headers="onSelectedHeaders" :table="table" class="row-start-2" />
         <Handle @mousedown="onMouseDown" class="row-start-2" :class="handleClass" />
-        <Graph ref="graph" :table="table" @ready="isContentReady = true" class="row-start-2" />
+        <Graph ref="graph" :table="table" :selected-headers="selectedHeaders" @ready="isContentReady = true" class="row-start-2" />
 
         <!-- Z1 -->
         <transition name="fade">

@@ -7,7 +7,8 @@
 
     // Ref: https://vuejs.org/guide/components/events.html
     const prop = defineProps<{
-        table: Table | null
+        table:           Table | null
+        selectedHeaders: { x: number | null, y: number | null, z: number | null }
     }>()
     const emit = defineEmits<{
         (e: 'ready'): void
@@ -128,6 +129,17 @@
                  newTable.headers[0], 
                  newTable.headers[1])
     })
+
+    watch(() => prop.selectedHeaders, (selectedHeaders) => {
+        if(!selectedHeaders || !prop.table || !dgc) return
+
+        const x      = prop.table.rows.map(row => Number(row[selectedHeaders.x!]))
+        const y      = prop.table.rows.map(row => Number(row[selectedHeaders.y!]))
+        const xLabel = prop.table.headers[selectedHeaders.x!]
+        const yLabel = prop.table.headers[selectedHeaders.y!]
+
+        dgc.load(x, y, xLabel, yLabel)
+    }, { deep: true })
 </script>
 
 
