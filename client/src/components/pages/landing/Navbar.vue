@@ -10,7 +10,7 @@
 
 <!-- Ref: https://daisyui.com/components/navbar/ -->
 <template>
-  <div class="absolute navbar h-24 px-16 text-xrb-text-1">
+  <div class="absolute navbar h-24 px-16 text-xrb-text-1 bg-xrb-bg-1">
     <div class="flex-1">
       <RouterLink to="/" class="btn btn-ghost text-xl">XRB</RouterLink>
     </div>

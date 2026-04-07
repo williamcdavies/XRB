@@ -39,11 +39,11 @@
 
 
 <template>
-    <div class="bg-xrb-bg-1">
+    <div>
         <!-- Z0 -->
         <Navbar @auth="handleAuth" @goto-landing="goToLanding" @goto-about="goToAbout" />
         <Hero />
-
+        
         <!-- Z1 -->
         <Transition name="fade">
             <TintLayer v-if="renderAuthModal" />
