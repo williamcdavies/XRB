@@ -6,6 +6,7 @@
     import TintLayer     from '../../layers/TintLayer.vue';
     import AuthModal     from '../../modals/auth';
     import Hero          from './Hero.vue';
+    import BlackHole     from './BlackHole.vue';
     import Navbar        from './Navbar.vue'
     
     const auth            = useAuth();
@@ -43,6 +44,7 @@
         <!-- Z0 -->
         <Navbar @auth="handleAuth" @goto-landing="goToLanding" @goto-about="goToAbout" />
         <Hero />
+        <BlackHole />
         
         <!-- Z1 -->
         <Transition name="fade">
