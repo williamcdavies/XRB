@@ -28,8 +28,12 @@
   --color-xrb-text-secondary:          oklch(0.7871 0.0044 236.52); /* for secondary text, pre-selection emphasis. */
   --color-xrb-text-warning-1:          oklch(63% 0.17 26);
 
-  --color-bh-orange-1: oklch(0.5898 0.2047 33.88);
+
   --color-bh-red-1: oklch(0.3511 0.1231 30.13);
+  --color-bh-red-2: oklch(0.4 0.1628 30.13);
+  --color-bh-yellow-1: oklch(0.7071 0.1561 53.04);
+  --color-bh-orange-1: oklch(0.5898 0.2047 33.88);
+  --color-bh-orange-2: oklch(0.5082 0.1875 33.88);
   
 
   --font-sans: Inter, system-ui, sans-serif;
