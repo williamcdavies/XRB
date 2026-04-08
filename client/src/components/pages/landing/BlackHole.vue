@@ -47,7 +47,7 @@ function onTransitionEnd(e: TransitionEvent) {
 
         <div class="rotate-45">
             <!-- blur layer -->
-            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-330 h-22.5 border-t-2 border-l-70 border-r-84 border-bh-red-3 bg-transparent blur-sm"
+            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-330 h-22.5 border-t-2 border-l-70 border-r-84 border-bh-red-3 bg-transparent blur-2xl"
                 style="border-radius: 50% 50% 0 0 / 100% 100% 0 0;">
             </div>
 
@@ -255,7 +255,7 @@ function onTransitionEnd(e: TransitionEvent) {
                 style="border-radius: 0% 0% 50% 50% / 0% 0% 100% 100%;">
             </div> -->
 
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-330 h-31 border-b-48 border-l-84 border-r-84 border-bh-red-3 bg-transparent blur-sm"
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-330 h-31 border-b-48 border-l-84 border-r-84 border-bh-red-3 bg-transparent blur-2xl"
                 style="border-radius: 0% 0% 50% 50% / 0% 0% 100% 100%;">
             </div>
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-320 h-30 border-b-32 border-l-84 border-r-84 border-bh-red-3 bg-transparent  "
