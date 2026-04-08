@@ -120,3 +120,10 @@ async function goToDashboard() {
         transform: scale(1);
     }
 </style>
+
+<style>
+    html, body {
+        overflow: hidden;
+        height: 100%;
+    }
+</style>

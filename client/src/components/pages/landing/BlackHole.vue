@@ -446,10 +446,3 @@ function onTransitionEnd(e: TransitionEvent) {
     }
 }
 </style>
-<style>
-    /*  This is to prevent any scrolling */
-    html, body {
-        overflow: hidden;
-        height: 100%;
-    }
-</style>
