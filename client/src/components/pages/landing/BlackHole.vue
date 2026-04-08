@@ -5,12 +5,18 @@ const props = defineProps<{
 
 const emit = defineEmits(['done'])
 
-const COUNT = 2500
+// 1. Efficiency: 200 stars is plenty when bounds match the viewport exactly
+const COUNT = 400 
+
 const stars = Array.from({ length: COUNT }, () => ({
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    r: Math.random() * 1.4 + 0.3,
-    opacity: Math.random() * 0.5 + 0.3,
+    // 2. Bounds: -100 to 100 relative to the center (covers 2x screen size)
+    // This handles the 90deg rotation and 40x zoom without gaps
+    x: Math.random() * 125 - 63, 
+    y: Math.random() * 125 - 63,
+    r: Math.random() * 3 + 0.5,
+    opacity: Math.random() * 0.9 + 0.3,
+    duration: Math.random() * 3 + 2,
+    delay: Math.random() * 5
 }))
 
 function onTransitionEnd(e: TransitionEvent) {
@@ -30,23 +36,23 @@ function onTransitionEnd(e: TransitionEvent) {
             'bh-zoomed': props.state === 'zoomed'
         }"
         @transitionend="onTransitionEnd"
-    >
-        <!-- Starfield -->
-        <div class="star-field">
+    >   
+        <div class="star-field-container">
             <div
                 v-for="(star, i) in stars"
                 :key="i"
                 class="star"
                 :style="{
-                    left: `${star.x}%`,
-                    top: `${star.y}%`,
-                    width: `${star.r * 2}px`,
-                    height: `${star.r * 2}px`,
+                    left: `${star.x}vw`,
+                    top: `${star.y}vh`,
+                    width: `${star.r}px`,
+                    height: `${star.r}px`,
                     opacity: star.opacity,
+                    '--star-delay': `${star.delay}s`,
+                    '--star-duration': `${star.duration}s`
                 }"
             />
         </div>
-    >   
 
         <!-- blur layer -->
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-full w-296 h-22 border-t-2 border-l-36 border-r-36 bg-bh-red-1 blur-2xl"
@@ -318,35 +324,52 @@ function onTransitionEnd(e: TransitionEvent) {
     </div>
 
 </template>
-
 <style scoped>
-.star-field {
+.star-field-container {
     position: absolute;
-    width: 400vw;
-    height: 400vh;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    /* Use a 0-size container at the center so children use vw/vh relative to center */
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
     pointer-events: none;
+    z-index: -1;
 }
 
 .star {
     position: absolute;
-    border-radius: 50%;
     background: #fff;
+    border-radius: 50%;
+    /* Optimization: Only animate opacity. Scaling individual stars during 
+       a parent 40x scale is redundant and costs CPU cycles. */
+    will-change: opacity;
+    animation: twinkle var(--star-duration) ease-in-out var(--star-delay) infinite alternate;
 }
 
+@keyframes twinkle {
+    from { opacity: 0.7; }
+    to { opacity: 0.9; }
+}
+
+/* Transitions */
 .bh-idle {
-    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  transform: translate(-50%, -50%) scale(1) rotate(0deg);
 }
 
 .bh-zoomed {
-    transform: translate(-50%, -50%) scale(40) rotate(90deg);
+  transform: translate(-50%, -50%) scale(40) rotate(90deg);
 }
 
 .bh-transition {
-    transition-property: transform;
-    transition-duration: 2000ms;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.1, 1);
+  transition: transform 2000ms cubic-bezier(0.4, 0, 0.1, 1);
+}
+
+.animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .5; }
 }
 </style>
