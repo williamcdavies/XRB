@@ -29,11 +29,14 @@
   --color-xrb-text-warning-1:          oklch(63% 0.17 26);
 
 
-  --color-bh-red-1: oklch(0.3511 0.1231 30.13);
-  --color-bh-red-2: oklch(0.4 0.1628 30.13);
-  --color-bh-yellow-1: oklch(0.7071 0.1561 53.04);
-  --color-bh-orange-1: oklch(0.5898 0.2047 33.88);
-  --color-bh-orange-2: oklch(0.5082 0.1875 33.88);
+  --color-bh-red-1: oklch(0.4509 0.1603 29.53);
+  --color-bh-red-2: oklch(0.3354 0.12 28.81);
+  --color-bh-red-3: oklch(0.3189 0.1147 29.81);
+  --color-bh-orange-1: oklch(0.6734 0.1648 44.94);
+  --color-bh-orange-2: oklch(0.5898 0.2047 33.88);
+  --color-bh-orange-3: oklch(0.5082 0.1875 33.88);
+  --color-bh-yellow-1: oklch(0.7655 0.1152 73.34);
+  --color-bh-yellow-2: oklch(0.726 0.1381 61);
   
 
   --font-sans: Inter, system-ui, sans-serif;
