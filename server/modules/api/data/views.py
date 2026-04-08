@@ -2,7 +2,7 @@ import csv
 import math
 import os
 import shutil
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -14,11 +14,12 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group as AuthGroup
 from django.http import FileResponse
 
-from .permissions import check_path_access, check_write_access
+from .permissions import check_path_access, check_write_access, filter_group_items
 
 User = get_user_model()
 
 BASE_DATA_DIR = Path(os.environ.get('DATA_DIR', '/data'))
+MAX_UPLOAD_SIZE = 5 * 1024 * 1024 * 1024  # 5 GB
 
 def is_path_safe(file_path: str) -> bool:
     try:
@@ -223,6 +224,8 @@ def preview_table(request):
     -----------------
     path : str (required)
     sheet : str (optional) – sheet name for Excel files, defaults to first sheet
+    start_row : int (optional) – first data row to return (1-based, default 1)
+    end_row : int (optional) – last data row to return (inclusive)
     """
     relative_path = request.query_params.get('path')
 
@@ -266,20 +269,37 @@ def preview_table(request):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
+    start_row = request.query_params.get('start_row')
+    end_row = request.query_params.get('end_row')
+    start_row = int(start_row) if start_row else None
+    end_row = int(end_row) if end_row else None
+
     try:
         if ext == '.csv':
             with open(file_path, newline='', encoding='utf-8') as f:
                 reader = csv.reader(f)
-                rows = [[cell for cell in row] for row in reader]
+                headers = next(reader, [])
 
-            headers = rows[0] if rows else []
-            data = rows[1:] if len(rows) > 1 else []
+                if start_row is not None and end_row is not None:
+                    data = []
+                    total_rows = 0
+                    for i, row in enumerate(reader, start=1):
+                        total_rows = i
+                        if start_row <= i <= end_row:
+                            data.append(row)
+                    # Skip remaining rows cheaply to get accurate count
+                    # (rows past end_row were already broken out of above
+                    #  only if we stored them — here we just count)
+                else:
+                    data = list(reader)
+                    total_rows = len(data)
 
             return Response({
                 'headers': headers,
                 'rows': data,
                 'sheets': [],
                 'active_sheet': '',
+                'total_rows': total_rows,
             })
         else:
             from openpyxl import load_workbook
@@ -288,12 +308,23 @@ def preview_table(request):
             sheet_name = request.query_params.get('sheet')
             ws = wb[sheet_name] if sheet_name and sheet_name in wb.sheetnames else wb.active
 
-            rows = []
-            for row in ws.iter_rows(values_only=True):
-                rows.append([str(cell) if cell is not None else '' for cell in row])
+            row_iter = ws.iter_rows(values_only=True)
+            first_row = next(row_iter, None)
+            headers = [str(cell) if cell is not None else '' for cell in first_row] if first_row else []
 
-            headers = rows[0] if rows else []
-            data = rows[1:] if len(rows) > 1 else []
+            if start_row is not None and end_row is not None:
+                data = []
+                total_rows = 0
+                for i, row in enumerate(row_iter, start=1):
+                    total_rows = i
+                    if start_row <= i <= end_row:
+                        data.append([str(cell) if cell is not None else '' for cell in row])
+            else:
+                data = []
+                for row in row_iter:
+                    data.append([str(cell) if cell is not None else '' for cell in row])
+                total_rows = len(data)
+
             sheet_names = wb.sheetnames
             active_sheet = ws.title
             wb.close()
@@ -303,6 +334,7 @@ def preview_table(request):
                 'rows': data,
                 'sheets': sheet_names,
                 'active_sheet': active_sheet,
+                'total_rows': total_rows,
             })
     except Exception as e:
         return Response(
@@ -341,6 +373,12 @@ def upload_file(request):
         )
 
     uploaded_file = request.FILES['file']
+
+    if uploaded_file.size > MAX_UPLOAD_SIZE:
+        return Response(
+            {'error': 'File exceeds maximum upload size of 5 GB'},
+            status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+        )
 
     try:
         upload_dir = BASE_DATA_DIR / target_dir
@@ -551,6 +589,11 @@ def browse_files(request):
                 entry['size'] = item.stat().st_size
                 entry['extension'] = item.suffix.lower()
             items.append(entry)
+
+        # Apply per-file access controls for group directories
+        parts = PurePosixPath(base_path).parts
+        if len(parts) >= 2 and parts[0] == 'groups' and user:
+            items = filter_group_items(user, parts[1], items)
 
         return Response({'path': base_path, 'items': items, 'count': len(items)})
 
