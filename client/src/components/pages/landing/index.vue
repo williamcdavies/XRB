@@ -1,50 +1,75 @@
 <script setup lang="ts">
-    import { ref }       from 'vue';
-    import { useAuth }   from '@/composables/auth';
-    import { useRouter } from 'vue-router';
+import { ref }       from 'vue';
+import { useAuth }   from '@/composables/auth';
+import { useRouter } from 'vue-router';
 
-    import TintLayer     from '../../layers/TintLayer.vue';
-    import AuthModal     from '../../modals/auth';
-    import Hero          from './Hero.vue';
-    import BlackHole     from './BlackHole.vue';
-    import Navbar        from './Navbar.vue'
-    
-    const auth            = useAuth();
-    const router          = useRouter();
-    const renderAuthModal = ref(false)
+import TintLayer     from '../../layers/TintLayer.vue';
+import AuthModal     from '../../modals/auth';
+import Hero          from './Hero.vue';
+import BlackHole     from './BlackHole.vue';
+import Navbar        from './Navbar.vue'
 
+const auth   = useAuth();
+const router = useRouter();
 
-    async function handleAuth() {
-        if(await auth.isAuthenticated()) {
-            goToDashboard()
-        } else {
-            renderAuthModal.value = true;
-        }
+const renderAuthModal = ref(false)
+const animationState = ref<'idle' | 'zoomed'>('idle')
+
+// store result until animation finishes
+let isAuthResult = false
+
+async function handleAuth() {
+    if (animationState.value !== 'idle') return
+
+    isAuthResult = await auth.isAuthenticated()
+    animationState.value = 'zoomed'
+}
+
+function closeModal() {
+    renderAuthModal.value = false
+    animationState.value = 'idle'
+}
+
+function handlePostAnimation() {
+    if (animationState.value !== 'zoomed') return
+
+    if (isAuthResult) {
+        goToDashboard()
+    } else {
+        renderAuthModal.value = true
     }
+}
 
 
-    async function goToLanding() {
-        router.push('/')
-    }
+async function goToLanding() {
+    router.push('/')
+}
 
+async function goToAbout() {
+    router.push('/about')
+}
 
-    async function goToAbout() {
-        router.push('/about')
-    }
-
-
-    async function goToDashboard() {
-        router.push('/dashboard')
-    }
+async function goToDashboard() {
+    router.push('/dashboard')
+}
 </script>
 
 
 <template>
     <div>
         <!-- Z0 -->
-        <Navbar @auth="handleAuth" @goto-landing="goToLanding" @goto-about="goToAbout" />
+        <Navbar 
+            @auth="handleAuth" 
+            @goto-landing="goToLanding" 
+            @goto-about="goToAbout" 
+        />
+        
         <Hero />
-        <BlackHole />
+
+        <BlackHole 
+            :state="animationState" 
+            @done="handlePostAnimation" 
+        />
         
         <!-- Z1 -->
         <Transition name="fade">
@@ -53,7 +78,10 @@
 
         <!-- Z2 -->
         <Transition name="pop">
-            <AuthModal v-if="renderAuthModal" @close="renderAuthModal = false" />
+            <AuthModal 
+                v-if="renderAuthModal" 
+                @close="closeModal" 
+            />
         </Transition>
     </div>
 </template>
