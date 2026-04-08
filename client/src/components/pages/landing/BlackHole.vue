@@ -2,7 +2,8 @@
 </script>
 
 <template>
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" style="scale: 1;">
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 lg:scale-80 md:scale-75 sm:scale-60">
+         <!-- center circle -->
 
         <!-- blur layer -->
          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-full w-296 h-22 border-t-2 border-l-36 border-r-36 bg-bh-red-1 blur-2xl"
@@ -75,9 +76,24 @@
         </div>
 
         <!-- Outer circles: blurry ring -->
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-160 h-160 rounded-full bg-bh-red-1 blur-2xl"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-186 h-186 rounded-full bg-bh-red-1 blur-2xl"></div>
 
         <!-- center rings -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-186 h-186 rounded-t-full bg-bh-orange-3"
+            style="border-radius: 52% 51% 50% 49% / 50% 50% 50% 50%;"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-183 h-183 rounded-t-full bg-bh-red-1"
+            style="border-radius: 52% 51% 50% 49% / 50% 50% 50% 50%;"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-180 h-180 rounded-t-full bg-bh-red-2"
+            style="border-radius: 52% 51% 50% 49% / 50% 50% 50% 50%;"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-177 h-177 rounded-t-full bg-bh-red-2"
+            style="border-radius: 52% 51% 50% 49% / 50% 50% 50% 50%;"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-177 h-177 rounded-t-full bg-bh-red-3"
+            style="border-radius: 52% 51% 50% 49% / 50% 50% 50% 50%;"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-174 h-174 rounded-t-full bg-bh-red-1"
+            style="border-radius: 52% 51% 50% 49% / 50% 50% 50% 50%;"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-171 h-171 rounded-t-full bg-bh-red-3"
+            style="border-radius: 52% 51% 50% 49% / 50% 50% 50% 50%;"></div>
+            
         <div class="relative slow-spin">
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-165 h-165 rounded-full bg-bh-red-3 "
             style="border-radius: 52% 51% 50% 49% / 50% 50% 50% 50%;"></div>
