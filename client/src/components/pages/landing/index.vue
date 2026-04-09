@@ -122,8 +122,8 @@ async function goToDashboard() {
 </style>
 
 <style>
-    html, body {
+    /* html, body {
         overflow: hidden;
         height: 100%;
-    }
+    } */
 </style>

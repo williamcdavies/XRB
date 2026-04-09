@@ -1,23 +1,48 @@
 <script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
+
 const props = defineProps<{
     state: 'idle' | 'zoomed'
 }>()
 
 const emit = defineEmits(['done'])
 
-// 1. Efficiency: 200 stars is plenty when bounds match the viewport exactly
-const COUNT = 800
+// stars canvas
+const canvasRef = ref<HTMLCanvasElement | null>(null)
 
-const stars = Array.from({ length: COUNT }, () => ({
-    // 2. Bounds: -100 to 100 relative to the center (covers 2x screen size)
-    // This handles the 90deg rotation and 40x zoom without gaps
-    x: Math.random() * 250 - 125,
-    y: Math.random() * 250 - 125,
-    r: Math.random() * 2.5 + 0.5,
-    opacity: Math.random() * 0.3 + 0.3,
-    duration: Math.random() * 3 + 2,
-    delay: Math.random() * 1
-}))
+onMounted(() => {
+  const canvas = canvasRef.value
+  if (!canvas) return
+  const ctx = canvas.getContext('2d')!
+
+  const COUNT = 400
+  const stars = Array.from({ length: COUNT }, () => ({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    r: Math.random() * 0.5 + 0.25
+  }))
+
+  canvas.width = window.innerWidth 
+  canvas.height = window.innerHeight
+
+  function draw() {
+
+    ctx.clearRect(0, 0, canvas!.width, canvas!.height)
+
+    for (const star of stars) {
+      ctx.beginPath()
+      ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2)
+      ctx.fillStyle = `rgba(255,255,255,1)`
+      ctx.fill()
+    }
+
+    rafId = requestAnimationFrame(draw)
+  }
+
+  let rafId = requestAnimationFrame(draw)
+
+  onUnmounted(() => cancelAnimationFrame(rafId))
+})
 
 function onTransitionEnd(e: TransitionEvent) {
     if (e.propertyName !== 'transform') return
@@ -33,17 +58,11 @@ function onTransitionEnd(e: TransitionEvent) {
             'bh-idle': props.state === 'idle',
             'bh-zoomed': props.state === 'zoomed'
         }" @transitionend="onTransitionEnd">
-        <div class="star-field-container">
-            <div v-for="(star, i) in stars" :key="i" class="star" :style="{
-                left: `${star.x}vw`,
-                top: `${star.y}vh`,
-                width: `${star.r}px`,
-                height: `${star.r}px`,
-                opacity: star.opacity,
-                '--star-delay': `${star.delay}s`,
-                '--star-duration': `${star.duration}s`
-            }" />
-        </div>
+        <canvas
+            ref="canvasRef"
+            class="absolute pointer-events-none -z-10"
+            style="transform: translate(-50%, -50%); top: 0; left: 0;"
+        />
 
         <div class="rotate-45">
             <!-- blur layer -->
@@ -362,37 +381,6 @@ function onTransitionEnd(e: TransitionEvent) {
         --bh-top: 25%;
         --bh-left: 85%;
         --bh-scale: 1.7;
-    }
-}
-
-.star-field-container {
-    position: absolute;
-    /* Use a 0-size container at the center so children use vw/vh relative to center */
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 0;
-    pointer-events: none;
-    z-index: -1;
-}
-
-.star {
-    position: absolute;
-    background: #fff;
-    border-radius: 50%;
-    /* Optimization: Only animate opacity. Scaling individual stars during 
-       a parent 40x scale is redundant and costs CPU cycles. */
-    will-change: opacity;
-    animation: twinkle var(--star-duration) ease-in-out var(--star-delay) infinite alternate;
-}
-
-@keyframes twinkle {
-    from {
-        opacity: 0.2;
-    }
-
-    to {
-        opacity: 0.5;
     }
 }
 
