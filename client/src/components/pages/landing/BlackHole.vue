@@ -52,87 +52,87 @@ function onTransitionEnd(e: TransitionEvent) {
             </div>
 
             <!-- top half of outer ring-->
-            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-320 h-22 border-t-2 border-l-84 border-r-84 border-bh-red-3 bg-t
+            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-320 h-22 border-t-2 border-l-86 border-r-86 border-bh-red-3 bg-t
 ransparent"
                 style="border-radius: 50% 50% 0 0 / 100% 100% 0 0;">
             </div>
-            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-278 h-21.75 border-t-2 border-l-28 border-r-28 border-bh-red-3 b
+            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-278 h-21.75 border-t-2 border-l-30 border-r-30 border-bh-red-3 b
 g-transparent"
                 style="border-radius: 50% 50% 0 0 / 100% 100% 0 0;">
             </div>
-            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-264 h-21.5 border-t-2 border-l-28 border-r-28 border-bh-red-2 bg
+            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-264 h-21.5 border-t-2 border-l-30 border-r-30 border-bh-red-2 bg
 -transparent"
                 style="border-radius: 50% 50% 0 0 / 100% 100% 0 0;">
             </div>
-            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-250 h-21.25 border-t-2 border-l-20 border-r-20 border-bh-red-1 b
+            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-250 h-21.25 border-t-2 border-l-22 border-r-22 border-bh-red-1 b
 g-transparent"
                 style="border-radius: 50% 50% 0 0 / 100% 100% 0 0;">
             </div>
-            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-240 h-21 border-t-2 border-l-18 border-r-18 border-bh-orange-3 b
+            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-240 h-21 border-t-2 border-l-20 border-r-20 border-bh-orange-3 b
 g-transparent"
                 style="border-radius: 50% 50% 0 0 / 100% 100% 0 0;">
             </div>
-            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-232 h-20.5 border-t-2 border-l-18 border-r-18 border-bh-orange-2
+            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-232 h-20.5 border-t-2 border-l-20 border-r-20 border-bh-orange-2
  bg-transparent  "
                 style="border-radius: 50% 50% 0 0 / 100% 100% 0 0;">
             </div>
-            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-224 h-20 border-t-2 border-l-18 border-r-18 border-bh-yellow-2 b
+            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-224 h-20 border-t-2 border-l-20 border-r-20 border-bh-yellow-2 b
 g-transparent  "
                 style="border-radius: 50% 50% 0 0 / 100% 100% 0 0;">
             </div>
-            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-216 h-19.5 border-t-2 border-l-18 border-r-18 border-bh-orange-1
+            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-216 h-19.5 border-t-2 border-l-20 border-r-20 border-bh-orange-1
  bg-transparent  "
                 style="border-radius: 50% 50% 0 0 / 100% 100% 0 0;">
             </div>
-            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-207 h-19 border-t-2 border-l-14 border-r-14 border-bh-orange-2 b
+            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-207 h-19 border-t-2 border-l-16 border-r-16 border-bh-orange-2 b
 g-transparent  "
                 style="border-radius: 50% 50% 0 0 / 100% 100% 0 0;">
             </div>
-            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-200 h-18.5 border-t-2 border-l-10 border-r-10 border-bh-orange-3
+            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-200 h-18.5 border-t-2 border-l-12 border-r-12 border-bh-orange-3
  bg-transparent  "
                 style="border-radius: 50% 50% 0 0 / 100% 100% 0 0;">
             </div>
-            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-195 h-18 border-t-2 border-l-6 border-r-6 border-bh-orange-2 bg-
+            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-195 h-18 border-t-2 border-l-8 border-r-8 border-bh-orange-2 bg-
 transparent  "
                 style="border-radius: 50% 50% 0 0 / 100% 100% 0 0;">
             </div>
-            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-192 h-17.5 border-t-2 border-l-6 border-r-6 border-bh-orange-1 b
+            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-192 h-17.5 border-t-2 border-l-8 border-r-8 border-bh-orange-1 b
 g-transparent  "
                 style="border-radius: 50% 50% 0 0 / 100% 100% 0 0;">
             </div>
-            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-189 h-17 border-t-2 border-l-6 border-r-6 border-bh-orange-2 bg-
+            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-189 h-17 border-t-2 border-l-8 border-r-8 border-bh-orange-2 bg-
 transparent  "
                 style="border-radius: 50% 50% 0 0 / 100% 100% 0 0;">
             </div>
-            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-186 h-16.5 border-t-2 border-l-6 border-r-6 border-bh-orange-3 b
+            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-186 h-16.5 border-t-2 border-l-8 border-r-8 border-bh-orange-3 b
 g-transparent  "
                 style="border-radius: 50% 50% 0 0 / 100% 100% 0 0;">
             </div>
-            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-183 h-16 border-t-2 border-l-6 border-r-6 border-bh-red-1 bg-tra
+            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-183 h-16 border-t-2 border-l-8 border-r-8 border-bh-red-1 bg-tra
 nsparent  "
                 style="border-radius: 50% 50% 0 0 / 100% 100% 0 0;">
             </div>
-            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-180 h-15.5 border-t-2 border-l-6 border-r-6 border-bh-red-2 bg-t
+            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-180 h-15.5 border-t-2 border-l-8 border-r-8 border-bh-red-2 bg-t
 ransparent  "
                 style="border-radius: 50% 50% 0 0 / 100% 100% 0 0;">
             </div>
-            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-177 h-15 border-t-2 border-l-6 border-r-6 border-bh-red-3 bg-tra
+            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-177 h-15 border-t-2 border-l-8 border-r-8 border-bh-red-3 bg-tra
 nsparent  "
                 style="border-radius: 50% 50% 0 0 / 100% 100% 0 0;">
             </div>
-            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-174 h-14.5 border-t-2 border-l-6 border-r-6 border-bh-red-1 bg-t
+            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-174 h-14.5 border-t-2 border-l-8 border-r-8 border-bh-red-1 bg-t
 ransparent  "
                 style="border-radius: 50% 50% 0 0 / 100% 100% 0 0;">
             </div>
-            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-171 h-14 border-t-2 border-l-4 border-r-4 border-bh-red-2 bg-tra
+            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-171 h-14 border-t-2 border-l-6 border-r-6 border-bh-red-2 bg-tra
 nsparent  "
                 style="border-radius: 50% 50% 0 0 / 100% 100% 0 0;">
             </div>
-            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-169 h-13.5 border-t-2 border-l-4 border-r-4 border-bh-red-2 bg-t
+            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-169 h-13.5 border-t-2 border-l-6 border-r-6 border-bh-red-2 bg-t
 ransparent  "
                 style="border-radius: 50% 50% 0 0 / 100% 100% 0 0;">
             </div>
-            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-167 h-13 border-t-2 border-l-4 border-r-4 border-bh-red-3 bg-tra
+            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-167 h-13 border-t-2 border-l-6 border-r-6 border-bh-red-3 bg-tra
 nsparent  "
                 style="border-radius: 50% 50% 0 0 / 100% 100% 0 0;">
             </div>
@@ -276,70 +276,70 @@ nsparent  "
                 style="border-radius: 0% 0% 50% 50% / 0% 0% 100% 100%;">
             </div> -->
 
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-330 h-31 border-b-48 border-l-84 border-r-84 border-bh-red-3 bg-transparent blur-sm"
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-330 h-31 border-b-48 border-l-86 border-r-86 border-bh-red-3 bg-transparent blur-sm"
                 style="border-radius: 0% 0% 50% 50% / 0% 0% 100% 100%;">
             </div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-320 h-30 border-b-32 border-l-84 border-r-84 border-bh-red-3 bg-transparent  "
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-320 h-30 border-b-32 border-l-86 border-r-86 border-bh-red-3 bg-transparent  "
                 style="border-radius: 0 0 50% 50% / 0 0 100% 100%;">
             </div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-278 h-29 border-b-28 border-l-28 border-r-28 border-bh-red-3 bg-transparent  "
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-278 h-29 border-b-28 border-l-30 border-r-30 border-bh-red-3 bg-transparent  "
                 style="border-radius: 0 0 50% 50% / 0 0 100% 100%;">
             </div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-264 h-28 border-b-28 border-l-28 border-r-28 border-bh-red-2 bg-transparent  "
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-264 h-28 border-b-28 border-l-30 border-r-30 border-bh-red-2 bg-transparent  "
                 style="border-radius: 0 0 50% 50% / 0 0 100% 100%;">
             </div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-250 h-27 border-b-28 border-l-20 border-r-20 border-bh-red-1 bg-transparent  "
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-250 h-27 border-b-28 border-l-22 border-r-22 border-bh-red-1 bg-transparent  "
                 style="border-radius: 0 0 50% 50% / 0 0 100% 100%;">
             </div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-240 h-26 border-b-28 border-l-20 border-r-20 border-bh-orange-3 bg-transparent  "
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-240 h-26 border-b-28 border-l-22 border-r-22 border-bh-orange-3 bg-transparent  "
                 style="border-radius: 0 0 50% 50% / 0 0 100% 100%;">
             </div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-232 h-25 border-b-28 border-l-20 border-r-20 border-bh-orange-2 bg-transparent  "
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-232 h-25 border-b-28 border-l-22 border-r-22 border-bh-orange-2 bg-transparent  "
+            style="border-radius: 0 0 50% 50% / 0 0 100% 100%;">
+            </div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-224 h-24 border-b-28 border-l-22 border-r-22 border-bh-yellow-2 bg-transparent  "
                 style="border-radius: 0 0 50% 50% / 0 0 100% 100%;">
             </div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-224 h-24 border-b-28 border-l-20 border-r-20 border-bh-yellow-2 bg-transparent  "
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-216 h-23 border-b-20 border-l-22 border-r-22 border-bh-orange-1 bg-transparent  "
                 style="border-radius: 0 0 50% 50% / 0 0 100% 100%;">
             </div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-216 h-23 border-b-20 border-l-20 border-r-20 border-bh-orange-1 bg-transparent  "
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-207 h-22 border-b-16 border-l-18 border-r-18 border-bh-orange-2 bg-transparent  "
                 style="border-radius: 0 0 50% 50% / 0 0 100% 100%;">
             </div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-207 h-22 border-b-16 border-l-16 border-r-16 border-bh-orange-2 bg-transparent  "
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-200 h-20 border-b-16 border-l-18 border-r-18 border-bh-orange-3 bg-transparent  "
                 style="border-radius: 0 0 50% 50% / 0 0 100% 100%;">
             </div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-200 h-20 border-b-16 border-l-16 border-r-16 border-bh-orange-3 bg-transparent  "
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-195 h-17.5 border-b-6 border-l-8 border-r-8 border-bh-orange-2 bg-transparent  "
                 style="border-radius: 0 0 50% 50% / 0 0 100% 100%;">
             </div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-195 h-17.5 border-b-6 border-l-6 border-r-6 border-bh-orange-2 bg-transparent  "
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-192 h-16 border-b-6 border-l-8 border-r-8 border-bh-orange-1 bg-transparent  "
                 style="border-radius: 0 0 50% 50% / 0 0 100% 100%;">
             </div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-192 h-16 border-b-6 border-l-6 border-r-6 border-bh-orange-1 bg-transparent  "
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-189 h-15 border-b-6 border-l-8 border-r-8 border-bh-orange-2 bg-transparent  "
                 style="border-radius: 0 0 50% 50% / 0 0 100% 100%;">
             </div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-189 h-15 border-b-6 border-l-6 border-r-6 border-bh-orange-2 bg-transparent  "
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-186 h-14 border-b-6 border-l-8 border-r-8 border-bh-orange-3 bg-transparent  "
                 style="border-radius: 0 0 50% 50% / 0 0 100% 100%;">
             </div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-186 h-14 border-b-6 border-l-6 border-r-6 border-bh-orange-3 bg-transparent  "
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-183 h-13 border-b-6 border-l-8 border-r-8 border-bh-red-1 bg-transparent  "
                 style="border-radius: 0 0 50% 50% / 0 0 100% 100%;">
             </div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-183 h-13 border-b-6 border-l-6 border-r-6 border-bh-red-1 bg-transparent  "
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-180 h-12 border-b-6 border-l-8 border-r-8 border-bh-red-2 bg-transparent  "
                 style="border-radius: 0 0 50% 50% / 0 0 100% 100%;">
             </div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-180 h-12 border-b-6 border-l-6 border-r-6 border-bh-red-2 bg-transparent  "
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-177 h-11 border-b-6 border-l-8 border-r-8 border-bh-red-3 bg-transparent  "
                 style="border-radius: 0 0 50% 50% / 0 0 100% 100%;">
             </div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-177 h-11 border-b-6 border-l-6 border-r-6 border-bh-red-3 bg-transparent  "
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-174 h-10 border-b-6 border-l-8 border-r-8 border-bh-red-1 bg-transparent  "
                 style="border-radius: 0 0 50% 50% / 0 0 100% 100%;">
             </div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-174 h-10 border-b-6 border-l-6 border-r-6 border-bh-red-1 bg-transparent  "
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-171 h-9 border-b-6 border-l-6 border-r-6 border-bh-red-2 bg-transparent  "
                 style="border-radius: 0 0 50% 50% / 0 0 100% 100%;">
             </div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-171 h-9 border-b-4 border-l-4 border-r-4 border-bh-red-2 bg-transparent  "
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-169 h-8 border-b-6 border-l-6 border-r-6 border-bh-red-2 bg-transparent  "
                 style="border-radius: 0 0 50% 50% / 0 0 100% 100%;">
             </div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-169 h-8 border-b-4 border-l-4 border-r-4 border-bh-red-2 bg-transparent  "
-                style="border-radius: 0 0 50% 50% / 0 0 100% 100%;">
-            </div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-167 h-7 border-b-4 border-l-4 border-r-4 border-bh-red-3 bg-transparent  "
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-167 h-7 border-b-4 border-l-6 border-r-6 border-bh-red-3 bg-transparent  "
                 style="border-radius: 0 0 50% 50% / 0 0 100% 100%;">
             </div>
         </div>
