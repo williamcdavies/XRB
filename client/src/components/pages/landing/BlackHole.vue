@@ -11,6 +11,7 @@ const canvasRef = ref<HTMLCanvasElement | null>(null)
 
 const U = 4
 
+// i can't use the tailwind library because of how canvas works
 const C: Record<string, string> = {
   red1:     '#9b2016',
   red2:     '#67110c',
@@ -24,27 +25,27 @@ const C: Record<string, string> = {
 }
 
 const TOP_ARCS = [
-     { w: 320, h: 21.5,   bb: 10, bl: 24, br: 24, c: 'red3'    },
-     { w: 278, h: 21,   bb: 6, bl: 7, br: 7, c: 'red3'    },
-     { w: 264, h: 20.75,   bb: 6, bl: 7, br: 7, c: 'red2'    },
-     { w: 250, h: 20.5,   bb: 6, bl: 6, br: 6, c: 'red1'    },
-    { w: 240, h: 20,   bb: 6, bl: 6, br: 6, c: 'orange3' },
-    { w: 232, h: 19,   bb: 6, bl: 6, br: 6, c: 'orange2' },
-    { w: 224, h: 18,   bb: 6, bl: 6, br: 6, c: 'yellow2' },
-    { w: 216, h: 17,   bb: 6, bl: 6, br: 6, c: 'orange1' },
-    { w: 207, h: 16,   bb: 6, bl: 6, br: 6, c: 'orange2' },
-    { w: 200, h: 15,   bb: 6, bl: 6, br: 6, c: 'orange3' },
-    { w: 195, h: 14, bb: 2,  bl: 2,  br: 2,  c: 'orange2' },
-    { w: 192, h: 13,   bb: 2,  bl: 2,  br: 2,  c: 'orange1' },
-    { w: 189, h: 12,   bb: 2,  bl: 2,  br: 2,  c: 'orange2' },
-    { w: 186, h: 11,   bb: 2,  bl: 2,  br: 2,  c: 'orange3' },
-    { w: 183, h: 10,   bb: 2,  bl: 2,  br: 2,  c: 'red1'    },
-    { w: 180, h: 9,   bb: 2,  bl: 2,  br: 2,  c: 'red2'    },
-    { w: 177, h: 8,   bb: 2,  bl: 2,  br: 2,  c: 'red3'    },
-    { w: 174, h: 7,   bb: 2,  bl: 2,  br: 2,  c: 'red1'    },
-    { w: 171, h: 6,    bb: 2,  bl: 4,  br: 4,  c: 'red3'    },
-    { w: 163, h: 5,    bb: 2,  bl: 1,  br: 1,  c: 'red2'    },
-    { w: 161, h: 4,    bb: 1,  bl: 1,  br: 1,  c: 'red3'    },
+     { w: 320, h: 18,   bb: 10, bl: 25, br: 25, c: 'red3'    },
+     { w: 278, h: 18,   bb: 6, bl: 7, br: 7, c: 'red3'    },
+     { w: 264, h: 18,   bb: 6, bl: 7, br: 7, c: 'red2'    },
+     { w: 250, h: 18,   bb: 6, bl: 6, br: 6, c: 'red1'    },
+    { w: 240, h: 18,   bb: 6, bl: 6, br: 6, c: 'orange3' },
+    { w: 232, h: 17,   bb: 6, bl: 6, br: 6, c: 'orange2' },
+    { w: 224, h: 16,   bb: 6, bl: 6, br: 6, c: 'yellow2' },
+    { w: 216, h: 15,   bb: 6, bl: 6, br: 6, c: 'orange1' },
+    { w: 207, h: 14,   bb: 6, bl: 6, br: 6, c: 'orange2' },
+    { w: 200, h: 13,   bb: 6, bl: 6, br: 6, c: 'orange3' },
+    { w: 195, h: 12, bb: 2,  bl: 2,  br: 2,  c: 'orange2' },
+    { w: 192, h: 11,   bb: 2,  bl: 2,  br: 2,  c: 'orange1' },
+    { w: 189, h: 10,   bb: 2,  bl: 2,  br: 2,  c: 'orange2' },
+    { w: 186, h: 9,   bb: 2,  bl: 2,  br: 2,  c: 'orange3' },
+    { w: 183, h: 8,   bb: 2,  bl: 2,  br: 2,  c: 'red1'    },
+    { w: 180, h: 7,   bb: 2,  bl: 2,  br: 2,  c: 'red2'    },
+    { w: 177, h: 6,   bb: 2,  bl: 2,  br: 2,  c: 'red3'    },
+    { w: 174, h: 5,   bb: 2,  bl: 2,  br: 2,  c: 'red1'    },
+    { w: 171, h: 4,    bb: 2,  bl: 4,  br: 4,  c: 'red3'    },
+    { w: 163, h: 3,    bb: 2,  bl: 1,  br: 1,  c: 'red2'    },
+    { w: 161, h: 2,    bb: 1,  bl: 1,  br: 1,  c: 'red3'    },
 ]
 
 const FILLED_CIRCLES = [
@@ -148,7 +149,7 @@ function drawTopArc(
   ctx.rotate(Math.PI)
   ctx.translate(-cx, -cy)
 
-  drawBottomArc(ctx, cx, cy, W, H, bt, bl, br, color)
+  drawBottomArc(ctx, cx, cy+1, W, H, bt, bl, br, color)
 
   ctx.restore()
 }
@@ -194,7 +195,7 @@ interface Star { x: number; y: number; r: number }
 let stars: Star[] = []
 
 function initStars(w: number, h: number) {
-  stars = Array.from({ length: 400 }, () => ({
+  stars = Array.from({ length: 800 }, () => ({
     x: Math.random() * w,
     y: Math.random() * h,
     r: Math.random() * 0.5 + 0.25,
