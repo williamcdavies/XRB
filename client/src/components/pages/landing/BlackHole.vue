@@ -66,9 +66,9 @@ function onTransitionEnd(e: TransitionEvent) {
 
         <div class="rotate-45">
             <!-- blur layer -->
-            <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-330 h-22.5 border-t-2 border-l-70 border-r-84 border-bh-red-3 bg-transparent blur-2xl"
+            <!-- <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-330 h-22.5 border-t-2 border-l-70 border-r-84 border-bh-red-3 bg-transparent blur-2xl"
                 style="border-radius: 50% 50% 0 0 / 100% 100% 0 0;">
-            </div>
+            </div> -->
 
             <!-- top half of outer ring-->
             <div class="absolute top-[calc(50%+1px)] left-1/2 -translate-x-1/2 -translate-y-full w-320 h-22 border-t-2 border-l-84 border-r-84 border-bh-red-3 bg-transparent"
@@ -136,11 +136,11 @@ function onTransitionEnd(e: TransitionEvent) {
             </div>
 
             <!-- Outer circles: blurry ring -->
-            <div
+            <!-- <div
                 class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-186 h-186 rounded-full bg-bh-red-1 blur-2xl">
-            </div>
+            </div> -->
 
-            <div class="relative slow-spin">
+            <div class="relative">
                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-186 h-186 rounded-t-full bg-bh-orange-3"
                     style="border-radius: 49.5% 50.5% 50% 49.75% / 50% 50% 50% 50%;"></div>
                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-183 h-183 rounded-t-full bg-bh-red-1"
@@ -253,11 +253,11 @@ function onTransitionEnd(e: TransitionEvent) {
             </div>
 
             <!-- inner haze -->
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-bh-red-1/50 animate-pulse blur-lg"
+            <!-- <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-bh-red-1/50 animate-pulse blur-lg"
                 style="border-radius: 49.5% 50.5% 50% 49.75% / 50% 50% 50% 50%;"></div>
             <div
                 class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-90 h-90 rounded-full bg-xrb-bg-1 blur-sm">
-            </div>
+            </div> -->
 
             <!-- Inner circle: Black -->
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-86 h-86 rounded-full bg-xrb-bg-1">
@@ -269,14 +269,10 @@ function onTransitionEnd(e: TransitionEvent) {
 
             <!-- bottom half of outer ring -->
 
-            <!-- blur layer -->
-             <!-- <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-360 h-40 border-b-34 border-l-84 border-r-84 border-bh-red-2 bg-transparent"
+            <!-- <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-330 h-31 border-b-48 border-l-84 border-r-84 border-bh-red-3 bg-transparent blur-2xl"
                 style="border-radius: 0% 0% 50% 50% / 0% 0% 100% 100%;">
             </div> -->
-
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-330 h-31 border-b-48 border-l-84 border-r-84 border-bh-red-3 bg-transparent blur-2xl"
-                style="border-radius: 0% 0% 50% 50% / 0% 0% 100% 100%;">
-            </div>
+            
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-320 h-30 border-b-32 border-l-84 border-r-84 border-bh-red-3 bg-transparent  "
                 style="border-radius: 0 0 50% 50% / 0 0 100% 100%;">
             </div>
@@ -404,7 +400,7 @@ function onTransitionEnd(e: TransitionEvent) {
 }
 
 .bh-zoomed {
-    transform: translate(-50%, -50%) scale(40) rotate(-120deg);
+    transform: translate(-50%, -50%) scale(1) rotate(-120deg);
 }
 
 .bh-transition {
