@@ -46,7 +46,7 @@
 <template>
     <div @click="emit('close')" class="fixed inset-0 flex items-center justify-center">
         <div @click.stop
-            class="flex flex-row h-[36rem] w-[48rem] bg-xrb-bg-1 overflow-hidden rounded-xl">
+            class="flex flex-row h-[36rem] w-[48rem] bg-xrb-bg-1 overflow-hidden rounded-xl bg-xrb-bg-2/50)]">
             <!-- Left Panel -->
             <Transition name="slide" mode="out-in">
                 <Panel_1 v-if="activePanel === 'panel_1'" @go-forward="goForward" @go-forward-as-guest="router.push('/dashboard')" @go-forward-as-student="() => { role = 'student'; goForward(); }" />
@@ -56,8 +56,8 @@
             </Transition>
 
             <!-- Right Panel-->
-            <div class="w-1/2 border-l border-xrb-border">
-                <img src="../../../assets/images/splash.png" class="h-full w-full object-cover">
+            <div class="w-1/2">
+                <img src="../../../assets/images/ethanlandingart2.png" class="h-full w-full object-cover" alt="Splash Image, credit: Ethan Claire" />
             </div>
         </div>
     </div>
