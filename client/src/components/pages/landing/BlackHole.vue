@@ -6,17 +6,15 @@ const props = defineProps<{
 const emit = defineEmits(['done'])
 
 // 1. Efficiency: 200 stars is plenty when bounds match the viewport exactly
-const COUNT = 800
+const COUNT = 0
 
 const stars = Array.from({ length: COUNT }, () => ({
     // 2. Bounds: -100 to 100 relative to the center (covers 2x screen size)
     // This handles the 90deg rotation and 40x zoom without gaps
     x: Math.random() * 250 - 125,
     y: Math.random() * 250 - 125,
-    r: Math.random() * 2.5 + 0.5,
+    r: Math.random() * 2 + 0.5,
     opacity: Math.random() * 0.3 + 0.3,
-    duration: Math.random() * 3 + 2,
-    delay: Math.random() * 1
 }))
 
 function onTransitionEnd(e: TransitionEvent) {
@@ -437,7 +435,7 @@ nsparent  "
 }
 
 .bh-zoomed {
-    transform: translate(-50%, -50%) scale(40) rotate(-120deg);
+    transform: translate(-50%, -50%) scale(8) rotate(-80deg);
 }
 
 .bh-transition {
