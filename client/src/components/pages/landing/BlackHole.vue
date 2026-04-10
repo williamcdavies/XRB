@@ -38,8 +38,6 @@ function onTransitionEnd(e: TransitionEvent) {
                 width: `${star.r}px`,
                 height: `${star.r}px`,
                 opacity: star.opacity,
-                '--star-delay': `${star.delay}s`,
-                '--star-duration': `${star.duration}s`
             }" />
         </div>
 
