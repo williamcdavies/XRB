@@ -251,18 +251,18 @@ nsparent  "
             </div>
 
             <!-- inner haze -->
+            
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-bh-red-1/50 animate-pulse blur-lg"
                 style="border-radius: 49.5% 50.5% 50% 49.75% / 50% 50% 50% 50%;"></div>
-            <div
-                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-90 h-90 rounded-full bg-xrb-bg-1 blur-sm">
-            </div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full"
+                style="border-radius: 49.5% 50.5% 50% 49.75% / 50% 50% 50% 50%; background-color: #0e1116;"></div>
 
             <!-- Inner circle: Black -->
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-86 h-86 rounded-full bg-xrb-bg-1">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-86 h-86 rounded-full" style="background-color: #0e1116;">
             </div>
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-70 h-70 rounded-full bg-bh-yellow-1 animate-pulse"
                 style="border-radius: 49.5% 50.5% 50% 49.75% / 50% 50% 50% 50%;"></div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-70 h-70 rounded-full bg-xrb-bg-1">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-70 h-70 rounded-full" style="background-color: #0e1116;">
             </div>
 
             <!-- bottom half of outer ring -->
