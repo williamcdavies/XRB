@@ -3,6 +3,7 @@ import type { AccountModalType } from '../../../../modals/dashboard/account-moda
 import { useAuth } from '@/composables/auth'
 import { onMounted, computed } from 'vue'
 import { useUser } from '@/composables/account'
+import { useAppearance } from '@/composables/appearance'
 
 const loading = computed(() => user.value === null)
 
@@ -17,6 +18,7 @@ import icon8 from '@/assets/images/profile-icons/profile-icon-8.jpg'
 
 const ICONS = [icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8]
 
+// For navigation across the account menu and advanced menu
 const emit = defineEmits<{
     (e: 'open-modal', modal: AccountModalType): void
     (e: 'change-view', view: 'main' | 'advanced'): void
@@ -24,12 +26,14 @@ const emit = defineEmits<{
 
 const { user, fetchUser } = useUser()
 const { isAuthenticated } = useAuth()
+const { isDark, toggleTheme } = useAppearance()
 
 const avatarSrc = computed(() => {
     const index = (user.value?.preferred_avatar ?? 1) - 1
     return ICONS[index] ?? ICONS[0]
 })
 
+// verify authentication and fetch user on mount
 onMounted(async () => {
     const authenticated = await isAuthenticated()
     if (authenticated) {
@@ -111,26 +115,21 @@ onMounted(async () => {
                 </div>
             </li>
 
-            <li 
-                class="flex list-row h-full hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary rounded-none">
+            <li class="flex list-row h-full hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary rounded-none">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M9.53 16.122a3 3 0 0 0-5.78 1.128 2.25 2.25 0 0 1-2.4 2.245 4.5 4.5 0 0 0 8.4-2.245c0-.399-.078-.78-.22-1.128Zm0 0a15.998 15.998 0 0 0 3.388-1.62m-5.043-.025a15.994 15.994 0 0 1 1.622-3.395m3.42 3.42a15.995 15.995 0 0 0 4.764-4.648l3.876-5.814a1.151 1.151 0 0 0-1.597-1.597L14.146 6.32a15.996 15.996 0 0 0-4.649 4.763m3.42 3.42a6.776 6.776 0 0 0-3.42-3.42" />
                     </svg>
-
                 </div>
                 <div class="flex flex-col w-2/3 justify-center h-full select-none">
                     <h2 class="font-sans font-bold text-lg">Appearance</h2>
-                    <p class="font-sans py-0 text-md">
-                        Dark
-                    </p>
+                    <p class="font-sans py-0 text-md">{{ isDark ? 'Dark' : 'Light' }}</p>
                 </div>
-
                 <div class="flex justify-center items-center w-1/6 h-full">
                     <label class="inline-flex items-center cursor-pointer">
-                        <input type="checkbox" value="" class="sr-only peer">
+                        <input type="checkbox" class="sr-only peer" :checked="!isDark" @change="toggleTheme">
                         <div
                             class="relative w-9 h-5 bg-xrb-yellow peer-checked:bg-xrb-blue peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-brand-soft dark:peer-focus:ring-brand-soft 
                             rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-buffer after:content-[''] 
@@ -138,10 +137,9 @@ onMounted(async () => {
                         </div>
                     </label>
                 </div>
-
             </li>
 
-            <li @click.stop="emit('change-view', 'advanced')" @click="console.log('clicked')"
+            <li @click.stop="emit('change-view', 'advanced')"
                 class="flex list-row h-full hover:bg-xrb-menu-background-accent hover:border-xrb-text-warning-2 text-xrb-text-secondary hover:text-xrb-text-primary rounded-none hover:cursor-pointer">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
