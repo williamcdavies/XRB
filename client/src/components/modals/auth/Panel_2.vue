@@ -59,7 +59,9 @@
             <div class="flex flex-row items-center">
                 <button @click="emit('go-back')"
                     class="btn btn-ghost hover:bg-transparent hover:border-transparent hover:shadow-none pl-0">
-                    <img class="h-4 w-4" src="../../../assets/icons/chevrons/chevron_left.svg" />
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="size-5 text-xrb-text-secondary hover:text-xrb-text-primary">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                    </svg>
                 </button>
                 <span class="text-2xl font-bold">Continue with email</span>
             </div>
@@ -70,12 +72,12 @@
         <div class="flex flex-col gap-4">
             <!-- Email fieldset -->
             <fieldset class="fieldset">
-                <form @submit.prevent="login" novalidate class="flex flex-col gap-4">
+                <form @submit.prevent="login" novalidate class="flex flex-col">
                     <label class="fieldset-legend text-xs text-xrb-text-1" for="token">Email</label>
                     <input :value="prop.email" @input="emit('update:email', ($event.target as HTMLInputElement).value)"
-                        type="email" class="input bg-xrb-bg-3" placeholder="Type here" required />
+                        type="email" class="input bg-xrb-bg-3 mt-2" placeholder="Type here" required />
                     <button type="submit" :disabled="!isEmailValid"
-                       class="btn btn-outline border-xrb-border text-xrb-text-1 hover:bg-xrb-text-1 hover:border-xrb-text-1 hover:text-xrb-text-2" :class="isEmailValid ? `bg-xrb-highlight` : `bg-xrb-disabled`">
+                       class="btn btn-outline border-xrb-border text-xrb-text-1 hover:bg-xrb-menu-background-accent text-xrb-text-primary mt-4" :class="isEmailValid ? `bg-xrb-highlight` : `bg-xrb-disabled`">
                         <span class="text-xs tracking-wider">CONTINUE</span>
                     </button>
                 </form>
