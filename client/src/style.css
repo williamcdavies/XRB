@@ -5,27 +5,26 @@
 }
 
 @theme {
-  --color-xrb-bg-1:                    oklch(0.1767 0.0114 260.64); /* dark */
-  --color-xrb-bg-2:                    oklch(0.2202 0.0157 256.82); 
-  --color-xrb-bg-3:                    oklch(0.2739 0.0156 252.38); /* light */
-  --color-xrb-border:                  oklch(0.3842 0.0158 255.61); 
+  --color-xrb-bg-1:                    oklch(0.1767 0.0114 260.64);
+  --color-xrb-bg-2:                    oklch(0.2202 0.0157 256.82);
+  --color-xrb-bg-3:                    oklch(0.2739 0.0156 252.38);
+  --color-xrb-border:                  oklch(0.3842 0.0158 255.61);
   --color-xrb-highlight:               oklch(0.5377 0.1124 255.89);
   --color-xrb-disabled:                oklch(0 0 0);
   --color-xrb-text-1:                  oklch(0.9708 0.0086 247.91);
   --color-xrb-text-2:                  oklch(0.1444 0.0159 73.55);
   --color-xrb-error:                   oklch(0.7232 0.1344 26.96);
-  
-  --color-xrb-drawer-background:       oklch(15.98% 0.0086 274.31); /* drawer content background: */
-  --color-xrb-menu-background:         oklch(26.36% 0.0063 258.36); /* menu content background: */
-  --color-xrb-menu-background-accent:  oklch(0.2645 0.0098 268.31); /* for selection in account component */
+  --color-xrb-drawer-background:       oklch(15.98% 0.0086 274.31);
+  --color-xrb-menu-background:         oklch(26.36% 0.0063 258.36);
+  --color-xrb-menu-background-accent:  oklch(0.2645 0.0098 268.31);
   --color-xrb-menu-background-warning: oklch(0.5504 0.1673 23.7);
-  --color-xrb-border-1:                oklch(39.27% 0.0114 258.36); /* border content background */
+  --color-xrb-border-1:                oklch(39.27% 0.0114 258.36);
   --color-xrb-accent-1:                oklch(0.6362 0.1765 46.711);
   --color-xrb-accent-2:                oklch(0.3377 0.1244 32.6);
   --color-xrb-accent-3:                oklch(0.2822 0.1097 30.38);
-  --color-xrb-accent-4:                oklch(15.96% 0.016 26.68);   /* for selection in account component */
-  --color-xrb-text-primary:            oklch(1 0 0);                /* for main text in body, pure white */
-  --color-xrb-text-secondary:          oklch(0.7871 0.0044 236.52); /* for secondary text, pre-selection emphasis. */
+  --color-xrb-accent-4:                oklch(15.96% 0.016 26.68);
+  --color-xrb-text-primary:            oklch(1 0 0);
+  --color-xrb-text-secondary:          oklch(0.7871 0.0044 236.52);
   --color-xrb-text-warning-1:          oklch(63% 0.17 26);
 
   --color-xrb-glow:                    oklch(1 0 0);
@@ -44,37 +43,73 @@
   --font-sans: Inter, system-ui, sans-serif;
 }
 
+/* ── Base: typography and rendering only, no colors ── */
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  
-  
-  background-color: oklch(0.1767 0.0114 260.64);
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-@media (dark) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
+/* ── Dark theme (default) ── */
+[data-theme="dark"] {
+  --color-xrb-bg-1:                    oklch(0.1767 0.0114 260.64);
+  --color-xrb-bg-2:                    oklch(0.2202 0.0157 256.82);
+  --color-xrb-bg-3:                    oklch(0.2739 0.0156 252.38);
+  --color-xrb-border:                  oklch(0.3842 0.0158 255.61);
+  --color-xrb-highlight:               oklch(0.5377 0.1124 255.89);
+  --color-xrb-disabled:                oklch(0 0 0);
+  --color-xrb-text-1:                  oklch(0.9708 0.0086 247.91);
+  --color-xrb-text-2:                  oklch(0.1444 0.0159 73.55);
+  --color-xrb-error:                   oklch(0.7232 0.1344 26.96);
+  --color-xrb-drawer-background:       oklch(15.98% 0.0086 274.31);
+  --color-xrb-menu-background:         oklch(26.36% 0.0063 258.36);
+  --color-xrb-menu-background-accent:  oklch(0.2645 0.0098 268.31);
+  --color-xrb-menu-background-warning: oklch(0.5504 0.1673 23.7);
+  --color-xrb-border-1:                oklch(39.27% 0.0114 258.36);
+  --color-xrb-accent-1:                oklch(0.6362 0.1765 46.711);
+  --color-xrb-accent-2:                oklch(0.3377 0.1244 32.6);
+  --color-xrb-accent-3:                oklch(0.2822 0.1097 30.38);
+  --color-xrb-accent-4:                oklch(15.96% 0.016 26.68);
+  --color-xrb-text-primary:            oklch(1 0 0);
+  --color-xrb-text-secondary:          oklch(0.7871 0.0044 236.52);
+  --color-xrb-text-warning-1:          oklch(63% 0.17 26);
 
-  a:hover {
-    color: #747bff;
-  }
+  color-scheme: dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: oklch(0.1767 0.0114 260.64);
+}
 
-  button {
-    background-color: #f9f9f9;
-  }
+/* ── Light theme ── */
+[data-theme="light"] {
+  --color-xrb-bg-1:                    oklch(0.97 0.005 247);
+  --color-xrb-bg-2:                    oklch(0.93 0.007 250);
+  --color-xrb-bg-3:                    oklch(0.88 0.009 252);
+  --color-xrb-border:                  oklch(0.75 0.010 255);
+  --color-xrb-highlight:               oklch(0.5377 0.1124 255.89);
+  --color-xrb-disabled:                oklch(0.6 0 0);
+  --color-xrb-text-1:                  oklch(0.15 0.012 260);
+  --color-xrb-text-2:                  oklch(0.25 0.015 260);
+  --color-xrb-error:                   oklch(0.55 0.18 26);
+  --color-xrb-drawer-background:       oklch(0.99 0.003 260);
+  --color-xrb-menu-background:         oklch(0.95 0.005 255);
+  --color-xrb-menu-background-accent:  oklch(0.90 0.008 258);
+  --color-xrb-menu-background-warning: oklch(0.80 0.12 26);
+  --color-xrb-border-1:                oklch(0.78 0.010 258);
+  --color-xrb-accent-1:                oklch(0.55 0.18 46);
+  --color-xrb-accent-2:                oklch(0.40 0.13 32);
+  --color-xrb-accent-3:                oklch(0.35 0.11 30);
+  --color-xrb-accent-4:                oklch(0.92 0.020 26);
+  --color-xrb-text-primary:            oklch(0.10 0.010 260);
+  --color-xrb-text-secondary:          oklch(0.40 0.010 240);
+  --color-xrb-text-warning-1:          oklch(0.50 0.17 26);
+
+  color-scheme: light;
+  color: oklch(0.15 0.012 260);
+  background-color: oklch(0.97 0.005 247);
 }
 
 @font-face {
@@ -88,7 +123,6 @@
   .tooltip-primary::before {
     --tooltip-color: var(--color-xrb-accent-1);
     --tooltip-text-color: var(--color-xrb-bg-1);
-    
     background-color: var(--tooltip-color);
     color: var(--tooltip-text-color);
   }
