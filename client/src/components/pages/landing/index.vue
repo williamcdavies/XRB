@@ -6,8 +6,8 @@ import { useRouter } from 'vue-router';
 import TintLayer from '../../layers/TintLayer.vue';
 import AuthModal from '../../modals/auth';
 import Hero from './Hero.vue';
-import BlackHole from './BlackHole.vue';
-import BlackHoleFirefox from './BlackHoleFirefox.vue';
+// import BlackHole from './BlackHole.vue';
+import BlackHolePreferred from './BlackHolePreferred.vue';
 import Navbar from './Navbar.vue'
 
 const auth = useAuth();
@@ -68,9 +68,9 @@ async function goToDashboard() {
 
         <Hero />
 
-        <BlackHole v-if="!isFirefox" :state="animationState" @done="handlePostAnimation" />
+        <BlackHolePreferred v-if="!isFirefox" :state="animationState" @done="handlePostAnimation" />
 
-        <BlackHoleFirefox v-else :state="animationState" @done="handlePostAnimation" />
+        <BlackHolePreferred v-else :state="animationState" @done="handlePostAnimation" />
 
         <!-- Z1 -->
         <Transition name="fade">

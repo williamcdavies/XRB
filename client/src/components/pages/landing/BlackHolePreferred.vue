@@ -8,9 +8,7 @@ const props = defineProps<{
 const emit = defineEmits(['done'])
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const BASE_U = 4
-let refreshInterval: ReturnType<typeof setInterval> | null = null
 
-// create stars off of seed 
 function splitmix32(a: number) {
     return function() {
         a |= 0; a = a + 0x9e3779b9 | 0;
@@ -31,46 +29,34 @@ const FILLED_CIRCLES = [{ w: 186, c: 'orange3' }, { w: 183, c: 'red1' }, { w: 18
 const EXTRA_CIRCLES = [{ w: 86, c: 'xrb-bg' }, { w: 70, c: 'yellow1' }, { w: 70, c: 'xrb-bg' }];
 const BOTTOM_ARCS = [{ w: 320, h: 30, bb: 10, bl: 27, br: 27, c: 'red3' }, { w: 278, h: 29, bb: 6, bl: 10, br: 10, c: 'red3' }, { w: 264, h: 28, bb: 6, bl: 9, br: 9, c: 'red2' }, { w: 250, h: 27, bb: 6, bl: 6, br: 6, c: 'red1' }, { w: 240, h: 26, bb: 6, bl: 6, br: 6, c: 'orange3' }, { w: 232, h: 25, bb: 6, bl: 6, br: 6, c: 'orange2' }, { w: 224, h: 24, bb: 6, bl: 6, br: 6, c: 'yellow2' }, { w: 216, h: 23, bb: 6, bl: 6, br: 6, c: 'orange1' }, { w: 207, h: 22, bb: 6, bl: 6, br: 6, c: 'orange2' }, { w: 200, h: 20, bb: 6, bl: 6, br: 6, c: 'orange3' }, { w: 195, h: 17.5, bb: 2, bl: 2, br: 2, c: 'orange2' }, { w: 192, h: 16, bb: 2, bl: 2, br: 2, c: 'orange1' }, { w: 189, h: 15, bb: 2, bl: 2, br: 2, c: 'orange2' }, { w: 186, h: 14, bb: 2, bl: 2, br: 2, c: 'orange3' }, { w: 183, h: 13, bb: 2, bl: 2, br: 2, c: 'red1' }, { w: 180, h: 12, bb: 2, bl: 2, br: 2, c: 'red2' }, { w: 177, h: 11, bb: 2, bl: 2, br: 2, c: 'red3' }, { w: 174, h: 10, bb: 2, bl: 2, br: 2, c: 'red1' }, { w: 171, h: 9, bb: 2, bl: 4, br: 4, c: 'red3' }, { w: 163, h: 8, bb: 2, bl: 1, br: 1, c: 'red2' }, { w: 161, h: 7, bb: 1, bl: 1, br: 1, c: 'red3' }];
 
-function drawTopArc(ctx: any, cx: any, cy: any, W: any, H: any, bt: any, bl: any, br: any, color: any, vibrateFactor: any) {
+function drawTopArc(ctx: any, cx: any, cy: any, W: any, H: any, bt: any, bl: any, br: any, color: any) {
     ctx.save(); ctx.translate(cx, cy); ctx.rotate(Math.PI); ctx.translate(-cx, -cy);
-    drawBottomArc(ctx, cx, cy + 1, W, H, bt, bl, br, color, vibrateFactor); ctx.restore();
+    drawBottomArc(ctx, cx, cy + 1, W, H, bt, bl, br, color); ctx.restore();
 }
-function drawBottomArc(ctx: any, cx: any, cy: any, W: any, H: any, bb: any, bl: any, br: any, color: any, vibrateFactor: any) {
-    const rand = vibrateFactor; const outerA = (W / 2) * (1 + rand); const outerB = H * (1 + rand);
-    const innerCx = cx + (bl - br) / 2; const innerA = ((W - bl - br) / 2) * (1 + rand); const innerB = (H - bb) * (1 + rand);
+function drawBottomArc(ctx: any, cx: any, cy: any, W: any, H: any, bb: any, bl: any, br: any, color: any) {
+    const outerA = W / 2; const outerB = H;
+    const innerCx = cx + (bl - br) / 2; const innerA = (W - bl - br) / 2; const innerB = H - bb;
     if (innerA <= 0 || innerB <= 0) return;
     ctx.beginPath(); ctx.ellipse(cx, cy, outerA, outerB, 0, Math.PI, 2 * Math.PI, false);
     ctx.ellipse(innerCx, cy, innerA, innerB, 0, 2 * Math.PI, Math.PI, true);
     ctx.closePath(); ctx.fillStyle = C[color] ?? color; ctx.fill();
 }
 function drawCircle(ctx: any, cx: any, cy: any, w: any, color: any) {
-    const rx = w / 2; const ry = rx * (0.995 + Math.random() * 0.005);
-    ctx.beginPath(); ctx.ellipse(cx, cy, rx, ry, 0, 0, 2 * Math.PI);
+    const rx = w / 2;
+    ctx.beginPath(); ctx.ellipse(cx, cy, rx, rx, 0, 0, 2 * Math.PI);
     ctx.fillStyle = C[color] ?? color; ctx.fill();
 }
 
 interface Star { x: number; y: number; r: number }
 let stars: Star[] = []
-let starsInitialized = false
 
-// Updated initStars to use seeded random and normalized coordinates
 function initStars() {
-    if (starsInitialized) return
-    
-    const seed = 41
+    const seed = 40
     const random = splitmix32(seed)
-    
     stars.length = 0
-    const count = 2400 
-    
-    for (let i = 0; i < count; i++) {
-        stars.push({
-            x: random(), // Normalized 0 to 1
-            y: random(), // Normalized 0 to 1
-            r: random() * 0.8 + 0.2,
-        })
+    for (let i = 0; i < 2400; i++) {
+        stars.push({ x: random(), y: random(), r: random() * 0.8 + 0.2 })
     }
-    starsInitialized = true
 }
 
 function drawFrame(ctx: CanvasRenderingContext2D, W: number, H: number, scaledU: number) {
@@ -78,12 +64,11 @@ function drawFrame(ctx: CanvasRenderingContext2D, W: number, H: number, scaledU:
     const cx = W / 2
     const cy = H / 2
 
-    // Stars now use W and H to calculate actual position from percentage
     for (const s of stars) {
-        ctx.beginPath(); 
-        ctx.arc(s.x * W, s.y * H, s.r, 0, 2 * Math.PI);
-        ctx.fillStyle = 'white'; 
-        ctx.fill();
+        ctx.beginPath()
+        ctx.arc(s.x * W, s.y * H, s.r, 0, 2 * Math.PI)
+        ctx.fillStyle = 'white'
+        ctx.fill()
     }
 
     ctx.save()
@@ -91,13 +76,10 @@ function drawFrame(ctx: CanvasRenderingContext2D, W: number, H: number, scaledU:
     ctx.rotate(-70 * Math.PI / 180)
     ctx.translate(-cx, -cy)
 
-    const vibrate = 0.005
-    const arcVibrations = TOP_ARCS.map(() => (Math.random() - 0.5) * vibrate)
-
-    TOP_ARCS.forEach((a, i) => drawTopArc(ctx, cx, cy, a.w * scaledU, a.h * scaledU, a.bb * scaledU, a.bl * scaledU, a.br * scaledU, a.c, arcVibrations[i] ?? 0))
+    TOP_ARCS.forEach(a => drawTopArc(ctx, cx, cy, a.w * scaledU, a.h * scaledU, a.bb * scaledU, a.bl * scaledU, a.br * scaledU, a.c))
     for (const fc of FILLED_CIRCLES) drawCircle(ctx, cx, cy, fc.w * scaledU, fc.c)
     for (const ec of EXTRA_CIRCLES) drawCircle(ctx, cx, cy, ec.w * scaledU, ec.c)
-    BOTTOM_ARCS.forEach((a, i) => drawBottomArc(ctx, cx, cy, a.w * scaledU, a.h * scaledU, a.bb * scaledU, a.bl * scaledU, a.br * scaledU, a.c, arcVibrations[i] ?? 0))
+    BOTTOM_ARCS.forEach(a => drawBottomArc(ctx, cx, cy, a.w * scaledU, a.h * scaledU, a.bb * scaledU, a.bl * scaledU, a.br * scaledU, a.c))
 
     ctx.restore()
 }
@@ -107,54 +89,34 @@ onMounted(() => {
     if (!canvas) return
     const ctx = canvas.getContext('2d')!
 
+    initStars()
+
     let currentScale = 1
+
     function resize() {
         if (!canvas) return
-
         const dpr = window.devicePixelRatio || 1
         const oversample = 2.5
         currentScale = Math.min(dpr * oversample, 3.0)
-
         const size = Math.max(window.innerWidth, window.innerHeight) * 1.5
-
         canvas.style.width = `${size}px`
         canvas.style.height = `${size}px`
         canvas.width = size * currentScale
         canvas.height = size * currentScale
-
-        initStars()
+        drawFrame(ctx, canvas.width, canvas.height, BASE_U * currentScale)
     }
 
     window.addEventListener('resize', resize)
     resize()
 
-    refreshInterval = setInterval(() => {
-        window.location.reload()
-    }, 60000) // refresh every minute to prevent lag
-
-    let lastTime = 0
-    const frameDuration = 1000 / 30
-    const loop = (time: number) => {
-        if (time - lastTime >= frameDuration) {
-            lastTime = time - ((time - lastTime) % frameDuration)
-            drawFrame(ctx, canvas.width, canvas.height, BASE_U * currentScale)
-        }
-        requestAnimationFrame(loop)
-    }
-    requestAnimationFrame(loop)
+    onUnmounted(() => {
+        window.removeEventListener('resize', resize)
+    })
 })
 
 function onTransitionEnd(e: TransitionEvent) {
     if (e.propertyName === 'transform' && props.state === 'zoomed') emit('done')
 }
-
-onUnmounted(() => {
-    if (refreshInterval) {
-        clearInterval(refreshInterval)
-        stars = []
-    }
-})
-
 </script>
 
 <template>
@@ -180,47 +142,49 @@ onUnmounted(() => {
     z-index: -10;
 }
 
-@media (max-width: 749px) { 
-    .bh-container { 
+@media (max-width: 749px) {
+    .bh-container {
         --bh-top: 57%;
         --bh-left: 87.5%;
-        --bh-scale: 0.8; 
-    } 
+        --bh-scale: 0.8;
+    }
 }
 
-@media (min-width: 750px) and (max-width: 849px) { 
+@media (min-width: 750px) and (max-width: 849px) {
     .bh-container {
-         --bh-top: 57%; --bh-left: 87.5%; --bh-scale: 1; 
-        } 
-    }
-
-@media (min-width: 850px) and (max-width: 1250px) { 
-    .bh-container { 
         --bh-top: 57%;
         --bh-left: 87.5%;
-        --bh-scale: 1.2; 
-        } 
+        --bh-scale: 1;
     }
+}
+
+@media (min-width: 850px) and (max-width: 1250px) {
+    .bh-container {
+        --bh-top: 57%;
+        --bh-left: 87.5%;
+        --bh-scale: 1.2;
+    }
+}
 
 @media (min-width: 1251px) {
-    .bh-container { 
-        --bh-top: 25%; 
-        --bh-left: 85%; 
-        --bh-scale: 1.7; 
-    } 
+    .bh-container {
+        --bh-top: 25%;
+        --bh-left: 85%;
+        --bh-scale: 1.7;
+    }
 }
 
 .idle {
     transform:
-        translate(-50%, -50%) 
-        scale(var(--bh-scale)) 
-        rotate(-135deg); 
+        translate(-50%, -50%)
+        scale(var(--bh-scale))
+        rotate(-135deg);
 }
-.zoomed { 
-    transform: 
-    translate(-50%, -50%) 
-    scale(calc(var(--bh-scale) * 8)) 
-    rotate(-200deg); 
+.zoomed {
+    transform:
+        translate(-50%, -50%)
+        scale(calc(var(--bh-scale) * 8))
+        rotate(-200deg);
 }
 
 .bh-transition {

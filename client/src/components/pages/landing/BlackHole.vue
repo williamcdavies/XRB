@@ -138,7 +138,7 @@ nsparent  "
                 class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-186 h-186 rounded-full bg-bh-red-1 blur-2xl">
             </div>
 
-            <div class="relative slow-spin">
+            <div class="relative">
                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-186 h-186 rounded-t-full bg-bh-orange-3"
                     style="border-radius: 49.5% 50.5% 50% 49.75% / 50% 50% 50% 50%;"></div>
                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-183 h-183 rounded-t-full bg-bh-red-1"
