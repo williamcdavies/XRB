@@ -1,14 +1,12 @@
 <script setup lang="ts">
-    import      { DesmosGraphingCalculator      } from '@/dgclib';
-    import      { DGC_IDS                       } from '@/dgclib';    
-    import      { onMounted, onUnmounted, watch } from 'vue';
-    import type { Table                         } from '@/types/table';
+    import type { Table                             } from '@/types/table';
+    import      { DesmosGraphingCalculator, DGC_IDS } from '@/dgclib';
+    import      { onMounted, onUnmounted, watch     } from 'vue';
 
 
     // Ref: https://vuejs.org/guide/components/events.html
     const prop = defineProps<{
-        table:           Table | null
-        selectedHeaders: { x: number | null, y: number | null, z: number | null }
+        table: Table | null
     }>()
     const emit = defineEmits<{
         (e: 'ready'): void
@@ -16,11 +14,11 @@
     
 
     // desmos stuff
-    const options                            = {
+    const options                              = {
         expressions: false
     }
 
-    let dgc: DesmosGraphingCalculator | null = null
+    let   dgc: DesmosGraphingCalculator | null = null
     
 
     function clearFit(): void {
@@ -129,17 +127,6 @@
                  newTable.headers[0], 
                  newTable.headers[1])
     })
-
-    watch(() => prop.selectedHeaders, (selectedHeaders) => {
-        if(!selectedHeaders || !prop.table || !dgc) return
-
-        const x      = prop.table.rows.map(row => Number(row[selectedHeaders.x!]))
-        const y      = prop.table.rows.map(row => Number(row[selectedHeaders.y!]))
-        const xLabel = prop.table.headers[selectedHeaders.x!]
-        const yLabel = prop.table.headers[selectedHeaders.y!]
-
-        dgc.load(x, y, xLabel, yLabel)
-    }, { deep: true })
 </script>
 
 

@@ -1,21 +1,22 @@
 <script setup lang="ts">
     import { ref } from 'vue';
 
+
     // Ref: https://vuejs.org/guide/components/events.html
     const emit = defineEmits<{
-        (e: 'clear-fit'):                           void
-        (e: 'file-selected',    file:   File):      void
-        (e: 'toggle-exponential'):                  void
-        (e: 'toggle-linear'):                       void
-        (e: 'toggle-logistic'):                     void
-        (e: 'toggle-logarithmic'):                  void
-        (e: 'toggle-polynomial',   degree: number): void
-        (e: 'toggle-power'):                        void
-        (e: 'toggle-sinusoidal'):                   void
+        (e: 'clear-fit'):                         void
+        (e: 'file-selected', file: File):         void
+        (e: 'toggle-exponential'):                void
+        (e: 'toggle-linear'):                     void
+        (e: 'toggle-logistic'):                   void
+        (e: 'toggle-logarithmic'):                void
+        (e: 'toggle-polynomial', degree: number): void
+        (e: 'toggle-power'):                      void
+        (e: 'toggle-sinusoidal'):                 void
     }>()
 
 
-    // file input stuff
+    // file stuff
     const fileInput = ref<HTMLInputElement | null>(null)
 
         

@@ -1,7 +1,7 @@
 <script setup lang="ts">
+    import type { Table                           } from '@/types/table';
+    import      { parseCSV                        } from '@/utils/parse';
     import      { onBeforeUnmount, onMounted, ref } from 'vue';
-    import type { Table }                           from '@/types/table';
-    import      { parseCSV }                        from '@/utils/parse';
     
     import      ColorLayer                          from '@/components/layers/ColorLayer.vue';
     import      Topbar                              from './Topbar.vue';
@@ -18,7 +18,6 @@
     const MIN_LEFTBAR_WIDTH = 200
     const MIN_GRAPH_WIDTH   = 200
     const HANDLE_WIDTH      = 10
-    
     const leftbarWidth      = ref(Math.floor(window.innerWidth / 2))
     const handleClass       = ref('bg-transparent')
 
@@ -66,7 +65,7 @@
 
 
     // graph stuff
-    const graph           = ref<InstanceType<typeof Graph> | null>(null)
+    const graph = ref<InstanceType<typeof Graph> | null>(null)
 
 
     function clearFit():                       void { graph.value?.clearFit()               }
@@ -80,11 +79,10 @@
 
 
     // header stuff
-    const selectedHeaders = ref<{ x: number | null, y: number | null, z: number | null }>({ x: null, y: null, z: null })
-
-
-    function onSelectedHeaders(headers: { x: number | null, y: number | null, z: number | null }): void {
-        selectedHeaders.value = headers
+    function onHeader(idx: number, name: string): void {
+        if (!table.value) return
+        
+        table.value.headers[idx] = name
     }
     
 
@@ -106,10 +104,11 @@
         <!-- Z0 -->
         <Topbar @file-selected="onFileReceived" @clear-fit="clearFit" @toggle-exponential="toggleExponential"
             @toggle-linear="toggleLinear" @toggle-logistic="toggleLogistic" @toggle-logarithmic="toggleLogarithmic"
-            @toggle-polynomial="togglePolynomial" @toggle-power="togglePower" @toggle-sinusoidal="toggleSinusoidal" class="col-span-3" />
-        <Leftbar @selected-headers="onSelectedHeaders" :table="table" class="row-start-2" />
-        <Handle @mousedown="onMouseDown" class="row-start-2" :class="handleClass" />
-        <Graph ref="graph" :table="table" :selected-headers="selectedHeaders" @ready="isContentReady = true" class="row-start-2" />
+            @toggle-polynomial="togglePolynomial" @toggle-power="togglePower" @toggle-sinusoidal="toggleSinusoidal"
+            class="col-span-3" />
+        <Leftbar :table="table" @header="onHeader" class="row-start-2" />
+        <Handle :class="handleClass" @mousedown="onMouseDown" class="row-start-2" />
+        <Graph ref="graph" :table="table" @ready="isContentReady = true" class="row-start-2" />
 
         <!-- Z1 -->
         <transition name="fade">
