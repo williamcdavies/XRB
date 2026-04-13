@@ -7,7 +7,10 @@
 
     // Ref: https://vuejs.org/guide/components/events.html
     const prop = defineProps<{
-        table: Table | null
+        table:      Table | null
+        hiddenRows: Set<number>
+        xColumn:    string | null
+        yColumn:    string | null
     }>()
     const emit = defineEmits<{
         (e: 'ready'): void
@@ -117,16 +120,28 @@
 
 
     // watching
-    watch(() => prop.table, (newTable) => {
-        if(!newTable || !dgc) return
+    watch(() => [prop.table, prop.hiddenRows, prop.xColumn, prop.yColumn], () => {
+        if(!prop.table || !dgc) return
+        if(!prop.xColumn || !prop.yColumn) return
 
-        const x = newTable.rows.map(r => Number(r[0]))
-        const y = newTable.rows.map(r => Number(r[1]))
+        const xIdx = prop.table.headers.indexOf(prop.xColumn)
+        const yIdx = prop.table.headers.indexOf(prop.yColumn)
+        if(xIdx < 0 || yIdx < 0) return
 
-        dgc.load(x, 
-                 y, 
-                 newTable.headers[0], 
-                 newTable.headers[1])
+        const x: number[] = []
+        const y: number[] = []
+
+        for(let i = 0; i < prop.table.rows.length; i++) {
+            if(prop.hiddenRows.has(i)) continue
+            const row = prop.table.rows[i]!
+            x.push(Number(row[xIdx]))
+            y.push(Number(row[yIdx]))
+        }
+
+        dgc.load(x,
+                 y,
+                 prop.xColumn,
+                 prop.yColumn)
     })
 </script>
 
