@@ -1,7 +1,7 @@
 <script setup lang="ts">
+    import type { Table                           } from '@/types/table';
+    import      { parseCSV                        } from '@/utils/parse';
     import      { onBeforeUnmount, onMounted, ref } from 'vue';
-    import type { Table }                           from '@/types/table';
-    import      { parseCSV }                        from '@/utils/parse';
     
     import      ColorLayer                          from '@/components/layers/ColorLayer.vue';
     import      Topbar                              from './Topbar.vue';
@@ -18,7 +18,6 @@
     const MIN_LEFTBAR_WIDTH = 200
     const MIN_GRAPH_WIDTH   = 200
     const HANDLE_WIDTH      = 10
-    
     const leftbarWidth      = ref(Math.floor(window.innerWidth / 2))
     const handleClass       = ref('bg-transparent')
 
@@ -69,14 +68,22 @@
     const graph = ref<InstanceType<typeof Graph> | null>(null)
 
 
-    function clearFit():                       void { graph.value?.clearFit()            }
+    function clearFit():                       void { graph.value?.clearFit()               }
     function toggleExponential():              void { graph.value?.toggleExponential()      }
     function toggleLinear():                   void { graph.value?.toggleLinear()           }
     function toggleLogistic():                 void { graph.value?.toggleLogistic()         }
     function toggleLogarithmic():              void { graph.value?.toggleLogarithmic()      }
     function togglePolynomial(degree: number): void { graph.value?.togglePolynomial(degree) }
     function togglePower():                    void { graph.value?.togglePower()            }
-    function toggleSinusoidal():               void { graph.value?.toggleSinusoidal()    }
+    function toggleSinusoidal():               void { graph.value?.toggleSinusoidal()       }
+
+
+    // header stuff
+    function onHeader(idx: number, name: string): void {
+        if (!table.value) return
+        
+        table.value.headers[idx] = name
+    }
     
 
     // mounting stuff
@@ -97,9 +104,10 @@
         <!-- Z0 -->
         <Topbar @file-selected="onFileReceived" @clear-fit="clearFit" @toggle-exponential="toggleExponential"
             @toggle-linear="toggleLinear" @toggle-logistic="toggleLogistic" @toggle-logarithmic="toggleLogarithmic"
-            @toggle-polynomial="togglePolynomial" @toggle-power="togglePower" @toggle-sinusoidal="toggleSinusoidal" class="col-span-3" />
-        <Leftbar :table="table" class="row-start-2" />
-        <Handle @mousedown="onMouseDown" class="row-start-2" :class="handleClass" />
+            @toggle-polynomial="togglePolynomial" @toggle-power="togglePower" @toggle-sinusoidal="toggleSinusoidal"
+            class="col-span-3" />
+        <Leftbar :table="table" @header="onHeader" class="row-start-2" />
+        <Handle :class="handleClass" @mousedown="onMouseDown" class="row-start-2" />
         <Graph ref="graph" :table="table" @ready="isContentReady = true" class="row-start-2" />
 
         <!-- Z1 -->

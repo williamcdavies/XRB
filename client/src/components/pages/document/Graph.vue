@@ -1,8 +1,7 @@
 <script setup lang="ts">
-    import      { DesmosGraphingCalculator      } from '@/dgclib';
-    import      { DGC_IDS                       } from '@/dgclib';    
-    import      { onMounted, onUnmounted, watch } from 'vue';
-    import type { Table                         } from '@/types/table';
+    import type { Table                             } from '@/types/table';
+    import      { DesmosGraphingCalculator, DGC_IDS } from '@/dgclib';
+    import      { onMounted, onUnmounted, watch     } from 'vue';
 
 
     // Ref: https://vuejs.org/guide/components/events.html
@@ -15,11 +14,11 @@
     
 
     // desmos stuff
-    const options                            = {
+    const options                              = {
         expressions: false
     }
 
-    let dgc: DesmosGraphingCalculator | null = null
+    let   dgc: DesmosGraphingCalculator | null = null
     
 
     function clearFit(): void {
@@ -127,7 +126,7 @@
                  y, 
                  newTable.headers[0], 
                  newTable.headers[1])
-    })
+    }, { deep: true })
 </script>
 
 

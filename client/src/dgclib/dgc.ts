@@ -1047,11 +1047,15 @@ export class DesmosGraphingCalculator {
         if(!this.calculator)                 return
         if(x.length === 0 || y.length === 0) return
         if(x.length !== y.length)            return
-
+        
+        const viewport = this.calculator.getState().graph.viewport
+        
         this.clear()
         this.add(x, y)
         this.setXLabel(xAxisLabel)
         this.setYLabel(yAxisLabel)
+
+        this.calculator.setMathBounds(viewport)
     }
 
 
