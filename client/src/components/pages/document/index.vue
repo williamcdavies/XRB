@@ -8,6 +8,7 @@
     import      Leftbar                             from './Leftbar.vue';
     import      Handle                              from './Handle.vue';
     import      Graph                               from './Graph.vue';
+    import      FileBrowser                         from './FileBrowser.vue';
 
 
     // pretty loading stuff
@@ -106,6 +107,20 @@
         <transition name="fade">
             <ColorLayer v-if="!isContentReady" />
         </transition>
+
+        <!-- File browser modal -->
+        <FileBrowser
+            v-if="showBrowser"
+            @close="showBrowser = false"
+            @select="loadServerFile" />
+
+        <!-- Load error toast -->
+        <div v-if="loadError"
+            class="fixed bottom-4 right-4 z-30 bg-xrb-bg-2 border border-xrb-error text-xrb-error text-sm px-4 py-2 rounded shadow-lg flex items-center gap-3">
+            <span>{{ loadError }}</span>
+            <button type="button" class="text-xrb-text-secondary hover:text-xrb-text-1"
+                @click="loadError = null">&times;</button>
+        </div>
     </div>
 </template>
 
