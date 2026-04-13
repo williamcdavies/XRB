@@ -126,7 +126,7 @@
                  y, 
                  newTable.headers[0], 
                  newTable.headers[1])
-    })
+    }, { deep: true })
 </script>
 
 
