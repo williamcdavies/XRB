@@ -10,14 +10,17 @@
         extension?: string;
     }
 
-    const props = defineProps<{
+    const props = withDefaults(defineProps<{
         items: BrowseItem[];
         currentPath: string;
         selectedPath?: string | null;
         loading?: boolean;
         error?: string | null;
         authenticated?: boolean;
-    }>();
+        showActions?: boolean;
+    }>(), {
+        showActions: true,
+    });
 
     const emit = defineEmits<{
         (e: 'open', path: string, type: 'file' | 'directory'): void;
@@ -74,7 +77,7 @@
                         class="text-xs text-xrb-text-secondary shrink-0">
                         {{ formatSize(item.size) }}
                     </span>
-                    <div class="flex items-center gap-1 shrink-0">
+                    <div v-if="props.showActions" class="flex items-center gap-1 shrink-0">
                         <button v-if="item.type === 'file'" type="button"
                             class="p-1 rounded hover:bg-xrb-bg-2 text-xrb-text-secondary hover:text-xrb-accent-1 transition-colors"
                             title="Download" @click.stop="emit('download', item.path)">
