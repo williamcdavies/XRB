@@ -78,10 +78,10 @@
 
 
     function applyTable(newTable: Table) {
-        table.value      = newTable
-        hiddenRows.value = new Set()
-        xColumn.value    = newTable.headers[0] ?? null
-        yColumn.value    = newTable.headers[1] ?? newTable.headers[0] ?? null
+        table.value         = newTable
+        hiddenRows.value    = new Set()
+        xColumn.value       = newTable.headers[0] ?? null
+        yColumn.value       = newTable.headers[1] ?? newTable.headers[0] ?? null
         currentViewId.value = null
     }
 
@@ -260,7 +260,7 @@
             <span>{{ loadError }}</span>
             <button type="button" class="text-xrb-text-secondary hover:text-xrb-text-1"
             @click="loadError = null">&times;</button>
-            
+
             <!-- Z1 -->
             <transition name="fade">
                 <ColorLayer v-if="!isContentReady" />
