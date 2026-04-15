@@ -35,7 +35,7 @@
     <div class="h-full w-full flex flex-col overflow-hidden">
         <!-- Header -->
         <div class="grid shrink-0 bg-xrb-bg-2 border-b border-xrb-border"
-            :style="{ gridTemplateColumns: `2rem 3rem repeat(${prop.table?.headers.length ?? 0}, minmax(100px, 1fr))` }">
+            :style="{ gridTemplateColumns: `2rem 3rem repeat(${Math.max(prop.table?.headers.length ?? 0, 1)}, minmax(100px, 1fr))` }">
             <div class="text-xs px-1 py-2"></div>
             <div class="text-xs font-medium text-xrb-text-secondary px-3 py-2">#</div>
             <div v-for="(header, idx) in prop.table?.headers" :key="header"
