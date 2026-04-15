@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import type { Table                           } from '@/types/table';
     import      { parseCSV                        } from '@/utils/parse';
-    import      { onBeforeUnmount, onMounted, ref } from 'vue';
+    import      { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
     import      { useApi }                          from '@/composables/api';
     import      { useDocumentViews }                from '@/composables/views';
 
@@ -11,6 +11,7 @@
     import      Handle                              from './Handle.vue';
     import      Graph                               from './Graph.vue';
     import      FileBrowser                         from './FileBrowser.vue';
+    import      SaveViewModal                       from './SaveViewModal.vue';
 
 
     const { api } = useApi()
