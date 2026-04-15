@@ -246,24 +246,25 @@
         <Graph ref="graph" :table="table" :hidden-rows="hiddenRows" :x-column="xColumn" :y-column="yColumn"
             @ready="isContentReady = true" class="row-start-2" />
 
-        <!-- Z1 -->
-        <transition name="fade">
-            <ColorLayer v-if="!isContentReady" />
-        </transition>
-
-        <!-- File browser modal -->
-        <FileBrowser v-if="showBrowser" @close="showBrowser = false" @select="loadServerFile" />
-
-        <!-- Save view modal -->
-        <SaveViewModal v-if="showSaveModal" :default-name="saveModalDefault" @close="showSaveModal = false"
+            
+            <!-- File browser modal -->
+            <FileBrowser v-if="showBrowser" @close="showBrowser = false" @select="loadServerFile" />
+            
+            <!-- Save view modal -->
+            <SaveViewModal v-if="showSaveModal" :default-name="saveModalDefault" @close="showSaveModal = false"
             @save="onSaveModalConfirm" />
-
-        <!-- Load error toast -->
-        <div v-if="loadError"
+            
+            <!-- Load error toast -->
+            <div v-if="loadError"
             class="fixed bottom-4 right-4 z-30 bg-xrb-bg-2 border border-xrb-error text-xrb-error text-sm px-4 py-2 rounded shadow-lg flex items-center gap-3">
             <span>{{ loadError }}</span>
             <button type="button" class="text-xrb-text-secondary hover:text-xrb-text-1"
-                @click="loadError = null">&times;</button>
+            @click="loadError = null">&times;</button>
+            
+            <!-- Z1 -->
+            <transition name="fade">
+                <ColorLayer v-if="!isContentReady" />
+            </transition>
         </div>
     </div>
 </template>
