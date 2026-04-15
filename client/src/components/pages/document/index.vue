@@ -3,6 +3,7 @@
     import      { parseCSV                        } from '@/utils/parse';
     import      { onBeforeUnmount, onMounted, ref } from 'vue';
     import      { useApi }                          from '@/composables/api';
+    import      { useDocumentViews }                from '@/composables/views';
 
     import      ColorLayer                          from '@/components/layers/ColorLayer.vue';
     import      Topbar                              from './Topbar.vue';
@@ -13,6 +14,7 @@
 
 
     const { api } = useApi()
+    const { views, save: saveView, overwrite: overwriteView, remove: removeView, get: getView } = useDocumentViews()
 
 
     // pretty loading stuff
@@ -61,12 +63,17 @@
 
 
     // data stuff
-    const table       = ref<Table | null>(null)
-    const hiddenRows  = ref<Set<number>>(new Set())
-    const xColumn     = ref<string | null>(null)
-    const yColumn     = ref<string | null>(null)
-    const loadError   = ref<string | null>(null)
-    const showBrowser = ref(false)
+    const table         = ref<Table | null>(null)
+    const hiddenRows    = ref<Set<number>>(new Set())
+    const xColumn       = ref<string | null>(null)
+    const yColumn       = ref<string | null>(null)
+    const loadError     = ref<string | null>(null)
+    const showBrowser   = ref(false)
+    const currentViewId   = ref<string | null>(null)
+    const currentViewName = computed(() => {
+        if (!currentViewId.value) return null
+        return getView(currentViewId.value)?.name ?? null
+    })
 
 
     function applyTable(newTable: Table) {
@@ -74,6 +81,7 @@
         hiddenRows.value = new Set()
         xColumn.value    = newTable.headers[0] ?? null
         yColumn.value    = newTable.headers[1] ?? newTable.headers[0] ?? null
+        currentViewId.value = null
     }
 
 
@@ -119,6 +127,71 @@
     function onYColumn(col: string) { yColumn.value = col }
 
 
+    // view stuff
+    const showSaveModal   = ref(false)
+    const saveModalDefault = ref('')
+
+
+    function buildViewData() {
+        return {
+            name:       '',
+            table:      table.value!,
+            hiddenRows: [...hiddenRows.value],
+            xColumn:    xColumn.value,
+            yColumn:    yColumn.value,
+            fits:       graph.value?.getFitState() ?? {
+                linear: false, exponential: false, logarithmic: false,
+                logistic: false, polynomial: false, power: false, sinusoidal: false,
+            },
+        }
+    }
+
+
+    function onSaveView() {
+        if (!table.value || !currentViewId.value) return
+        overwriteView(currentViewId.value, buildViewData())
+    }
+
+
+    function onSaveViewAs() {
+        if (!table.value) return
+        const current = currentViewId.value ? getView(currentViewId.value) : null
+        saveModalDefault.value = current?.name ?? table.value.source?.name ?? ''
+        showSaveModal.value = true
+    }
+
+
+    function onSaveModalConfirm(name: string) {
+        if (!table.value) return
+        showSaveModal.value = false
+        const data  = buildViewData()
+        data.name   = name
+        const entry = saveView(data)
+        currentViewId.value = entry.id
+    }
+
+
+    function onLoadView(id: string) {
+        const view = getView(id)
+        if (!view) return
+        table.value         = view.table
+        hiddenRows.value    = new Set(view.hiddenRows)
+        xColumn.value       = view.xColumn
+        yColumn.value       = view.yColumn
+        currentViewId.value = view.id
+
+        if (view.fits) {
+            nextTick(() => graph.value?.restoreFits(view.fits))
+        }
+    }
+
+
+    function onDeleteView(id: string) {
+        removeView(id)
+        if (currentViewId.value === id) currentViewId.value = null
+    }
+
+
     // header stuff
     function onHeader(idx: number, name: string): void {
         if (!table.value) return
@@ -161,6 +234,10 @@
             :headers="table?.headers ?? []"
             :x-column="xColumn"
             :y-column="yColumn"
+            :saved-views="views"
+            :has-table="!!table"
+            :current-view-id="currentViewId"
+            :current-view-name="currentViewName"
             @file-selected="onFileReceived"
             @browse-files="showBrowser = true"
             @update:x-column="onXColumn"
@@ -173,6 +250,10 @@
             @toggle-polynomial="togglePolynomial"
             @toggle-power="togglePower"
             @toggle-sinusoidal="toggleSinusoidal"
+            @save-view="onSaveView"
+            @save-view-as="onSaveViewAs"
+            @load-view="onLoadView"
+            @delete-view="onDeleteView"
             class="col-span-3" />
         <Leftbar :table="table" :hidden-rows="hiddenRows" @toggle-row-hidden="toggleRowHidden"
             @header="onHeader" class="row-start-2" />
@@ -196,6 +277,13 @@
             v-if="showBrowser"
             @close="showBrowser = false"
             @select="loadServerFile" />
+
+        <!-- Save view modal -->
+        <SaveViewModal
+            v-if="showSaveModal"
+            :default-name="saveModalDefault"
+            @close="showSaveModal = false"
+            @save="onSaveModalConfirm" />
 
         <!-- Load error toast -->
         <div v-if="loadError"
