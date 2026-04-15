@@ -23,6 +23,7 @@ function parseCSVLine(line: string): string[] {
         if (line[i] === '"') {
             let field = ''
             i++ // skip opening quote
+            
             while (i < line.length) {
                 if (line[i] === '"' && line[i + 1] === '"') {
                     field += '"'
@@ -34,10 +35,13 @@ function parseCSVLine(line: string): string[] {
                     field += line[i++]
                 }
             }
+
             fields.push(field)
+
             if (line[i] === ',') i++
         } else {
             const end = line.indexOf(',', i)
+            
             if (end === -1) {
                 fields.push(line.slice(i))
                 break

@@ -94,6 +94,15 @@
     }
 
 
+    function toggleAllHidden() {
+        if (hiddenRows.value.size === table.value?.rows.length) {
+            hiddenRows.value = new Set()
+        } else {
+            hiddenRows.value = new Set(table.value?.rows.map((_, i) => i))
+        }
+    }
+
+
     async function onFileReceived(file: File) {
         loadError.value = null
         const text = await file.text()
@@ -240,26 +249,26 @@
             @toggle-polynomial="togglePolynomial" @toggle-power="togglePower" @toggle-sinusoidal="toggleSinusoidal"
             @save-view="onSaveView" @save-view-as="onSaveViewAs" @load-view="onLoadView" @delete-view="onDeleteView"
             class="col-span-3" />
-        <Leftbar :table="table" :hidden-rows="hiddenRows" @toggle-row-hidden="toggleRowHidden" @header="onHeader"
-            class="row-start-2" />
+        <Leftbar :table="table" :hidden-rows="hiddenRows" @toggle-row-hidden="toggleRowHidden"
+            @toggle-all-hidden="toggleAllHidden" @header="onHeader" class="row-start-2" />
         <Handle @mousedown="onMouseDown" class="row-start-2" :class="handleClass" />
         <Graph ref="graph" :table="table" :hidden-rows="hiddenRows" :x-column="xColumn" :y-column="yColumn"
             @ready="isContentReady = true" class="row-start-2" />
 
-            
-            <!-- File browser modal -->
-            <FileBrowser v-if="showBrowser" @close="showBrowser = false" @select="loadServerFile" />
-            
-            <!-- Save view modal -->
-            <SaveViewModal v-if="showSaveModal" :default-name="saveModalDefault" @close="showSaveModal = false"
+
+        <!-- File browser modal -->
+        <FileBrowser v-if="showBrowser" @close="showBrowser = false" @select="loadServerFile" />
+
+        <!-- Save view modal -->
+        <SaveViewModal v-if="showSaveModal" :default-name="saveModalDefault" @close="showSaveModal = false"
             @save="onSaveModalConfirm" />
-            
-            <!-- Load error toast -->
-            <div v-if="loadError"
+
+        <!-- Load error toast -->
+        <div v-if="loadError"
             class="fixed bottom-4 right-4 z-30 bg-xrb-bg-2 border border-xrb-error text-xrb-error text-sm px-4 py-2 rounded shadow-lg flex items-center gap-3">
             <span>{{ loadError }}</span>
             <button type="button" class="text-xrb-text-secondary hover:text-xrb-text-1"
-            @click="loadError = null">&times;</button>
+                @click="loadError = null">&times;</button>
 
             <!-- Z1 -->
             <transition name="fade">

@@ -1017,9 +1017,8 @@ export class DesmosGraphingCalculator {
     // add new dataset
     add(x: number[], 
         y: number[]): void {
-        if(!this.calculator)                 return
-        if(x.length === 0 || y.length === 0) return
-        if(x.length !== y.length)            return
+        if(!this.calculator)      return
+        if(x.length !== y.length) return
 
         const id = `dataset-${ this.exprc }`
         
@@ -1044,9 +1043,8 @@ export class DesmosGraphingCalculator {
          y:      number[], 
          xAxisLabel: string = "X", 
          yAxisLabel: string = "Y"): void {
-        if(!this.calculator)                 return
-        if(x.length === 0 || y.length === 0) return
-        if(x.length !== y.length)            return
+        if(!this.calculator)      return
+        if(x.length !== y.length) return
         
         const viewport = this.calculator.getState().graph.viewport
         

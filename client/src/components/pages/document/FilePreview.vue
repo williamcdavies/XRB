@@ -9,7 +9,8 @@
         hiddenRows: Set<number>
     }>()
     const emit = defineEmits<{
-        (e: 'toggle-row-hidden', index: number): void
+        (e: 'toggle-row-hidden', index: number):  void
+        (e: 'toggle-all-hidden'):                 void
         (e: 'header', idx: number, name: string): void
     }>()
 
@@ -32,16 +33,25 @@
     // preview stuff
     const colCount = computed(() => Math.max(prop.table?.headers.length ?? 0, 1))
     const gridCols = computed(() => `2rem 3rem repeat(${colCount.value}, minmax(100px, 1fr))`)
+
+    // toggle stuff
+    const allHidden = computed(() =>
+        prop.table !== null && prop.table.rows.length > 0 &&
+        prop.table.rows.every((_, i) => prop.hiddenRows.has(i))
+    )
 </script>
 
 
 <template>
-    <div class="h-full w-full overflow-x-auto scrollbar-none">
+    <div class="h-full w-full overflow-x-auto">
         <div class="h-full flex flex-col" :style="{ minWidth: `calc(5rem + ${colCount} * 100px)` }">
             <!-- Header -->
             <div class="grid shrink-0 bg-xrb-bg-2 border-b border-xrb-border"
                 :style="{ gridTemplateColumns: gridCols }">
-                <div class="text-xs px-1 py-2"></div>
+                <button class="text-xs px-1 py-2 text-xrb-text-secondary hover:text-xrb-text-1 cursor-pointer"
+                    @click="emit('toggle-all-hidden')">
+                    {{ allHidden ? '○' : '●' }}
+                </button>
                 <div class="text-xs font-medium text-xrb-text-secondary px-3 py-2">#</div>
                 <div v-for="(header, idx) in prop.table?.headers" :key="header"
                     class="group flex items-center text-xs px-3 py-2">

@@ -10,6 +10,7 @@
     }>()
     const emit = defineEmits<{
         (e: 'toggle-row-hidden', index: number):  void
+        (e: 'toggle-all-hidden'):                 void
         (e: 'header', idx: number, name: string): void
     }>()
 </script>
@@ -19,7 +20,7 @@
     <div class="h-full w-full overflow-hidden">
         <FilePreview :table="prop.table" :hidden-rows="prop.hiddenRows"
             @toggle-row-hidden="(i: number) => emit('toggle-row-hidden', i)"
-            @header="(idx, name) => emit('header', idx, name)" />
+            @toggle-all-hidden="emit('toggle-all-hidden')" @header="(idx, name) => emit('header', idx, name)" />
     </div>
 </template>
 

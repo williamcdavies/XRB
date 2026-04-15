@@ -159,12 +159,13 @@
 
 
     // watching
-    watch(() => [prop.table, prop.hiddenRows, prop.xColumn, prop.yColumn], () => {
-        if(!prop.table || !dgc) return
+    watch([() => prop.table, () => prop.hiddenRows, () => prop.xColumn, () => prop.yColumn], () => {
+        if(!prop.table || !dgc)            return
         if(!prop.xColumn || !prop.yColumn) return
 
         const xIdx = prop.table.headers.indexOf(prop.xColumn)
         const yIdx = prop.table.headers.indexOf(prop.yColumn)
+        
         if(xIdx < 0 || yIdx < 0) return
 
         const x: number[] = []
@@ -172,7 +173,9 @@
 
         for(let i = 0; i < prop.table.rows.length; i++) {
             if(prop.hiddenRows.has(i)) continue
+            
             const row = prop.table.rows[i]!
+            
             x.push(Number(row[xIdx]))
             y.push(Number(row[yIdx]))
         }
@@ -181,7 +184,7 @@
                  y,
                  prop.xColumn,
                  prop.yColumn)
-    })
+    }, { deep: true })
 </script>
 
 
