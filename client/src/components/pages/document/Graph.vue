@@ -1,5 +1,6 @@
 <script setup lang="ts">
     import type { Table                             } from '@/types/table';
+    import type { FitState                          } from '@/types/view';
     import      { DesmosGraphingCalculator, DGC_IDS } from '@/dgclib';
     import      { onMounted, onUnmounted, watch     } from 'vue';
 
@@ -17,11 +18,12 @@
 
 
     // desmos stuff
-    const options                              = {
+    const options = {
         expressions: false
     }
 
     let   dgc: DesmosGraphingCalculator | null = null
+    let   lastPolyDegree: number = 2
 
 
     function clearFit(): void {
@@ -65,8 +67,11 @@
     function togglePolynomial(degree: number): void {
         if(!dgc) return
 
-        if (!dgc.hasFit(DGC_IDS.FIT_POLYNOMIAL)) dgc.fitPolynomial(degree)
-        else                                     dgc.clearPolynomial()
+        if (!dgc.hasFit(DGC_IDS.FIT_POLYNOMIAL)) {
+            lastPolyDegree = degree
+            dgc.fitPolynomial(degree)
+        }
+        else dgc.clearPolynomial()
     }
 
 
@@ -86,6 +91,38 @@
     }
 
 
+    function getFitState(): FitState {
+        return {
+            linear:          !!dgc?.hasFit(DGC_IDS.FIT_LINEAR),
+            exponential:     !!dgc?.hasFit(DGC_IDS.FIT_EXPONENTIAL),
+            logarithmic:     !!dgc?.hasFit(DGC_IDS.FIT_LOGARITHMIC),
+            logistic:        !!dgc?.hasFit(DGC_IDS.FIT_LOGISTIC),
+            polynomial:      !!dgc?.hasFit(DGC_IDS.FIT_POLYNOMIAL),
+            polynomialDegree: lastPolyDegree,
+            power:           !!dgc?.hasFit(DGC_IDS.FIT_POWER),
+            sinusoidal:      !!dgc?.hasFit(DGC_IDS.FIT_SINUSOIDAL),
+        }
+    }
+
+
+    function restoreFits(fits: FitState): void {
+        if (!dgc) return
+
+        dgc.clearFit()
+
+        if (fits.linear)      dgc.fitLinear()
+        if (fits.exponential) dgc.fitExponential()
+        if (fits.logarithmic) dgc.fitLogarithmic()
+        if (fits.logistic)    dgc.fitLogistic()
+        if (fits.power)       dgc.fitPower()
+        if (fits.sinusoidal)  dgc.fitSinusoidal()
+        if (fits.polynomial) {
+            lastPolyDegree = fits.polynomialDegree ?? 2
+            dgc.fitPolynomial(lastPolyDegree)
+        }
+    }
+
+
     defineExpose({
         clearFit,
         toggleExponential,
@@ -94,7 +131,9 @@
         toggleLogistic,
         togglePolynomial,
         togglePower,
-        toggleSinusoidal
+        toggleSinusoidal,
+        getFitState,
+        restoreFits,
     })
 
 
