@@ -1015,8 +1015,8 @@ export class DesmosGraphingCalculator {
     // -----------------
 
     // add new dataset
-    add(x: number[], 
-        y: number[]): void {
+    add(x: string[], 
+        y: string[]): void {
         if(!this.calculator)      return
         if(x.length !== y.length) return
 
@@ -1026,8 +1026,8 @@ export class DesmosGraphingCalculator {
             id,
             type: 'table',
             columns: [
-                { latex: 'x_1', values: x },
-                { latex: 'y_1', values: y }
+                { latex: 'x_1', values: x.map(String) },
+                { latex: 'y_1', values: y.map(String) }
             ]
         })
 
@@ -1039,8 +1039,8 @@ export class DesmosGraphingCalculator {
     // load new dataset
     //  overrides existing dataset
     //  overrides existing expressions
-    load(x:      number[], 
-         y:      number[], 
+    load(x:          string[], 
+         y:          string[], 
          xAxisLabel: string = "X", 
          yAxisLabel: string = "Y"): void {
         if(!this.calculator)      return

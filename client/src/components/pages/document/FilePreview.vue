@@ -48,7 +48,7 @@
             <!-- Header -->
             <div class="grid shrink-0 bg-xrb-bg-2 border-b border-xrb-border"
                 :style="{ gridTemplateColumns: gridCols }">
-                <button class="text-xs px-1 py-2 text-xrb-text-secondary hover:text-xrb-text-1 cursor-pointer"
+                <button v-if="prop.table !== null" class="text-xs px-1 py-2 text-xrb-text-secondary hover:text-xrb-text-1 cursor-pointer"
                     @click="emit('toggle-all-hidden')">
                     {{ allHidden ? '○' : '●' }}
                 </button>

@@ -168,16 +168,16 @@
         
         if(xIdx < 0 || yIdx < 0) return
 
-        const x: number[] = []
-        const y: number[] = []
+        const x: string[] = []
+        const y: string[] = []
 
         for(let i = 0; i < prop.table.rows.length; i++) {
             if(prop.hiddenRows.has(i)) continue
             
             const row = prop.table.rows[i]!
             
-            x.push(Number(row[xIdx]))
-            y.push(Number(row[yIdx]))
+            x.push(row[xIdx]!)
+            y.push(row[yIdx]!)
         }
 
         dgc.load(x,
