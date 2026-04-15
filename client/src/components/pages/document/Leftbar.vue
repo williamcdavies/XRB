@@ -1,6 +1,6 @@
 <script setup lang="ts">
-    import      FilePreview from './FilePreview.vue';
     import type { Table }   from '@/types/table'
+    import      FilePreview from './FilePreview.vue';
 
 
     // Ref: https://vuejs.org/guide/components/events.html
@@ -9,7 +9,7 @@
         hiddenRows: Set<number>
     }>()
     const emit = defineEmits<{
-        (e: 'toggle-row-hidden', index: number): void
+        (e: 'toggle-row-hidden', index: number):  void
         (e: 'header', idx: number, name: string): void
     }>()
 </script>

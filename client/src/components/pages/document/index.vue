@@ -1,20 +1,20 @@
 <script setup lang="ts">
-    import type { Table                           } from '@/types/table';
-    import      { parseCSV                        } from '@/utils/parse';
+    import      { useApi                                              } from '@/composables/api';
+    import      { useDocumentViews                                    } from '@/composables/views';
+    import type { Table                                               } from '@/types/table';
+    import      { parseCSV                                            } from '@/utils/parse';
     import      { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
-    import      { useApi }                          from '@/composables/api';
-    import      { useDocumentViews }                from '@/composables/views';
 
-    import      ColorLayer                          from '@/components/layers/ColorLayer.vue';
-    import      Topbar                              from './Topbar.vue';
-    import      Leftbar                             from './Leftbar.vue';
-    import      Handle                              from './Handle.vue';
-    import      Graph                               from './Graph.vue';
-    import      FileBrowser                         from './FileBrowser.vue';
-    import      SaveViewModal                       from './SaveViewModal.vue';
+    import      ColorLayer                                              from '@/components/layers/ColorLayer.vue';
+    import      FileBrowser                                             from './FileBrowser.vue';
+    import      Graph                                                   from './Graph.vue';
+    import      Handle                                                  from './Handle.vue';
+    import      Leftbar                                                 from './Leftbar.vue';
+    import      SaveViewModal                                           from './SaveViewModal.vue';
+    import      Topbar                                                  from './Topbar.vue';
 
 
-    const { api } = useApi()
+    const { api }                                                                               = useApi()
     const { views, save: saveView, overwrite: overwriteView, remove: removeView, get: getView } = useDocumentViews()
 
 
@@ -64,12 +64,12 @@
 
 
     // data stuff
-    const table         = ref<Table | null>(null)
-    const hiddenRows    = ref<Set<number>>(new Set())
-    const xColumn       = ref<string | null>(null)
-    const yColumn       = ref<string | null>(null)
-    const loadError     = ref<string | null>(null)
-    const showBrowser   = ref(false)
+    const table           = ref<Table | null>(null)
+    const hiddenRows      = ref<Set<number>>(new Set())
+    const xColumn         = ref<string | null>(null)
+    const yColumn         = ref<string | null>(null)
+    const loadError       = ref<string | null>(null)
+    const showBrowser     = ref(false)
     const currentViewId   = ref<string | null>(null)
     const currentViewName = computed(() => {
         if (!currentViewId.value) return null
@@ -107,8 +107,9 @@
         try {
             const res = await api.fetch(`/api/data/preview/table/?path=${encodeURIComponent(path)}`)
             if (!res.ok) {
-                const data = await res.json().catch(() => ({}))
+                const data      = await res.json().catch(() => ({}))
                 loadError.value = data.error || `Error ${res.status}`
+                
                 return
             }
             const data     = await res.json()
@@ -129,7 +130,7 @@
 
 
     // view stuff
-    const showSaveModal   = ref(false)
+    const showSaveModal    = ref(false)
     const saveModalDefault = ref('')
 
 
@@ -231,42 +232,19 @@
     <div class="grid grid-rows-[auto_1fr] h-screen w-screen bg-xrb-bg-1"
         :style="{ gridTemplateColumns: `${leftbarWidth}px ${HANDLE_WIDTH}px 1fr` }">
         <!-- Z0 -->
-        <Topbar
-            :headers="table?.headers ?? []"
-            :x-column="xColumn"
-            :y-column="yColumn"
-            :saved-views="views"
-            :has-table="!!table"
-            :current-view-id="currentViewId"
-            :current-view-name="currentViewName"
-            @file-selected="onFileReceived"
-            @browse-files="showBrowser = true"
-            @update:x-column="onXColumn"
-            @update:y-column="onYColumn"
-            @clear-fit="clearFit"
-            @toggle-exponential="toggleExponential"
-            @toggle-linear="toggleLinear"
-            @toggle-logistic="toggleLogistic"
-            @toggle-logarithmic="toggleLogarithmic"
-            @toggle-polynomial="togglePolynomial"
-            @toggle-power="togglePower"
-            @toggle-sinusoidal="toggleSinusoidal"
-            @save-view="onSaveView"
-            @save-view-as="onSaveViewAs"
-            @load-view="onLoadView"
-            @delete-view="onDeleteView"
+        <Topbar :headers="table?.headers ?? []" :x-column="xColumn" :y-column="yColumn" :saved-views="views"
+            :has-table="!!table" :current-view-id="currentViewId" :current-view-name="currentViewName"
+            @file-selected="onFileReceived" @browse-files="showBrowser = true" @update:x-column="onXColumn"
+            @update:y-column="onYColumn" @clear-fit="clearFit" @toggle-exponential="toggleExponential"
+            @toggle-linear="toggleLinear" @toggle-logistic="toggleLogistic" @toggle-logarithmic="toggleLogarithmic"
+            @toggle-polynomial="togglePolynomial" @toggle-power="togglePower" @toggle-sinusoidal="toggleSinusoidal"
+            @save-view="onSaveView" @save-view-as="onSaveViewAs" @load-view="onLoadView" @delete-view="onDeleteView"
             class="col-span-3" />
-        <Leftbar :table="table" :hidden-rows="hiddenRows" @toggle-row-hidden="toggleRowHidden"
-            @header="onHeader" class="row-start-2" />
-        <Handle @mousedown="onMouseDown" class="row-start-2" :class="handleClass" />
-        <Graph
-            ref="graph"
-            :table="table"
-            :hidden-rows="hiddenRows"
-            :x-column="xColumn"
-            :y-column="yColumn"
-            @ready="isContentReady = true"
+        <Leftbar :table="table" :hidden-rows="hiddenRows" @toggle-row-hidden="toggleRowHidden" @header="onHeader"
             class="row-start-2" />
+        <Handle @mousedown="onMouseDown" class="row-start-2" :class="handleClass" />
+        <Graph ref="graph" :table="table" :hidden-rows="hiddenRows" :x-column="xColumn" :y-column="yColumn"
+            @ready="isContentReady = true" class="row-start-2" />
 
         <!-- Z1 -->
         <transition name="fade">
@@ -274,16 +252,10 @@
         </transition>
 
         <!-- File browser modal -->
-        <FileBrowser
-            v-if="showBrowser"
-            @close="showBrowser = false"
-            @select="loadServerFile" />
+        <FileBrowser v-if="showBrowser" @close="showBrowser = false" @select="loadServerFile" />
 
         <!-- Save view modal -->
-        <SaveViewModal
-            v-if="showSaveModal"
-            :default-name="saveModalDefault"
-            @close="showSaveModal = false"
+        <SaveViewModal v-if="showSaveModal" :default-name="saveModalDefault" @close="showSaveModal = false"
             @save="onSaveModalConfirm" />
 
         <!-- Load error toast -->

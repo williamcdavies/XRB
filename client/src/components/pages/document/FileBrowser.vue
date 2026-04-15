@@ -1,10 +1,10 @@
 <script setup lang="ts">
-    import { ref, computed, watch, onMounted } from 'vue';
-    import { useApi }   from '@/composables/api';
-    import { useAuth }  from '@/composables/auth';
-    import { browsePath } from '@/components/pages/files/helpers';
-    import FileList from '@/components/pages/files/FileList.vue';
-    import type { BrowseItem } from '@/components/pages/files/FileList.vue';
+    import type { BrowseItem                      } from '@/components/pages/files/FileList.vue';
+    import      FileList                            from '@/components/pages/files/FileList.vue';
+    import      { browsePath                      } from '@/components/pages/files/helpers';
+    import      { useApi                          } from '@/composables/api';
+    import      { useAuth                         } from '@/composables/auth';
+    import      { ref, computed, watch, onMounted } from 'vue';
 
 
     const emit = defineEmits<{
@@ -13,11 +13,10 @@
     }>()
 
 
+    type TabId = string
+
     const { api }             = useApi()
     const { isAuthenticated } = useAuth()
-
-
-    type TabId = string
 
     const authenticated = ref(false)
     const username      = ref<string | null>(null)
@@ -164,8 +163,7 @@
             <!-- Main tabs -->
             <div class="flex items-center border-b border-xrb-border bg-xrb-bg-2 shrink-0">
                 <button v-for="tab in mainTabs" :key="tab.id" type="button"
-                    class="px-5 py-2 text-xs font-medium border-b-2 transition-colors"
-                    :class="activeMainTab === tab.id
+                    class="px-5 py-2 text-xs font-medium border-b-2 transition-colors" :class="activeMainTab === tab.id
                         ? 'border-xrb-accent-1 text-xrb-accent-1'
                         : 'border-transparent text-xrb-text-secondary hover:text-xrb-text-1'"
                     @click="selectMainTab(tab.id)">
@@ -177,8 +175,7 @@
             <div v-if="activeMainTab === 'groups'"
                 class="flex items-center border-b border-xrb-border bg-xrb-bg-2 shrink-0">
                 <button v-for="g in userGroups" :key="g.name" type="button"
-                    class="px-5 py-1.5 text-xs font-medium border-b-2 transition-colors"
-                    :class="activeGroupName === g.name
+                    class="px-5 py-1.5 text-xs font-medium border-b-2 transition-colors" :class="activeGroupName === g.name
                         ? 'border-xrb-accent-1 text-xrb-accent-1'
                         : 'border-transparent text-xrb-text-secondary hover:text-xrb-text-1'"
                     @click="activeTab = `group:${g.name}`">
@@ -200,14 +197,8 @@
 
             <!-- File list -->
             <div class="flex-1 min-h-0 overflow-hidden">
-                <FileList
-                    :items="visibleItems"
-                    :current-path="currentPath"
-                    :loading="loading"
-                    :error="error"
-                    :show-actions="false"
-                    @open="onOpen"
-                    @select="onSelect" />
+                <FileList :items="visibleItems" :current-path="currentPath" :loading="loading" :error="error"
+                    :show-actions="false" @open="onOpen" @select="onSelect" />
             </div>
         </div>
     </div>

@@ -22,8 +22,8 @@
         expressions: false
     }
 
-    let   dgc: DesmosGraphingCalculator | null = null
-    let   lastPolyDegree: number = 2
+    let dgc: DesmosGraphingCalculator | null = null
+    let lastPolyDegree: number               = 2
 
 
     function clearFit(): void {
@@ -32,6 +32,7 @@
         dgc.clearFit()
     }
 
+    
     function toggleExponential(): void {
         if(!dgc) return
 
