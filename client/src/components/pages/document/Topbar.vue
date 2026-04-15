@@ -82,11 +82,10 @@
     <div class="flex flex-row items-center h-10 w-full bg-xrb-bg-2 border-b border-xrb-border px-3 gap-3">
         <input ref="fileInput" type="file" accept=".csv" class="hidden" @change="handleFileInput" />
 
-        <!-- File actions -->
-        <button class="btn btn-ghost btn-xs text-xrb-text-1 font-mono tracking-widest uppercase"
-            @click="targetFileInput()">Import CSV</button>
         <button class="btn btn-ghost btn-xs text-xrb-text-1 font-mono tracking-widest uppercase"
             @click="emit('browse-files')">Browse Files</button>
+        <button class="btn btn-ghost btn-xs text-xrb-text-1 font-mono tracking-widest uppercase"
+            @click="targetFileInput()">Import CSV</button>
 
         <div class="w-px h-5 bg-xrb-border" />
 
