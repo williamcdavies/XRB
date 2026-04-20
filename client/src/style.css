@@ -86,9 +86,9 @@
 
 /* ── Light theme ── */
 [data-theme="light"] {
-  --color-xrb-bg-1:                    oklch(0.97 0.005 247);
-  --color-xrb-bg-2:                    oklch(0.93 0.007 250);
-  --color-xrb-bg-3:                    oklch(0.88 0.009 252);
+  --color-xrb-bg-1:                    oklch(0.99 0.003 260);
+  --color-xrb-bg-2:                    oklch(0.99 0.003 260);
+  --color-xrb-bg-3:                    oklch(0.99 0.003 260);
   --color-xrb-border:                  oklch(0.75 0.010 255);
   --color-xrb-highlight:               oklch(0.5377 0.1124 255.89);
   --color-xrb-disabled:                oklch(0.6 0 0);
@@ -96,7 +96,7 @@
   --color-xrb-text-2:                  oklch(0.25 0.015 260);
   --color-xrb-error:                   oklch(0.55 0.18 26);
   --color-xrb-drawer-background:       oklch(0.99 0.003 260);
-  --color-xrb-menu-background:         oklch(0.95 0.005 255);
+  --color-xrb-menu-background:         oklch(0.99 0.003 260);
   --color-xrb-menu-background-accent:  oklch(0.90 0.008 258);
   --color-xrb-menu-background-warning: oklch(0.80 0.12 26);
   --color-xrb-border-1:                oklch(0.78 0.010 258);
@@ -110,7 +110,7 @@
 
   color-scheme: light;
   color: oklch(0.15 0.012 260);
-  background-color: oklch(0.97 0.005 247);
+  background-color: oklch(0.99 0.003 260);
 }
 
 @font-face {
