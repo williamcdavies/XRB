@@ -8,6 +8,7 @@
         headers:         string[]
         xColumn:         string | null
         yColumn:         string | null
+        aColumn:         string | null
         savedViews:      DocumentView[]
         hasTable:        boolean
         currentViewId:   string | null
@@ -19,6 +20,7 @@
         (e: 'browse-files'):                      void
         (e: 'update:x-column',   column: string): void
         (e: 'update:y-column',   column: string): void
+        (e: 'update:a-column',   column: string): void
         (e: 'toggle-exponential'):                void
         (e: 'toggle-linear'):                     void
         (e: 'toggle-logistic'):                   void
@@ -63,6 +65,11 @@
 
     function onYChange(e: Event) {
         emit('update:y-column', (e.target as HTMLSelectElement).value)
+    }
+
+
+    function onAChange(e: Event) {
+        emit('update:a-column', (e.target as HTMLSelectElement).value)
     }
 
 
@@ -128,6 +135,12 @@
             <label class="text-xs font-mono uppercase tracking-widest text-xrb-text-secondary">Y</label>
             <select class="select select-xs bg-xrb-bg-3 border border-xrb-border text-xrb-text-1 font-mono text-xs"
                 :value="prop.yColumn ?? ''" @change="onYChange">
+                <option v-for="h in prop.headers" :key="h" :value="h">{{ h }}</option>
+            </select>
+            <label class="text-xs font-mono uppercase tracking-widest text-xrb-text-secondary">A</label>
+            <select class="select select-xs bg-xrb-bg-3 border border-xrb-border text-xrb-text-1 font-mono text-xs"
+                :value="prop.aColumn ?? ''" @change="onAChange">
+                <option value="">none</option>
                 <option v-for="h in prop.headers" :key="h" :value="h">{{ h }}</option>
             </select>
         </div>

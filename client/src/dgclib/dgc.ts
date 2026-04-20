@@ -832,6 +832,16 @@ export class DesmosGraphingCalculator {
         })
     }
 
+    // viewport methods
+    // ------------------------------------------
+    getViewport(): any {
+        return this.calculator.getState().graph.viewport
+    }
+
+    setViewport(viewport: any): void {
+        this.calculator.setMathBounds(viewport)
+    }
+
     
     // behaviour methods
     // ------------------------------------------
@@ -1015,22 +1025,19 @@ export class DesmosGraphingCalculator {
     // -----------------
 
     // add new dataset
-    add(x: string[], 
-        y: string[]): void {
+    add(x: string[], y: string[], color?: string): void {
         if(!this.calculator)      return
         if(x.length !== y.length) return
 
         const id = `dataset-${ this.exprc }`
-        
         this.calculator.setExpression({
             id,
             type: 'table',
             columns: [
-                { latex: 'x_1', values: x.map(String) },
-                { latex: 'y_1', values: y.map(String) }
+                { latex: 'x_1', values: x, color },
+                { latex: 'y_1', values: y, color }
             ]
         })
-
         this.exprv.push(id)
         ++this.exprc
     }

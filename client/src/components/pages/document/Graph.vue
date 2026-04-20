@@ -11,6 +11,7 @@
         hiddenRows: Set<number>
         xColumn:    string | null
         yColumn:    string | null
+        aColumn:    string | null
     }>()
     const emit = defineEmits<{
         (e: 'ready'): void
@@ -185,6 +186,73 @@
                  prop.xColumn,
                  prop.yColumn)
     }, { deep: true })
+
+    watch([() => prop.table, () => prop.hiddenRows, () => prop.xColumn, () => prop.yColumn, () => prop.aColumn], () => {
+    if(!prop.table || !dgc) return
+    if(!prop.xColumn || !prop.yColumn) return
+
+    const xIdx = prop.table.headers.indexOf(prop.xColumn)
+    const yIdx = prop.table.headers.indexOf(prop.yColumn)
+
+    if(xIdx < 0 || yIdx < 0) return
+
+    if(prop.aColumn) {
+        const aIdx = prop.table.headers.indexOf(prop.aColumn)
+        
+        if(aIdx < 0) return
+
+        // select distinct values from aColumn
+        const distinctKeys = [...new Set(
+            prop.table.rows.map(row => row[aIdx] ?? '(empty)')
+        )]
+
+        // map distinct values to colours
+        const colorMap = new Map<string, string>()
+        
+        distinctKeys.forEach((key, i) => {
+            colorMap.set(key, `hsl(${Math.round((i / distinctKeys.length) * 360)}, 50%, 50%)`)
+        })
+
+        // build groups from visible rows only
+        const groups = new Map<string, { x: string[], y: string[] }>()
+        
+        distinctKeys.forEach(key => groups.set(key, { x: [], y: [] }))
+
+        for(let i = 0; i < prop.table.rows.length; i++) {
+            if(prop.hiddenRows.has(i)) continue
+
+            const row = prop.table.rows[i]!
+            const key = row[aIdx] ?? '(empty)'
+
+            groups.get(key)!.x.push(row[xIdx]!)
+            groups.get(key)!.y.push(row[yIdx]!)
+        }
+
+        const viewport = dgc.getViewport()
+        dgc.clear()
+        dgc.setViewport(viewport)
+
+        groups.forEach((data, key) => {
+            if(data.x.length === 0) return
+            
+            dgc!.add(data.x, data.y, colorMap.get(key))
+        })
+    } else {
+        const x: string[] = []
+        const y: string[] = []
+
+        for(let i = 0; i < prop.table.rows.length; i++) {
+            if(prop.hiddenRows.has(i)) continue
+
+            const row = prop.table.rows[i]!
+
+            x.push(row[xIdx]!)
+            y.push(row[yIdx]!)
+        }
+
+        dgc.load(x, y, prop.xColumn, prop.yColumn)
+    }
+}, { deep: true })
 </script>
 
 
