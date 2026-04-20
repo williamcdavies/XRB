@@ -1,86 +1,98 @@
 <script setup lang="ts">
-    import type { DocumentView } from '@/types/view';
-    import      { ref          } from 'vue';
+import type { DocumentView} from '@/types/view';
+import { useRouter } from 'vue-router';
+import { ref } from 'vue';
+
+const router = useRouter();
+
+// Ref: https://vuejs.org/guide/components/events.html
+const prop = defineProps<{
+    headers: string[]
+    xColumn: string | null
+    yColumn: string | null
+    savedViews: DocumentView[]
+    hasTable: boolean
+    currentViewId: string | null
+    currentViewName: string | null
+}>()
+const emit = defineEmits<{
+    (e: 'clear-fit'): void
+    (e: 'file-selected', file: File): void
+    (e: 'browse-files'): void
+    (e: 'update:x-column', column: string): void
+    (e: 'update:y-column', column: string): void
+    (e: 'toggle-exponential'): void
+    (e: 'toggle-linear'): void
+    (e: 'toggle-logistic'): void
+    (e: 'toggle-logarithmic'): void
+    (e: 'toggle-polynomial', degree: number): void
+    (e: 'toggle-power'): void
+    (e: 'toggle-sinusoidal'): void
+    (e: 'save-view'): void
+    (e: 'save-view-as'): void
+    (e: 'load-view', id: string): void
+    (e: 'delete-view', id: string): void
+}>()
 
 
-    // Ref: https://vuejs.org/guide/components/events.html
-    const prop = defineProps<{
-        headers:         string[]
-        xColumn:         string | null
-        yColumn:         string | null
-        savedViews:      DocumentView[]
-        hasTable:        boolean
-        currentViewId:   string | null
-        currentViewName: string | null
-    }>()
-    const emit = defineEmits<{
-        (e: 'clear-fit'):                         void
-        (e: 'file-selected',     file:   File):   void
-        (e: 'browse-files'):                      void
-        (e: 'update:x-column',   column: string): void
-        (e: 'update:y-column',   column: string): void
-        (e: 'toggle-exponential'):                void
-        (e: 'toggle-linear'):                     void
-        (e: 'toggle-logistic'):                   void
-        (e: 'toggle-logarithmic'):                void
-        (e: 'toggle-polynomial', degree: number): void
-        (e: 'toggle-power'):                      void
-        (e: 'toggle-sinusoidal'):                 void
-        (e: 'save-view'):                         void
-        (e: 'save-view-as'):                      void
-        (e: 'load-view',         id:   string):   void
-        (e: 'delete-view',       id:   string):   void
-    }>()
+// file stuff
+const fileInput = ref<HTMLInputElement | null>(null)
 
 
-    // file stuff
-    const fileInput = ref<HTMLInputElement | null>(null)
+function handleFileInput(event: Event) {
+    const input = event.target as HTMLInputElement
+    const file = input.files?.[0]
 
-
-    function handleFileInput(event: Event) {
-        const input = event.target as HTMLInputElement
-        const file  = input.files?.[0]
-
-        if(!file) {
-            return
-        }
-
-        emit('file-selected', file)
-        input.value = ''
+    if (!file) {
+        return
     }
 
-
-    function targetFileInput() {
-        fileInput.value?.click()
-    }
-
-
-    // axis column stuff
-    function onXChange(e: Event) {
-        emit('update:x-column', (e.target as HTMLSelectElement).value)
-    }
+    emit('file-selected', file)
+    input.value = ''
+}
 
 
-    function onYChange(e: Event) {
-        emit('update:y-column', (e.target as HTMLSelectElement).value)
-    }
+function targetFileInput() {
+    fileInput.value?.click()
+}
 
 
-    // graph stuff
-    function clearFit():                       void { emit('clear-fit')                 }
-    function toggleExponential():              void { emit('toggle-exponential')        }
-    function toggleLinear():                   void { emit('toggle-linear')             }
-    function toggleLogistic():                 void { emit('toggle-logistic')           }
-    function toggleLogarithmic():              void { emit('toggle-logarithmic')        }
-    function togglePolynomial(degree: number): void { emit('toggle-polynomial', degree) }
-    function togglePower():                    void { emit('toggle-power')              }
-    function toggleSinusoidal():               void { emit('toggle-sinusoidal')         }
+// axis column stuff
+function onXChange(e: Event) {
+    emit('update:x-column', (e.target as HTMLSelectElement).value)
+}
+
+
+function onYChange(e: Event) {
+    emit('update:y-column', (e.target as HTMLSelectElement).value)
+}
+
+
+// graph stuff
+function clearFit(): void { emit('clear-fit') }
+function toggleExponential(): void { emit('toggle-exponential') }
+function toggleLinear(): void { emit('toggle-linear') }
+function toggleLogistic(): void { emit('toggle-logistic') }
+function toggleLogarithmic(): void { emit('toggle-logarithmic') }
+function togglePolynomial(degree: number): void { emit('toggle-polynomial', degree) }
+function togglePower(): void { emit('toggle-power') }
+function toggleSinusoidal(): void { emit('toggle-sinusoidal') }
 </script>
 
 
 <template>
     <div class="flex flex-row items-center h-10 w-full bg-xrb-bg-2 border-b border-xrb-border px-3 gap-3">
         <input ref="fileInput" type="file" accept=".csv" class="hidden" @change="handleFileInput" />
+
+        <button @click="router.push('/dashboard');"
+            class="rounded-none tooltip tooltip-bottom tooltip-neutral group" data-tip="Home">
+            <!-- Home icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
+                stroke="currentColor" class="size-6 transition-colors duration-50">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+            </svg>
+        </button>
 
         <button class="btn btn-ghost btn-xs text-xrb-text-1 font-mono tracking-widest uppercase"
             @click="emit('browse-files')">Browse Files</button>
@@ -170,5 +182,4 @@
 </template>
 
 
-<style scoped>
-</style>
+<style scoped></style>
