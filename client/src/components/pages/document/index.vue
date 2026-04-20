@@ -68,6 +68,7 @@
     const hiddenRows      = ref<Set<number>>(new Set())
     const xColumn         = ref<string | null>(null)
     const yColumn         = ref<string | null>(null)
+    const aColumn         = ref<string | null>(null)
     const loadError       = ref<string | null>(null)
     const showBrowser     = ref(false)
     const currentViewId   = ref<string | null>(null)
@@ -82,6 +83,7 @@
         hiddenRows.value    = new Set()
         xColumn.value       = newTable.headers[0] ?? null
         yColumn.value       = newTable.headers[1] ?? newTable.headers[0] ?? null
+        aColumn.value       = null
         currentViewId.value = null
     }
 
@@ -136,6 +138,23 @@
 
     function onXColumn(col: string) { xColumn.value = col }
     function onYColumn(col: string) { yColumn.value = col }
+    function onAColumn(col: string) {
+        if (table.value) {
+            const idx      = table.value.headers.indexOf(col)
+            const distinct = new Set(table.value.rows.map(row => row[idx])).size
+            
+            if (distinct > 50) {
+                loadError.value = `Column "${col}" has ${distinct} distinct values (max 50 for grouping)`
+                
+                aColumn.value = ""
+                nextTick(() => { aColumn.value = null })
+                
+                return
+            }
+        }
+
+        aColumn.value = col
+    }
 
 
     // view stuff
@@ -241,20 +260,19 @@
     <div class="grid grid-rows-[auto_1fr] h-screen w-screen bg-xrb-bg-1"
         :style="{ gridTemplateColumns: `${leftbarWidth}px ${HANDLE_WIDTH}px 1fr` }">
         <!-- Z0 -->
-        <Topbar :headers="table?.headers ?? []" :x-column="xColumn" :y-column="yColumn" :saved-views="views"
-            :has-table="!!table" :current-view-id="currentViewId" :current-view-name="currentViewName"
-            @file-selected="onFileReceived" @browse-files="showBrowser = true" @update:x-column="onXColumn"
-            @update:y-column="onYColumn" @clear-fit="clearFit" @toggle-exponential="toggleExponential"
-            @toggle-linear="toggleLinear" @toggle-logistic="toggleLogistic" @toggle-logarithmic="toggleLogarithmic"
-            @toggle-polynomial="togglePolynomial" @toggle-power="togglePower" @toggle-sinusoidal="toggleSinusoidal"
-            @save-view="onSaveView" @save-view-as="onSaveViewAs" @load-view="onLoadView" @delete-view="onDeleteView"
-            class="col-span-3" />
+        <Topbar :headers="table?.headers ?? []" :x-column="xColumn" :y-column="yColumn" :a-column="aColumn"
+            :saved-views="views" :has-table="!!table" :current-view-id="currentViewId"
+            :current-view-name="currentViewName" @file-selected="onFileReceived" @browse-files="showBrowser = true"
+            @update:x-column="onXColumn" @update:y-column="onYColumn" @update:a-column="onAColumn" @clear-fit="clearFit"
+            @toggle-exponential="toggleExponential" @toggle-linear="toggleLinear" @toggle-logistic="toggleLogistic"
+            @toggle-logarithmic="toggleLogarithmic" @toggle-polynomial="togglePolynomial" @toggle-power="togglePower"
+            @toggle-sinusoidal="toggleSinusoidal" @save-view="onSaveView" @save-view-as="onSaveViewAs"
+            @load-view="onLoadView" @delete-view="onDeleteView" class="col-span-3" />
         <Leftbar :table="table" :hidden-rows="hiddenRows" @toggle-row-hidden="toggleRowHidden"
             @toggle-all-hidden="toggleAllHidden" @header="onHeader" class="row-start-2" />
         <Handle @mousedown="onMouseDown" class="row-start-2" :class="handleClass" />
         <Graph ref="graph" :table="table" :hidden-rows="hiddenRows" :x-column="xColumn" :y-column="yColumn"
-            @ready="isContentReady = true" class="row-start-2" />
-
+            :a-column="aColumn" @ready="isContentReady = true" class="row-start-2" />
 
         <!-- File browser modal -->
         <FileBrowser v-if="showBrowser" @close="showBrowser = false" @select="loadServerFile" />
