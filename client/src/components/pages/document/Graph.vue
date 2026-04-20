@@ -228,14 +228,22 @@
             groups.get(key)!.y.push(row[yIdx]!)
         }
 
+        const allX: string[] = []
+        const allY: string[] = []
+        groups.forEach((data) => { allX.push(...data.x); allY.push(...data.y) })
+
         const viewport = dgc.getViewport()
         dgc.clear()
         dgc.setViewport(viewport)
+        
+        dgc.add(allX, allY)
+
+        let varIndex = 2
 
         groups.forEach((data, key) => {
             if(data.x.length === 0) return
             
-            dgc!.add(data.x, data.y, colorMap.get(key))
+            dgc!.add(data.x, data.y, colorMap.get(key), varIndex++)
         })
     } else {
         const x: string[] = []

@@ -1025,7 +1025,7 @@ export class DesmosGraphingCalculator {
     // -----------------
 
     // add new dataset
-    add(x: string[], y: string[], color?: string): void {
+    add(x: string[], y: string[], color?: string, varIndex: number = 1): void {
         if(!this.calculator)      return
         if(x.length !== y.length) return
 
@@ -1034,8 +1034,8 @@ export class DesmosGraphingCalculator {
             id,
             type: 'table',
             columns: [
-                { latex: 'x_1', values: x, color },
-                { latex: 'y_1', values: y, color }
+                { latex: `x_${varIndex}`, values: x, color },
+                { latex: `y_${varIndex}`, values: y, color }
             ]
         })
         this.exprv.push(id)
