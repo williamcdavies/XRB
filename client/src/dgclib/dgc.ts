@@ -1029,16 +1029,28 @@ export class DesmosGraphingCalculator {
         if(!this.calculator)      return
         if(x.length !== y.length) return
 
-        const id = `dataset-${ this.exprc }`
+        const tableId = `dataset-${ this.exprc }`
+        const pointId = `dataset-point-${ this.exprc }`
+
         this.calculator.setExpression({
-            id,
+            id:   tableId,
             type: 'table',
             columns: [
-                { latex: `x_${varIndex}`, values: x, color },
-                { latex: `y_${varIndex}`, values: y, color }
+                { latex: `x_{${varIndex}}`, values: x },
+                { latex: `y_{${varIndex}}`, values: y }
             ]
         })
-        this.exprv.push(id)
+
+        if(varIndex > 1) {
+            this.calculator.setExpression({
+                id:    pointId,
+                latex: `(x_{${varIndex}}, y_{${varIndex}})`,
+                color: color,
+            })
+            this.exprv.push(pointId)
+        }
+
+        this.exprv.push(tableId)
         ++this.exprc
     }
 
