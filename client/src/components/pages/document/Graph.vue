@@ -234,6 +234,8 @@
 
         const viewport = dgc.getViewport()
         dgc.clear()
+        dgc.setXLabel(prop.xColumn)
+        dgc.setYLabel(prop.yColumn)
         dgc.setViewport(viewport)
         
         dgc.add(allX, allY)
