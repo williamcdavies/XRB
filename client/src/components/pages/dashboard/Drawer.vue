@@ -175,7 +175,8 @@ const isActive = (view: string) => activeView.value === view
                     </li>
 
                     <!-- Learn item -->
-                    <li v-if="authenticated && user?.type === 'Student'">
+                     <!-- <li v-if="authenticated && user?.type === 'Student'"> -->
+                    <li>
                         <button @click="handleNavigation('learn')"
                             :class="isActive('learn') ? 'text-xrb-text-primary' : 'text-xrb-text-secondary hover:text-xrb-text-primary'"
                             class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group" data-tip="Learn">

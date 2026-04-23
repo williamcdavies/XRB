@@ -8,9 +8,9 @@ const activeSection = ref<'lrlx' | 'xrb'>('lrlx')
   <div class="flex-1 flex flex-col min-h-0 min-w-0 overflow-hidden bg-xrb-bg-1 text-xrb-text-primary">
 
     <!-- Header -->
-    <div class="flex items-center justify-between px-6 py-4 border-b border-xrb-border bg-xrb-bg-2 shrink-0">
+    <!-- <div class="flex items-center justify-between px-6 py-4 border-b border-xrb-border bg-xrb-bg-2 shrink-0">
       <h2 class="text-sm tracking-widest uppercase">Learn</h2>
-    </div>
+    </div> -->
 
     <!-- Scrollable content -->
     <div class="flex-1 overflow-y-auto">
@@ -24,12 +24,12 @@ const activeSection = ref<'lrlx' | 'xrb'>('lrlx')
         />
         <div class="absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-xrb-bg-1"></div>
         <div class="absolute bottom-0 left-0 right-0 px-8 pb-8 text-xrb-text-primary">
-          <h1 class="text-3xl font-bold leading-tight">Accreting Black Holes</h1>
-          <p class="text-sm text-xrb-text-secondary mt-2 max-w-2xl">
-            Some black holes have a companion star. Over time, they steal gas from it — and that gas glows brilliantly
-            in X-rays as it spirals inward. This page explains the data behind those systems.
+          <h1 class="text-4xl font-bold leading-tight text-center">Accreting Black Holes</h1>
+          <p class="italic text-md text-xrb-text-secondary text-center mt-10 ">
+            Some black holes have a companion star. Over time, they steal gas from it. That gas glows brilliantly
+            in X-rays as it spirals inward. Let's take a deep dive into the data behind those systems.
           </p>
-          <p class="text-xs text-xrb-text-secondary mt-1 opacity-60">
+          <p class="text-xs text-xrb-text-secondary text-right mt-10 opacity-60">
             Image credit: Event Horizon Telescope Collaboration, CC BY 4.0 — First-ever photograph of a black hole (M87*, 2019)
           </p>
         </div>
