@@ -11,13 +11,18 @@ export type FitState = {
     sinusoidal:      boolean
 }
 
+export type Viewport = Record<string, number>
+
 export type DocumentView = {
-    id:         string
-    name:       string
-    table:      Table
-    hiddenRows: number[]
-    xColumn:    string | null
-    yColumn:    string | null
-    fits:       FitState
-    savedAt:    number
+    id:              string
+    name:            string
+    table:           Table
+    hiddenRows:      number[]
+    xColumn:         string | null
+    yColumn:         string | null
+    aColumn:         string | null
+    fits:            FitState
+    viewport?:       Viewport | null
+    savedAt:         number
+    lastAccessedAt?: number
 }

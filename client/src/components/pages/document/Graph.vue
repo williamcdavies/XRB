@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import type { Table                             } from '@/types/table';
-    import type { FitState                          } from '@/types/view';
+    import type { FitState, Viewport                } from '@/types/view';
     import      { DesmosGraphingCalculator, DGC_IDS } from '@/dgclib';
     import      { onMounted, onUnmounted, watch     } from 'vue';
 
@@ -125,6 +125,17 @@
     }
 
 
+    function getViewport(): Viewport | null {
+        if (!dgc) return null
+        return dgc.getViewport() ?? null
+    }
+
+
+    function setViewport(vp: Viewport): void {
+        dgc?.setViewport(vp)
+    }
+
+
     defineExpose({
         clearFit,
         toggleExponential,
@@ -136,6 +147,8 @@
         toggleSinusoidal,
         getFitState,
         restoreFits,
+        getViewport,
+        setViewport,
     })
 
 

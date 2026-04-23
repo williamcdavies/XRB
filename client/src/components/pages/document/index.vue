@@ -4,6 +4,7 @@
     import type { Table                                               } from '@/types/table';
     import      { parseCSV                                            } from '@/utils/parse';
     import      { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
+    import      { useRoute                                            } from 'vue-router';
 
     import      ColorLayer                                              from '@/components/layers/ColorLayer.vue';
     import      FileBrowser                                             from './FileBrowser.vue';
@@ -14,8 +15,9 @@
     import      Topbar                                                  from './Topbar.vue';
 
 
-    const { api }                                                                               = useApi()
-    const { views, save: saveView, overwrite: overwriteView, remove: removeView, get: getView } = useDocumentViews()
+    const { api }                                                                                                      = useApi()
+    const { views, save: saveView, overwrite: overwriteView, remove: removeView, get: getView, touch: touchView }      = useDocumentViews()
+    const route                                                                                                        = useRoute()
 
 
     // pretty loading stuff
@@ -169,17 +171,22 @@
             hiddenRows: [...hiddenRows.value],
             xColumn:    xColumn.value,
             yColumn:    yColumn.value,
+            aColumn:    aColumn.value,
             fits:       graph.value?.getFitState() ?? {
                 linear: false, exponential: false, logarithmic: false,
                 logistic: false, polynomial: false, power: false, sinusoidal: false,
             },
+            viewport:   graph.value?.getViewport() ?? null,
         }
     }
 
 
     function onSaveView() {
         if (!table.value || !currentViewId.value) return
-        overwriteView(currentViewId.value, buildViewData())
+        const existing = getView(currentViewId.value)
+        const data     = buildViewData()
+        data.name      = existing?.name ?? ''
+        overwriteView(currentViewId.value, data)
     }
 
 
@@ -208,11 +215,15 @@
         hiddenRows.value    = new Set(view.hiddenRows)
         xColumn.value       = view.xColumn
         yColumn.value       = view.yColumn
+        aColumn.value       = view.aColumn ?? null
         currentViewId.value = view.id
 
-        if (view.fits) {
-            nextTick(() => graph.value?.restoreFits(view.fits))
-        }
+        touchView(view.id)
+
+        nextTick(() => {
+            if (view.fits)     graph.value?.restoreFits(view.fits)
+            if (view.viewport) graph.value?.setViewport(view.viewport)
+        })
     }
 
 
@@ -247,6 +258,12 @@
     // mounting stuff
     onMounted(() => {
         window.addEventListener('resize', onWindowResize)
+
+        const queryId = route.query.view
+        const viewId  = Array.isArray(queryId) ? queryId[0] : queryId
+        if (viewId && getView(viewId)) {
+            onLoadView(viewId)
+        }
     })
 
 
