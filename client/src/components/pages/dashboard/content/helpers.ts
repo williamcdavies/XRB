@@ -20,6 +20,7 @@ export interface GroupDetail {
     id: number;
     name: string;
     current_user_role: 'admin' | 'user';
+    current_user_id: number;
     members: Member[];
 }
 
