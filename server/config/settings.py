@@ -213,3 +213,8 @@ AUTH_USER_MODEL = 'api_account.User'
 # Max upload size: 5 GB
 DATA_UPLOAD_MAX_MEMORY_SIZE = 5 * 1024 * 1024 * 1024
 FILE_UPLOAD_MAX_MEMORY_SIZE = 5 * 1024 * 1024 * 1024
+
+# Path to the rsync sshd authorized_keys file. Written by the account
+# signals; consumed by the rsync container's sshd via the shared /rsync
+# volume.
+RSYNC_AUTHORIZED_KEYS_PATH = os.environ.get('RSYNC_AUTHORIZED_KEYS_PATH', '/rsync/authorized_keys')

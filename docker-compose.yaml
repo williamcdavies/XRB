@@ -15,7 +15,7 @@ services:
       - xrb-network
     ports:
       - "8080:8080"
-    
+
   django:
     build:
       context: server
@@ -30,6 +30,26 @@ services:
       - xrb-network
     volumes:
       - ./docker-data/data:/data
+      - ./rsync:/rsync
+
+  rsync:
+    build:
+      context: .
+      dockerfile: rsync/Dockerfile
+      network: host
+    container_name: xrb-rsync
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - .env
+    networks:
+      - xrb-network
+    ports:
+      - "2222:22"
+    volumes:
+      - ./docker-data/data:/data
+      - ./rsync:/rsync
 
   postgres:
     container_name: xrb-postgres
@@ -45,7 +65,7 @@ services:
       - "5432:5432"
     volumes:
       - ./docker-data/postgres:/var/lib/postgresql/data
-    
+
 networks:
   xrb-network:
     driver: bridge

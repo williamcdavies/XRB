@@ -10,6 +10,8 @@ from django_otp.plugins.otp_email.models import EmailDevice
 from rest_framework.response import Response
 from rest_framework import status
 
+from modules.api.account.models import RsyncPublicKey, InvalidPublicKey
+
 User = get_user_model()
 
 #Email Change Authentication
@@ -154,4 +156,55 @@ def logout(request):
 def delete_account(request):
     user = request.user
     user.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+def _serialize_rsync_key(key):
+    return {
+        'id': key.id,
+        'name': key.name,
+        'key_type': key.key_type,
+        'fingerprint': key.fingerprint,
+        'created_at': key.created_at,
+    }
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def list_rsync_keys(request):
+    keys = RsyncPublicKey.objects.filter(user=request.user).order_by('-created_at')
+    return Response([_serialize_rsync_key(k) for k in keys])
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_rsync_key(request):
+    name = (request.data.get('name') or '').strip()
+    public_key = request.data.get('public_key') or ''
+    if not name:
+        return Response({'error': 'Name is required.'}, status=status.HTTP_400_BAD_REQUEST)
+    if len(name) > 64:
+        return Response({'error': 'Name must be 64 characters or fewer.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        key = RsyncPublicKey.register(user=request.user, name=name, raw_public_key=public_key)
+    except InvalidPublicKey as exc:
+        return Response({'error': str(exc)}, status=status.HTTP_400_BAD_REQUEST)
+    except IntegrityError:
+        return Response(
+            {'error': 'This key name or public key is already registered.'},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    return Response(_serialize_rsync_key(key), status=status.HTTP_201_CREATED)
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_rsync_key(request, key_id):
+    try:
+        key = RsyncPublicKey.objects.get(pk=key_id, user=request.user)
+    except RsyncPublicKey.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    key.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)

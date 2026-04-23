@@ -1,0 +1,38 @@
+Port 22
+
+# Host keys persist across container restarts via the /rsync volume.
+HostKey /rsync/ssh_host_keys/ssh_host_ed25519_key
+HostKey /rsync/ssh_host_keys/ssh_host_rsa_key
+
+# Root is the only login; each authorized_keys line pins a forced command
+# that identifies the real Django user and enforces precheck permissions.
+PermitRootLogin prohibit-password
+AllowUsers root
+
+# Public-key auth only.
+PubkeyAuthentication yes
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+KbdInteractiveAuthentication no
+PermitEmptyPasswords no
+UsePAM no
+
+AuthorizedKeysFile /rsync/authorized_keys
+
+# Lock down everything that isn't rsync-over-ssh.
+X11Forwarding no
+AllowTcpForwarding no
+AllowAgentForwarding no
+AllowStreamLocalForwarding no
+GatewayPorts no
+PermitTunnel no
+PermitUserRC no
+PrintMotd no
+PrintLastLog no
+
+# Django writes authorized_keys via a shared volume; permissions/ownership
+# are fixed by the entrypoint, but the volume root is created by Docker
+# and may not match sshd's strict expectations.
+StrictModes no
+
+PidFile /var/run/sshd.pid
