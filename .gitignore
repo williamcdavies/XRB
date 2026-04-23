@@ -4,6 +4,10 @@
 # VSC stuff
 .vscode
 
+# rsync-over-ssh runtime state — generated from RsyncPublicKey rows and sshd
+rsync/authorized_keys
+rsync/ssh_host_keys/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

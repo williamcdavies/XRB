@@ -1,0 +1,116 @@
+#!/usr/bin/env python3
+"""
+SSH forced-command wrapper for rsync.
+
+sshd invokes this script for every successful public-key login. The
+authorized_keys line pins the Django user's email as argv[1]; the rsync
+command the client wanted to run is passed in $SSH_ORIGINAL_COMMAND.
+
+We:
+  1. Require the original command to be ``rsync --server ...``.
+  2. Translate any absolute ``/data/...`` paths back to module-relative
+     form expected by the permission checker.
+  3. Run the same evaluator the old rsyncd ``pre-xfer exec`` hook used.
+  4. chdir to /data and exec the rsync server with the normalized argv.
+"""
+
+import os
+import shlex
+import sys
+from pathlib import Path
+
+XRB_DATA_ROOT = Path('/data')
+
+
+def _die(msg, code=1):
+    sys.stderr.write(f'xrb-rsync-wrapper: {msg}\n')
+    sys.exit(code)
+
+
+def _rel_path(arg):
+    """Return the module-relative form of an rsync path argument, or None if
+    it escapes the /data root."""
+    if arg.startswith('/data/'):
+        return arg[len('/data/'):] or '.'
+    if arg == '/data':
+        return '.'
+    if arg.startswith('/'):
+        return None
+    return arg
+
+
+def main():
+    if len(sys.argv) != 2:
+        _die('expected exactly one argument (user email)')
+    email = sys.argv[1].strip()
+    if not email:
+        _die('missing user email')
+
+    original = os.environ.get('SSH_ORIGINAL_COMMAND', '')
+    if not original:
+        _die('only rsync-over-ssh is permitted for this key')
+
+    try:
+        argv = shlex.split(original)
+    except ValueError as exc:
+        _die(f'could not parse command: {exc}')
+
+    if len(argv) < 2 or argv[0] != 'rsync' or argv[1] != '--server':
+        _die('only "rsync --server ..." invocations are permitted')
+
+    try:
+        sep = argv.index('.')
+    except ValueError:
+        _die('malformed rsync argv: missing path separator')
+
+    option_block = argv[:sep + 1]
+    raw_paths = argv[sep + 1:]
+    if not raw_paths:
+        _die('no paths in rsync argv')
+
+    normalized = []
+    for raw in raw_paths:
+        rel = _rel_path(raw)
+        if rel is None:
+            _die(f'path outside /data: {raw!r}')
+        normalized.append(rel)
+
+    # sshd wipes the session environment, so Django settings can't see the
+    # container's env_file vars. The rsync entrypoint snapshots env to this
+    # file before exec'ing sshd; reinstate it here.
+    try:
+        with open('/etc/xrb-rsync.env', 'rb') as f:
+            snapshot = f.read()
+    except OSError:
+        snapshot = b''
+    for entry in snapshot.split(b'\0'):
+        if not entry:
+            continue
+        k, eq, v = entry.partition(b'=')
+        if eq and k:
+            os.environ.setdefault(k.decode('utf-8', 'replace'), v.decode('utf-8', 'replace'))
+
+    sys.path.insert(0, '/app')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+    import django
+    django.setup()
+
+    from django.contrib.auth import get_user_model
+    from modules.api.data.rsync_precheck import evaluate
+
+    User = get_user_model()
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        _die(f'unknown user {email!r}')
+
+    ok, reason = evaluate(user, option_block + normalized)
+    if not ok:
+        _die(f'deny: {reason}')
+
+    os.chdir(XRB_DATA_ROOT)
+    os.execvp('rsync', option_block + normalized)
+
+
+if __name__ == '__main__':
+    main()
