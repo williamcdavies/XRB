@@ -23,10 +23,12 @@ export function useDocumentViews() {
 
 
     function save(view: Omit<DocumentView, 'id' | 'savedAt'>): DocumentView {
+        const now = Date.now()
         const entry: DocumentView = {
             ...view,
-            id:      crypto.randomUUID(),
-            savedAt: Date.now(),
+            id:             crypto.randomUUID(),
+            savedAt:        now,
+            lastAccessedAt: now,
         }
         views.value.push(entry)
         persist()
@@ -38,10 +40,12 @@ export function useDocumentViews() {
         const idx = views.value.findIndex(v => v.id === id)
         if (idx < 0) return undefined
 
+        const now = Date.now()
         const updated: DocumentView = {
             ...data,
             id,
-            savedAt: Date.now(),
+            savedAt:        now,
+            lastAccessedAt: now,
         }
         views.value[idx] = updated
         persist()
@@ -60,5 +64,13 @@ export function useDocumentViews() {
     }
 
 
-    return { views, save, overwrite, remove, get }
+    function touch(id: string) {
+        const idx = views.value.findIndex(v => v.id === id)
+        if (idx < 0) return
+        views.value[idx] = { ...views.value[idx]!, lastAccessedAt: Date.now() }
+        persist()
+    }
+
+
+    return { views, save, overwrite, remove, get, touch }
 }
