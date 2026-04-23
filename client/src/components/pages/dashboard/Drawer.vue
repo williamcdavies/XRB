@@ -2,13 +2,9 @@
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import { useAuth } from '@/composables/auth';
-
-const { isAuthenticated } = useAuth()
-const authenticated = ref(false)
-
-onMounted(async () => {
-    authenticated.value = await isAuthenticated()
-})
+import { computed } from 'vue'
+import { useDocumentViews } from '@/composables/views'
+import type { DocumentView } from '@/types/view'
 
 const activeView = ref('home')
 
@@ -18,6 +14,31 @@ const emit = defineEmits<{
 }>();
 
 const router = useRouter();
+const { views } = useDocumentViews();
+
+const recentViews = computed(() => {
+    return [...views.value].sort((a, b) => {
+        const aTime = a.lastAccessedAt ?? a.savedAt
+        const bTime = b.lastAccessedAt ?? b.savedAt
+        return bTime - aTime
+    }).slice(0, 5)
+})
+
+function truncateName(name: string) {
+    return name.length > 20 ? name.slice(0, 20) + '...' : name
+}
+
+function openView(view: DocumentView) {
+    router.push({ path: '/document', query: { view: view.id } })
+}
+
+const { isAuthenticated } = useAuth()
+const authenticated = ref(false)
+
+onMounted(async () => {
+    authenticated.value = await isAuthenticated()
+})
+
 
 const handleNavigation = (view: string) => {
     if (view === 'document') {
@@ -63,15 +84,15 @@ const isActive = (view: string) => activeView.value === view
                             class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group text-xrb-text-secondary hover:text-xrb-text-primary"
                             data-tip="New">
                             <!-- New item icon -->
-                            <svg v-if="isActive('new')" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                class="size-6">
+                            <svg v-if="isActive('new')" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                fill="currentColor" class="size-6">
                                 <path fill-rule="evenodd"
                                     d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 9a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25V15a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V9Z"
                                     clip-rule="evenodd" />
                             </svg>
 
-                            <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
-                                stroke="currentColor" class="size-6 transition-colors duration-50">
+                            <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1" stroke="currentColor" class="size-6 transition-colors duration-50">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                             </svg>
@@ -83,8 +104,7 @@ const isActive = (view: string) => activeView.value === view
                     <li>
                         <button @click="handleNavigation('home')"
                             :class="isActive('home') ? 'text-xrb-text-primary' : 'text-xrb-text-secondary hover:text-xrb-text-primary'"
-                            class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group"
-                            data-tip="Home">
+                            class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group" data-tip="Home">
                             <!-- Home icon -->
                             <svg v-if="isActive('home')" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                 fill="currentColor" class="size-6">
@@ -106,8 +126,7 @@ const isActive = (view: string) => activeView.value === view
                     <li>
                         <button @click="handleNavigation('files')"
                             :class="isActive('files') ? 'text-xrb-text-primary' : 'text-xrb-text-secondary hover:text-xrb-text-primary'"
-                            class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group"
-                            data-tip="Files">
+                            class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group" data-tip="Files">
                             <svg v-if="isActive('files')" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                 fill="currentColor" class="size-6">
                                 <path
@@ -130,8 +149,7 @@ const isActive = (view: string) => activeView.value === view
                     <li v-if="authenticated">
                         <button @click="handleNavigation('groups')"
                             :class="isActive('groups') ? 'text-xrb-text-primary' : 'text-xrb-text-secondary hover:text-xrb-text-primary'"
-                            class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group"
-                            data-tip="Groups">
+                            class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group" data-tip="Groups">
                             <!-- Groups icon -->
                             <svg v-if="isActive('groups')" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                 fill="currentColor" class="size-6">
@@ -152,6 +170,15 @@ const isActive = (view: string) => activeView.value === view
                     <div>
                         <span
                             class="item-inline is-drawer-close:hidden p-4 text-xrb-text-secondary flex justify-start select-none">Recents</span>
+                        <button v-for="view in recentViews" :key="view.id" type="button"
+                            class="w-full rounded-none is-drawer-close:hidden group relative flex flex-col pl-6 py-2 text-left cursor-pointer text-xrb-text-secondary hover:text-xrb-text-primary hover:bg-base-content/10 transition-colors duration-50"
+                            @click="openView(view)">
+                            <div class="flex items-center justify-between select-none">
+                                <span class="text-sm truncate flex-1">
+                                    {{ truncateName(view.name || '(unnamed)') }}
+                                </span>
+                            </div>
+                        </button>
                     </div>
 
                     <!-- Force to Bottom -->
