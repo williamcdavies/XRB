@@ -87,6 +87,21 @@ onMounted(async () => {
                 </div>
             </li>
 
+            <li @click="emit('open-modal', 'rsync')"
+                class="flex list-row h-1/6 hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary rounded-none hover:cursor-pointer">
+                <div class="flex justify-center items-center w-1/6">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M7.5 7.5h-.75A2.25 2.25 0 0 0 4.5 9.75v7.5a2.25 2.25 0 0 0 2.25 2.25h7.5a2.25 2.25 0 0 0 2.25-2.25v-7.5a2.25 2.25 0 0 0-2.25-2.25h-.75m-6 3.75 3 3m0 0 3-3m-3 3V1.5m6 9h.75a2.25 2.25 0 0 1 2.25 2.25v7.5a2.25 2.25 0 0 1-2.25 2.25h-7.5a2.25 2.25 0 0 1-2.25-2.25v-.75" />
+                    </svg>
+                </div>
+                <div class="flex flex-col w-5/6 justify-center h-full select-none">
+                    <h2 class="font-sans font-bold text-lg">Rsync SSH Keys</h2>
+                    <p class="font-sans py-0 text-md">Public keys authorized to transfer files via rsync over SSH</p>
+                </div>
+            </li>
+
             <li @click="emit('open-modal', 'delete')"
                 class="flex list-row h-1/6 hover:bg-xrb-menu-background-accent hover:border-xrb-text-warning-2 text-xrb-text-secondary hover:text-xrb-text-primary rounded-none hover:cursor-pointer">
                 <div class="flex justify-center items-center w-1/6">

@@ -37,6 +37,12 @@
 
     const isAdmin = computed(() => selectedGroup.value?.current_user_role === 'admin');
 
+    const isOnlyAdmin = computed(() => {
+        const g = selectedGroup.value;
+        if (!g || g.current_user_role !== 'admin') return false;
+        return g.members.filter(m => m.role === 'admin').length === 1;
+    });
+
     // File permissions state
     const activeTab = ref<'members' | 'permissions'>('members');
     const filePermissions = ref<FilePermission[]>([]);
@@ -146,6 +152,18 @@
             await fetchGroups();
         } catch (e) {
             error.value = e instanceof Error ? e.message : 'Failed to delete group';
+        }
+    }
+
+    async function leaveGroup() {
+        if (!selectedGroup.value) return;
+        if (!confirm(`Leave group "${selectedGroup.value.name}"? You will lose access to its shared files.`)) return;
+        try {
+            await removeMemberRequest(api, selectedGroup.value.id, selectedGroup.value.current_user_id);
+            selectedGroup.value = null;
+            await fetchGroups();
+        } catch (e) {
+            error.value = e instanceof Error ? e.message : 'Failed to leave group';
         }
     }
 
@@ -277,14 +295,25 @@
             <template v-else>
                 <div class="flex items-center justify-between px-6 py-4 border-b border-xrb-border bg-xrb-bg-2 shrink-0">
                     <h2 class="text-lg font-medium">{{ selectedGroup.name }}</h2>
-                    <button
-                        v-if="isAdmin"
-                        type="button"
-                        class="btn btn-sm btn-outline border-red-500/30 text-red-400 hover:bg-red-500/10 hover:border-red-500/50"
-                        @click="deleteGroup"
-                    >
-                        Delete group
-                    </button>
+                    <div class="flex items-center gap-2">
+                        <button
+                            type="button"
+                            class="btn btn-sm btn-outline border-red-500/30 text-red-400 hover:bg-red-500/10 hover:border-red-500/50 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                            :disabled="isOnlyAdmin"
+                            :title="isOnlyAdmin ? 'You are the only admin. Promote another member first, or delete the group.' : ''"
+                            @click="leaveGroup"
+                        >
+                            Leave group
+                        </button>
+                        <button
+                            v-if="isAdmin"
+                            type="button"
+                            class="btn btn-sm btn-outline border-red-500/30 text-red-400 hover:bg-red-500/10 hover:border-red-500/50"
+                            @click="deleteGroup"
+                        >
+                            Delete group
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Tabs (admin sees both; regular users only see members) -->

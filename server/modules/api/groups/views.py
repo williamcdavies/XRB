@@ -98,6 +98,7 @@ def group_detail(request, group_id):
         'id': group.id,
         'name': group.name,
         'current_user_role': membership.role,
+        'current_user_id': request.user.id,
         'members': [
             {
                 'id': m.user.id,
@@ -201,6 +202,16 @@ def remove_member(request, group_id, user_id):
             {'error': 'User is not a member of this group'},
             status=status.HTTP_404_NOT_FOUND,
         )
+
+    if target_membership.role == GroupMembership.ROLE_ADMIN:
+        other_admin_count = group.memberships.filter(
+            role=GroupMembership.ROLE_ADMIN,
+        ).exclude(user_id=user_id).count()
+        if other_admin_count == 0:
+            return Response(
+                {'error': 'Cannot remove the only admin. Promote another member to admin first, or delete the group.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
     target_membership.user.groups.remove(group)
     target_membership.delete()

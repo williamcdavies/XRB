@@ -13,4 +13,7 @@ urlpatterns = [
     path('update_type/', views.update_type, name='update_type'),
     path('logout/', views.logout, name='logout'),
     path('delete_account/', views.delete_account, name='delete_account'),
+    path('rsync_keys/', views.list_rsync_keys, name='list_rsync_keys'),
+    path('rsync_keys/create/', views.create_rsync_key, name='create_rsync_key'),
+    path('rsync_keys/<int:key_id>/', views.delete_rsync_key, name='delete_rsync_key'),
 ]

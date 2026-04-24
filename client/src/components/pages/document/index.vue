@@ -4,7 +4,7 @@
     import type { Table                                               } from '@/types/table';
     import      { parseCSV                                            } from '@/utils/parse';
     import      { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
-    import      { useRoute, useRouter                                 } from 'vue-router';
+    import      { useRoute                                            } from 'vue-router';
 
     import      ColorLayer                                              from '@/components/layers/ColorLayer.vue';
     import      FileBrowser                                             from './FileBrowser.vue';
@@ -18,7 +18,6 @@
     const { api }                                                                                                      = useApi()
     const { views, save: saveView, overwrite: overwriteView, remove: removeView, get: getView, touch: touchView }      = useDocumentViews()
     const route                                                                                                        = useRoute()
-    const router                                                                                                       = useRouter()
 
 
     // pretty loading stuff
@@ -264,7 +263,6 @@
         const viewId  = Array.isArray(queryId) ? queryId[0] : queryId
         if (viewId && getView(viewId)) {
             onLoadView(viewId)
-            router.replace({ path: '/document' })
         }
     })
 

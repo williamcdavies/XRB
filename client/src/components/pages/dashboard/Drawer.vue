@@ -2,13 +2,10 @@
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import { useAuth } from '@/composables/auth';
-
-const { isAuthenticated } = useAuth()
-const authenticated = ref(false)
-
-onMounted(async () => {
-    authenticated.value = await isAuthenticated()
-})
+import { useUser } from '@/composables/account'
+import { computed } from 'vue'
+import { useDocumentViews } from '@/composables/views'
+import type { DocumentView } from '@/types/view'
 
 const activeView = ref('home')
 
@@ -18,6 +15,38 @@ const emit = defineEmits<{
 }>();
 
 const router = useRouter();
+const { views } = useDocumentViews();
+
+const recentViews = computed(() => {
+    return [...views.value].sort((a, b) => {
+        const aTime = a.lastAccessedAt ?? a.savedAt
+        const bTime = b.lastAccessedAt ?? b.savedAt
+        return bTime - aTime
+    }).slice(0, 5)
+})
+
+function truncateName(name: string) {
+    return name.length > 20 ? name.slice(0, 20) + '...' : name
+}
+
+function openView(view: DocumentView) {
+    router.push({ path: '/document', query: { view: view.id } })
+}
+
+const { isAuthenticated } = useAuth()
+const authenticated = ref(false)
+
+const { user, fetchUser } = useUser()
+
+onMounted(async () => {
+    authenticated.value = await isAuthenticated()
+    if (authenticated.value) {
+        await fetchUser()
+    } else {
+        console.log('No valid token found')
+    }
+})
+
 
 const handleNavigation = (view: string) => {
     if (view === 'document') {
@@ -63,15 +92,15 @@ const isActive = (view: string) => activeView.value === view
                             class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group text-xrb-text-secondary hover:text-xrb-text-primary"
                             data-tip="New">
                             <!-- New item icon -->
-                            <svg v-if="isActive('new')" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                class="size-6">
+                            <svg v-if="isActive('new')" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                fill="currentColor" class="size-6">
                                 <path fill-rule="evenodd"
                                     d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 9a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25V15a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V9Z"
                                     clip-rule="evenodd" />
                             </svg>
 
-                            <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
-                                stroke="currentColor" class="size-6 transition-colors duration-50">
+                            <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1" stroke="currentColor" class="size-6 transition-colors duration-50">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                             </svg>
@@ -83,8 +112,7 @@ const isActive = (view: string) => activeView.value === view
                     <li>
                         <button @click="handleNavigation('home')"
                             :class="isActive('home') ? 'text-xrb-text-primary' : 'text-xrb-text-secondary hover:text-xrb-text-primary'"
-                            class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group"
-                            data-tip="Home">
+                            class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group" data-tip="Home">
                             <!-- Home icon -->
                             <svg v-if="isActive('home')" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                 fill="currentColor" class="size-6">
@@ -106,8 +134,7 @@ const isActive = (view: string) => activeView.value === view
                     <li>
                         <button @click="handleNavigation('files')"
                             :class="isActive('files') ? 'text-xrb-text-primary' : 'text-xrb-text-secondary hover:text-xrb-text-primary'"
-                            class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group"
-                            data-tip="Files">
+                            class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group" data-tip="Files">
                             <svg v-if="isActive('files')" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                 fill="currentColor" class="size-6">
                                 <path
@@ -130,8 +157,7 @@ const isActive = (view: string) => activeView.value === view
                     <li v-if="authenticated">
                         <button @click="handleNavigation('groups')"
                             :class="isActive('groups') ? 'text-xrb-text-primary' : 'text-xrb-text-secondary hover:text-xrb-text-primary'"
-                            class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group"
-                            data-tip="Groups">
+                            class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group" data-tip="Groups">
                             <!-- Groups icon -->
                             <svg v-if="isActive('groups')" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                 fill="currentColor" class="size-6">
@@ -148,10 +174,47 @@ const isActive = (view: string) => activeView.value === view
                         </button>
                     </li>
 
+                    <!-- Learn item -->
+                    <li v-if="authenticated && user?.type === 'Student'">
+                        <button @click="handleNavigation('learn')"
+                            :class="isActive('learn') ? 'text-xrb-text-primary' : 'text-xrb-text-secondary hover:text-xrb-text-primary'"
+                            class="p-4 rounded-none tooltip tooltip-right tooltip-neutral group" data-tip="Learn">
+                            <!-- Learn icon -->
+                            <svg v-if="isActive('learn')" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                fill="currentColor" class="size-6">
+                                <path
+                                    d="M11.7 2.805a.75.75 0 0 1 .6 0A60.65 60.65 0 0 1 22.83 8.72a.75.75 0 0 1-.231 1.337 49.948 49.948 0 0 0-9.902 3.912l-.003.002c-.114.06-.227.119-.34.18a.75.75 0 0 1-.707 0A50.88 50.88 0 0 0 7.5 12.173v-.224c0-.131.067-.248.172-.311a54.615 54.615 0 0 1 4.653-2.52.75.75 0 0 0-.65-1.352 56.123 56.123 0 0 0-4.78 2.589 1.858 1.858 0 0 0-.859 1.228 49.803 49.803 0 0 0-4.634-1.527.75.75 0 0 1-.231-1.337A60.653 60.653 0 0 1 11.7 2.805Z" />
+                                <path
+                                    d="M13.06 15.473a48.45 48.45 0 0 1 7.666-3.282c.134 1.414.22 2.843.255 4.284a.75.75 0 0 1-.46.711 47.87 47.87 0 0 0-8.105 4.342.75.75 0 0 1-.832 0 47.87 47.87 0 0 0-8.104-4.342.75.75 0 0 1-.461-.71c.035-1.442.121-2.87.255-4.286.921.304 1.83.634 2.726.99v1.27a1.5 1.5 0 0 0-.14 2.508c-.09.38-.222.753-.397 1.11.452.213.901.434 1.346.66a6.727 6.727 0 0 0 .551-1.607 1.5 1.5 0 0 0 .14-2.67v-.645a48.549 48.549 0 0 1 3.44 1.667 2.25 2.25 0 0 0 2.12 0Z" />
+                                <path
+                                    d="M4.462 19.462c.42-.419.753-.89 1-1.395.453.214.902.435 1.347.662a6.742 6.742 0 0 1-1.286 1.794.75.75 0 0 1-1.06-1.06Z" />
+                            </svg>
+                            <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1" stroke="currentColor" class="size-6 transition-colors duration-50">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 
+                                48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 
+                                0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 
+                                0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 
+                                0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
+                            </svg>
+                            <span class="is-drawer-close:hidden select-none leading-6">Learn</span>
+                        </button>
+                    </li>
+
                     <!-- Recents -->
                     <div>
                         <span
                             class="item-inline is-drawer-close:hidden p-4 text-xrb-text-secondary flex justify-start select-none">Recents</span>
+                        <button v-for="view in recentViews" :key="view.id" type="button"
+                            class="w-full rounded-none is-drawer-close:hidden group relative flex flex-col pl-6 py-2 text-left cursor-pointer text-xrb-text-secondary hover:text-xrb-text-primary hover:bg-base-content/10 transition-colors duration-50"
+                            @click="openView(view)">
+                            <div class="flex items-center justify-between select-none">
+                                <span class="text-sm truncate flex-1">
+                                    {{ truncateName(view.name || '(unnamed)') }}
+                                </span>
+                            </div>
+                        </button>
                     </div>
 
                     <!-- Force to Bottom -->

@@ -6,6 +6,7 @@ import Hero                 from './Hero.vue'
 import Drawer               from './Drawer.vue'
 import HomeComponent        from './content/Home.vue'
 import GroupsComponent      from './content/Groups.vue'
+import LearnComponent       from './content/Learn.vue'
 import AccountComponent     from './content/account/Account.vue'
 import FilesComponent       from '../files/index.vue'
 
@@ -29,6 +30,7 @@ const changeView = (view: string) => { activeView.value = view }
         @tint="tinted = $event"
       />
       <FilesComponent   v-else-if="activeView === 'files'" />
+      <LearnComponent   v-else-if="activeView === 'learn' && accessToken" />
     </div>
     <Transition name="fade">
       <TintLayer v-if="tinted" class="absolute inset-0 z-2" />
