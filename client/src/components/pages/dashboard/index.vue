@@ -31,7 +31,7 @@ const changeView = (view: string) => { activeView.value = view }
       />
       <FilesComponent   v-else-if="activeView === 'files'" />
       <LearnComponent   v-else-if="activeView === 'learn'" />
-      <!-- <LearnComponent   v-else-if="activeView === 'learn' && accessToken" /> !-->
+      <!-- <LearnComponent   v-else-if="activeView === 'learn' && accessToken" />  -->
     </div>
     <Transition name="fade">
       <TintLayer v-if="tinted" class="absolute inset-0 z-2" />
