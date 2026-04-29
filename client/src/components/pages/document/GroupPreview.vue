@@ -48,7 +48,7 @@
                         {{ entry.hidden ? '○' : '●' }}
                     </button>
                     <div class="text-xs px-3 py-1.5 whitespace-nowrap">{{ index + 1 }}</div>
-                    <div class="text-xs px-3 py-1.5 whitespace-nowrap">Group {{ index + 1 }}</div>
+                    <div class="text-xs px-3 py-1.5 whitespace-nowrap">{{ key }}</div>
                     <div class="text-xs px-3 py-1.5 whitespace-nowrap flex items-center gap-2">
                         <div class="w-3 h-3 rounded-sm shrink-0" :style="{ backgroundColor: entry.colour }"></div>
                         {{ entry.colour }}
