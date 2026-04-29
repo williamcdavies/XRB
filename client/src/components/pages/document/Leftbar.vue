@@ -35,7 +35,7 @@
         <div class="shrink-0 flex bg-xrb-bg-2 border-b border-xrb-border">
             <button class="text-xs font-semibold px-3 py-2 transition-colors duration-150"
                 :class="!showGroups ? 'text-xrb-text-1' : 'text-xrb-text-secondary/30 hover:text-xrb-text-secondary'"
-                @click="showGroups = false">Table</button>
+                @click="showGroups = false">Points</button>
             <button class="text-xs font-semibold px-3 py-2 transition-colors duration-150"
                 :class="showGroups ? 'text-xrb-text-1' : 'text-xrb-text-secondary/30 hover:text-xrb-text-secondary'"
                 @click="showGroups = true">Groups</button>
