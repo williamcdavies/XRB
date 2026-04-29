@@ -39,7 +39,7 @@ const activeSection = ref<'lrlx' | 'xrb'>('lrlx')
             An <strong class="text-xrb-accent-1">X-Ray Binary (XRB)</strong> is a two-star system where one object is
             a <strong class="text-xrb-accent-1">black hole</strong> (or neutron star) and the other is an ordinary
             companion star. The black hole's gravity pulls material off the companion. That material forms a swirling
-            disk — called an <strong class="text-xrb-accent-1">accretion disk</strong> — that heats up to millions of
+            disk (<strong class="text-xrb-accent-1">accretion disk</strong>) that heats up to millions of
             degrees and shines brightly in X-rays. By measuring the radio and X-ray light from these systems,
             scientists can learn about the black hole's mass, distance, and how efficiently it converts matter into energy.
           </p>
@@ -78,9 +78,9 @@ const activeSection = ref<'lrlx' | 'xrb'>('lrlx')
           <p class="text-lg text-xrb-text-secondary leading-relaxed">
             One of the most important discoveries in black hole physics is that <strong class="text-xrb-accent-1">radio brightness
             and X-ray brightness track each other</strong>. When a black hole accretes more material,
-            both its X-ray glow (from the hot disk) and its radio jet (a beam of fast-moving particles) get brighter together.
-            This tight relationship — called the <em>fundamental plane of black hole accretion</em> — holds across stellar-mass
-            black holes in our galaxy and even supermassive black holes in distant galaxies.
+            both its X-ray glow from the hot disk and its radio jet (a beam of fast-moving particles) get brighter together.
+            This tight relationship is called the <strong class = "text-xrb-accent-1">fundamental plane of black hole accretion</strong>. 
+            This relationship is found in stellar-mass black holes in our galaxy and even supermassive black holes in distant galaxies.
           </p>
         </div>
 
@@ -93,17 +93,16 @@ const activeSection = ref<'lrlx' | 'xrb'>('lrlx')
           <div class="rounded-xl p-5">
             <div class="flex items-start gap-3">
               <div>
-                <h4 class="font-semibold text-xrb-text-primary text-xl mb-3">
+                <h4 class="font-semibold text-xrb-text-primary text-xl mb-1">
                   L<sub>R</sub> — Radio Luminosity
                 </h4>
                 <p class="text-lg text-xrb-text-secondary leading-relaxed">
-                  <strong class="text-xrb-accent-1">Luminosity</strong> means total power output — how much energy
-                  something radiates per second. L<sub>R</sub> is the power output in
+                  <strong class="text-xrb-accent-1">Luminosity</strong> represents the amount of radiated electromagnetic 
+                  energy per unit time. L<sub>R</sub> represents power output in the form of
                   <strong class="text-xrb-accent-1">radio waves</strong>, measured in ergs per second (erg/s).
-                  For comparison, the Sun puts out about 4 × 10<sup>33</sup> erg/s — these black holes can be
-                  trillions of times more powerful in radio alone. Radio emission in black hole X-ray binaries
-                  is thought to come from a <em>relativistic jet</em> — a narrow beam of plasma
-                  launched near the black hole at nearly the speed of light.
+                  The radio luminosity of a black hole can be <em>trillions</em> of times more powerful than that of the Sun (4 × 10<sup>33</sup> erg/s). Radio emission in black hole X-ray binaries
+                  is thought to come from a narrow beam of plasma
+                  launched near the black hole at nearly the speed of light called a <strong class="text-xrb-accent-1">relativistic jet</strong>.
                 </p>
               </div>
             </div>
@@ -113,17 +112,17 @@ const activeSection = ref<'lrlx' | 'xrb'>('lrlx')
             <div class="flex items-start gap-3">
               <div>
                 <h4 class="font-semibold text-xrb-text-primary text-xl mb-1">
-                  L<sub>R_ler</sub>L<sub>R_uer</sub> — Radio Luminosity Error Bounds
+                  L<sub>R_ler</sub> L<sub>R_uer</sub> — Radio Luminosity Error Bounds
                 </h4>
                 <p class="text-lg text-xrb-text-secondary leading-relaxed">
                   Scientific measurements always come with <strong class="text-xrb-accent-1">uncertainty</strong>.
                   <em>L<sub>R_ler</sub></em> is the <strong class="text-xrb-accent-1">lower error</strong>
                   (how much lower the true value could be) and
                   <em>L<sub>R_uer</sub></em> is the <strong class="text-xrb-accent-1">upper error</strong>
-                  (how much higher it could be). When these values are <em>inf</em> (infinity), it means the
-                  measurement has no reliable upper or lower bound — perhaps because the source was only
+                  (how much higher it could be). When these values are infinity, it means the
+                  measurement has no reliable upper or lower bound. This may be because the source was only
                   detected at a single snapshot in time, or because the distance to the system is not well-constrained.
-                  Error bars are not a sign of bad data; they honestly communicate what we know and don't know.
+                  Acknowledging these uncertainties is crucial for scientific analysis of this data.
                 </p>
               </div>
             </div>
@@ -141,7 +140,7 @@ const activeSection = ref<'lrlx' | 'xrb'>('lrlx')
                   of energetic particles above it. X-rays are invisible to our eyes and blocked by Earth's
                   atmosphere, so they must be observed from space telescopes like
                   <em>Chandra</em>, <em>XMM-Newton</em>, and <em>RXTE</em>.
-                  L<sub>X</sub> values here are typically in the range 10<sup>30</sup>–10<sup>35</sup> erg/s,
+                  L<sub>X</sub> values here are typically in the range 10<sup>30</sup> to 10<sup>35</sup> erg/s,
                   meaning these systems are among the brightest X-ray sources in our entire galaxy.
                 </p>
               </div>
@@ -152,12 +151,11 @@ const activeSection = ref<'lrlx' | 'xrb'>('lrlx')
             <div class="flex items-start gap-3">
               <div>
                 <h4 class="font-semibold text-xrb-text-primary text-xl mb-1">
-                  L<sub>X_ler</sub> &amp; L<sub>X_uer</sub> — X-ray Luminosity Error Bounds
+                  L<sub>X_ler</sub> & L<sub>X_uer</sub> — X-ray Luminosity Error Bounds
                 </h4>
                 <p class="text-lg text-xrb-text-secondary leading-relaxed">
-                  Same concept as the radio errors — lower and upper uncertainty on L<sub>X</sub>.
-                  These arise from uncertainty in the <strong class="text-xrb-accent-1">source distance</strong>
-                  (luminosity scales as distance squared, so a 10% distance error causes a ~20% luminosity error),
+                  Similar to the radio errors mentioned above, x-ray luminosity error bounds represent the lower and upper uncertainty on L<sub>X</sub>.
+                  These bounds arise from uncertainty in the <strong class="text-xrb-accent-1">source distance</strong>,
                   calibration uncertainties in the telescope, and the assumed spectral model used to convert
                   raw counts into physical flux.
                 </p>
@@ -172,12 +170,11 @@ const activeSection = ref<'lrlx' | 'xrb'>('lrlx')
                   uplim — Upper Limit Flag
                 </h4>
                 <p class="text-lg text-xrb-text-secondary leading-relaxed">
-                  When the <code class="bg-xrb-bg-1 px-1 rounded text-xs">uplim</code> column is not NULL,
+                  When the <em>uplim</em> column is not NULL,
                   it signals that the measured value is an <strong class="text-xrb-accent-1">upper limit</strong>
-                  rather than a real detection. This means the telescope could not clearly detect the source —
+                  rather than a real detection. This means the telescope could not clearly detect the source. Instead,
                   it only knows the source is <em>at most</em> this bright. Upper limits are common in
-                  quiescent (quiet) black holes that have nearly stopped accreting. Plotting them correctly
-                  (as arrows pointing down on a log-log diagram) is crucial for honest science.
+                  quiescent (quiet) black holes that have nearly stopped accreting. 
                 </p>
               </div>
             </div>
@@ -191,11 +188,11 @@ const activeSection = ref<'lrlx' | 'xrb'>('lrlx')
                 </h4>
                 <p class="text-lg text-xrb-text-secondary leading-relaxed">
                   The <strong class="text-xrb-accent-1">spectral index</strong> (α) describes
-                  <em>how the radio brightness changes with frequency</em>. A value of
-                  <strong class="text-xrb-accent-1">α = 0</strong> means a flat spectrum —
+                  how the radio brightness changes with frequency. A value of
+                  <strong class="text-xrb-accent-1">α = 0</strong> means 
                   the source emits equally across radio frequencies. This is the classic signature
                   of a <em>compact, self-absorbed jet</em> in the hard state of a black hole X-ray binary.
-                  Steeper values indicate optically thin emission or a different emission mechanism.
+                  Higher values indicate optically thin emission or a different emission mechanism.
                 </p>
               </div>
             </div>
@@ -209,11 +206,11 @@ const activeSection = ref<'lrlx' | 'xrb'>('lrlx')
                 </h4>
                 <p class="text-lg text-xrb-text-secondary leading-relaxed">
                   <strong class="text-xrb-accent-1">nu (ν)</strong> is the radio frequency at which
-                  the observation was made, in gigahertz (GHz). Most of these measurements use
-                  5 GHz, a standard band used by radio telescopes like the
-                  <em>Very Large Array (VLA)</em> in New Mexico. The choice of frequency affects
-                  the measured flux, which is why the spectral index α is needed to convert to a
-                  standard reference frequency for fair comparison between different systems.
+                  the observation was made, measured in gigahertz (GHz). Most measurements provided in the LRLX
+                  dataset use have a radio frequency of 5 GHz. This is a standard band used by radio telescopes like the
+                  Very Large Array in New Mexico. The choice of frequency affects
+                  the measured flux, which is why the spectral index is needed to convert to a
+                  standard reference frequency for accurate comparisons between systems.
                 </p>
               </div>
             </div>
@@ -223,16 +220,16 @@ const activeSection = ref<'lrlx' | 'xrb'>('lrlx')
             <div class="flex items-start gap-3">
               <div>
                 <h4 class="font-semibold text-xrb-text-primary text-xl mb-1">
-                  E_1measured &amp; E_2measured — X-ray Energy Band (keV)
+                  E<sub>1</sub> measured / E<sub>2</sub> measured — X-ray Energy Band (keV)
                 </h4>
                 <p class="text-lg text-xrb-text-secondary leading-relaxed">
-                  These define the <strong class="text-xrb-accent-1">energy band</strong> of the
-                  X-ray observation — the lowest (E_1) and highest (E_2) photon energies included,
-                  measured in <em>kiloelectronvolts (keV)</em>. A 1–10 keV band is a typical
+                  E<sub>1</sub> and E<sub>2</sub> define the <strong class="text-xrb-accent-1">energy band</strong> of the
+                  X-ray observation, classifying the lowest (E<sub>1</sub>) and highest (E<sub>2</sub>) photon energies included. 
+                  This measurements are made in <em>kiloelectronvolts (keV)</em>. A 1–10 keV band is a typical
                   "soft X-ray" window. Different telescopes cover different energy ranges,
                   and all fluxes must be converted to a common band to make
                   cross-system comparisons valid. Think of it like comparing brightness between
-                  photos taken with different camera filters — you need to account for the filter first.
+                  photos taken with different camera filters. You need to account for the filter <em>first</em>.
                 </p>
               </div>
             </div>
@@ -246,9 +243,8 @@ const activeSection = ref<'lrlx' | 'xrb'>('lrlx')
                 </h4>
                 <p class="text-lg text-xrb-text-secondary leading-relaxed">
                   The <strong class="text-xrb-accent-1">photon index</strong> (Γ) describes
-                  the shape of the X-ray energy spectrum — how many photons arrive at each energy.
-                  A value of <strong class="text-xrb-accent-1">Γ = 1.7</strong> is typical for
-                  black holes in the <em>hard spectral state</em>, where accretion is low and
+                  the shape of the X-ray energy spectrum. A value of <strong class="text-xrb-accent-1">Γ = 1.7</strong> 
+                  is typical for black holes in the <em>hard spectral state</em>, where accretion is low and
                   the emission is dominated by a hot corona of electrons that Compton-scatter
                   photons to higher energies. It's used to convert the measured X-ray flux into
                   a consistent luminosity across the standard energy band.
@@ -268,7 +264,7 @@ const activeSection = ref<'lrlx' | 'xrb'>('lrlx')
                   The <strong class="text-xrb-accent-1">time column</strong> records the
                   time difference (in days) between the radio and X-ray observations used
                   for a single data point. A value of <strong class="text-xrb-accent-1">0.0</strong>
-                  means the two measurements were simultaneous — the ideal case.
+                  means the two measurements were simultaneous. This is the ideal case.
                   Large offsets can introduce scatter into the correlation because the source
                   may have brightened or faded between the two observations.
                 </p>
@@ -285,10 +281,9 @@ const activeSection = ref<'lrlx' | 'xrb'>('lrlx')
                 <p class="text-lg text-xrb-text-secondary leading-relaxed">
                   Every data point in science traces back to a published paper.
                   The <strong class="text-xrb-accent-1">Ref column</strong> lists the
-                  journal articles (e.g., MNRAS = Monthly Notices of the Royal Astronomical Society,
-                  ApJ = Astrophysical Journal) where the original observations were reported.
-                  Citing sources allows other scientists to verify, reproduce, or build on the work —
-                  a cornerstone of the scientific process.
+                  journal articles where the original observations were reported.
+                  Citing sources allows other scientists to verify, reproduce, or build on the work
+                  published in these original journals.
                 </p>
               </div>
             </div>
@@ -318,7 +313,7 @@ const activeSection = ref<'lrlx' | 'xrb'>('lrlx')
               <div>
                 <h4 class="font-semibold text-xrb-text-primary text-xl mb-3">Name</h4>
                 <p class="text-lg text-xrb-text-secondary leading-relaxed">
-                  The <strong class="text-xrb-accent-1">catalog name</strong> of the X-ray binary system.
+                  Name specifically references the <strong class="text-xrb-accent-1">catalog name</strong> of the X-ray binary system.
                   Many names reflect the telescope or survey that discovered them. For example,
                   <em>GRO J1655-40</em> was found by the <em>Compton Gamma Ray Observatory (GRO)</em>,
                   while its position on the sky is encoded as J1655-40 (right ascension and declination
@@ -332,7 +327,7 @@ const activeSection = ref<'lrlx' | 'xrb'>('lrlx')
           <div class="p-5">
             <div class="flex items-start gap-3">
               <div>
-                <h4 class="font-semibold text-xrb-text-primary text-xl mb-3">Dist &amp; DistErr: Distance (kpc)</h4>
+                <h4 class="font-semibold text-xrb-text-primary text-xl mb-3">Dist & DistErr: Distance (kpc)</h4>
                 <p class="text-lg text-xrb-text-secondary leading-relaxed">
                   <strong class="text-xrb-accent-1">Dist</strong> is the distance to the system in
                   <strong class="text-xrb-accent-1">kiloparsecs (kpc)</strong>.
@@ -367,14 +362,14 @@ const activeSection = ref<'lrlx' | 'xrb'>('lrlx')
           <div class="p-5">
             <div class="flex items-start gap-3">
               <div>
-                <h4 class="font-semibold text-xrb-text-primary text-xl mb-3">Incl &amp; InclErr — Orbital Inclination (°)</h4>
+                <h4 class="font-semibold text-xrb-text-primary text-xl mb-3">Incl & InclErr — Orbital Inclination (°)</h4>
                 <p class="text-lg text-xrb-text-secondary leading-relaxed">
                   <strong class="text-xrb-accent-1">Inclination</strong> is the tilt of the binary orbit
                   relative to our line of sight, measured in degrees.
                   At <strong class="text-xrb-accent-1">0°</strong>, we'd look straight down onto the
                   orbital plane (face-on). At <strong class="text-xrb-accent-1">90°</strong>, we see the
                   orbit edge-on. Inclination matters because it affects how we measure the
-                  companion star's radial velocity — which is used to determine the black hole's mass.
+                  companion star's radial velocity, which is used to determine the black hole's mass.
                   High inclinations also mean the system can produce <em>X-ray eclipses</em> or dips
                   as the companion passes in front of the accretion disk.
                 </p>
@@ -385,10 +380,9 @@ const activeSection = ref<'lrlx' | 'xrb'>('lrlx')
           <div class="p-5">
             <div class="flex items-start gap-3">
               <div>
-                <h4 class="font-semibold text-xrb-text-primary text-xl mb-3">HardlineSlope &amp; HardlineSlopeErr</h4>
+                <h4 class="font-semibold text-xrb-text-primary text-xl mb-3">HardlineSlope & HardlineSlopeErr</h4>
                 <p class="text-lg text-xrb-text-secondary leading-relaxed">
-                  On a log–log plot of radio vs. X-ray luminosity, each black hole system traces a
-                  <em>hard-state track</em> — a power-law line called the
+                  On a plot of radio vs. X-ray luminosity, each black hole system traces a power-law line called the
                   <strong class="text-xrb-accent-1">hard-line</strong>.
                   <strong class="text-xrb-accent-1">HardlineSlope</strong> is the slope of that line
                   for the individual source. The canonical slope from early studies was ~0.6,
@@ -427,7 +421,7 @@ const activeSection = ref<'lrlx' | 'xrb'>('lrlx')
                   GRO J1655-40 has an orbital period of about 62.9 hours (~2.6 days), while
                   4U 1543-47 takes about 26.8 hours. Using Kepler's laws, the orbital period combined
                   with the radial velocity of the companion star lets astronomers weigh the
-                  black hole — one of the only ways to confirm an object is truly a black hole
+                  black hole. This is one of the only ways to confirm an object is truly a black hole
                   (rather than a neutron star) from Earth.
                 </p>
               </div>
@@ -443,8 +437,8 @@ const activeSection = ref<'lrlx' | 'xrb'>('lrlx')
                   <strong class="text-xrb-accent-1">solar masses (M☉)</strong> — multiples of our Sun's mass.
                   The systems in this dataset range from about 6 to over 10 solar masses. To put that
                   in perspective, our Sun would have to be crushed to a sphere about 3 km across to become
-                  a black hole of 1 M☉. A value of <em>&gt;6</em> means the mass is a lower limit —
-                  confirming it's definitely a black hole (neutron stars cannot exceed ~3 M☉),
+                  a black hole of 1 M☉. A value of <em>>6</em> means the mass is a lower limit, thus
+                  confirming it as black hole (neutron stars cannot exceed ~3 M☉),
                   even if the exact mass isn't pinned down yet.
                 </p>
               </div>
