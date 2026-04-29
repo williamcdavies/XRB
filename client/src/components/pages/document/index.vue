@@ -109,6 +109,30 @@
     }
 
 
+    function toggleGroupHidden(key: string): void {
+        console.log('toggleGroupHidden called', key)
+        const entry = groups.value.get(key)
+        
+        if (!entry) return
+        
+        const next = new Map(groups.value)
+        next.set(key, { ...entry, hidden: !entry.hidden })
+        groups.value = next
+    }
+
+
+    function toggleAllGroupsHidden(): void {
+        console.log('toggleAllGroupsHidden called')
+        const allHidden = [...groups.value.values()].every(g => g.hidden)
+        const next      = new Map(groups.value)
+        
+        next.forEach((entry, key) => {
+            next.set(key, { ...entry, hidden: !allHidden })
+        })
+        groups.value = next
+    }
+
+
     async function onFileReceived(file: File) {
         loadError.value = null
         const text = await file.text()
@@ -310,8 +334,10 @@
             @toggle-logarithmic="toggleLogarithmic" @toggle-polynomial="togglePolynomial" @toggle-power="togglePower"
             @toggle-sinusoidal="toggleSinusoidal" @save-view="onSaveView" @save-view-as="onSaveViewAs"
             @load-view="onLoadView" @delete-view="onDeleteView" class="col-span-3" />
-        <Leftbar :table="table" :hidden-rows="hiddenRows" :a-column="aColumn" :groups="groups" @toggle-row-hidden="toggleRowHidden"
-            @toggle-all-rows-hidden="toggleAllRowsHidden" @header="onHeader" class="row-start-2" />
+        <Leftbar :table="table" :hidden-rows="hiddenRows" :a-column="aColumn" :groups="groups"
+            @toggle-row-hidden="toggleRowHidden" @toggle-all-rows-hidden="toggleAllRowsHidden"
+            @toggle-group-hidden="toggleGroupHidden" @toggle-all-groups-hidden="toggleAllGroupsHidden"
+            @header="onHeader" class="row-start-2" />
         <Handle @mousedown="onMouseDown" class="row-start-2" :class="handleClass" />
         <Graph ref="graph" :table="table" :hidden-rows="hiddenRows" :x-column="xColumn" :y-column="yColumn"
             :a-column="aColumn" :groups="groups" @ready="isContentReady = true" class="row-start-2" />

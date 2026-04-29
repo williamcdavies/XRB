@@ -176,6 +176,7 @@
 
     // watching
     watch([() => prop.table, () => prop.hiddenRows, () => prop.xColumn, () => prop.yColumn, () => prop.aColumn, () => prop.groups], () => {
+        console.log('watch fired, groups size:', prop.groups.size)
         if(!prop.table || !dgc)            return
         if(!prop.xColumn || !prop.yColumn) return
 
