@@ -1055,6 +1055,26 @@ export class DesmosGraphingCalculator {
     }
 
 
+    addHidden(x: string[], y: string[]): void {
+        if(!this.calculator)      return
+        if(x.length !== y.length) return
+
+        const tableId = `dataset-${ this.exprc }`
+        
+        this.calculator.setExpression({
+            id:   tableId,
+            type: 'table',
+            columns: [
+                { latex: 'x_1', values: x, hidden: true },
+                { latex: 'y_1', values: y, hidden: true }
+            ]
+        })
+        
+        this.exprv.push(tableId)
+        ++this.exprc
+    }
+
+
     // load new dataset
     //  overrides existing dataset
     //  overrides existing expressions
