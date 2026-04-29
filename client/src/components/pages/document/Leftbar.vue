@@ -31,11 +31,20 @@
 
 
 <template>
-    <div class="h-full w-full overflow-hidden">
-        <FilePreview :table="prop.table" :hidden-rows="prop.hiddenRows"
+    <div class="h-full w-full flex flex-col overflow-hidden">
+        <div class="shrink-0 flex bg-xrb-bg-2 border-b border-xrb-border">
+            <button class="text-xs font-semibold px-3 py-2 transition-colors duration-150"
+                :class="!showGroups ? 'text-xrb-text-1' : 'text-xrb-text-secondary/30 hover:text-xrb-text-secondary'"
+                @click="showGroups = false">Table</button>
+            <button class="text-xs font-semibold px-3 py-2 transition-colors duration-150"
+                :class="showGroups ? 'text-xrb-text-1' : 'text-xrb-text-secondary/30 hover:text-xrb-text-secondary'"
+                @click="showGroups = true">Groups</button>
+        </div>
+        <FilePreview v-if="!showGroups" :table="prop.table" :hidden-rows="prop.hiddenRows"
             @toggle-row-hidden="(i: number) => emit('toggle-row-hidden', i)"
-            @toggle-all-rows-hidden="emit('toggle-all-rows-hidden')" @header="(idx, name) => emit('header', idx, name)" />
-        <GroupPreview :groups="prop.groups" @toggle-group-hidden="emit('toggle-group-hidden', $event)"
+            @toggle-all-rows-hidden="emit('toggle-all-rows-hidden')"
+            @header="(idx, name) => emit('header', idx, name)" />
+        <GroupPreview v-else :groups="prop.groups" @toggle-group-hidden="emit('toggle-group-hidden', $event)"
             @toggle-all-groups-hidden="emit('toggle-all-groups-hidden')" />
     </div>
 </template>
