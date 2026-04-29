@@ -10,7 +10,7 @@
     }>()
     const emit = defineEmits<{
         (e: 'toggle-row-hidden', index: number):  void
-        (e: 'toggle-all-hidden'):                 void
+        (e: 'toggle-all-rows-hidden'):            void
         (e: 'header', idx: number, name: string): void
     }>()
 
@@ -49,7 +49,7 @@
             <div class="grid shrink-0 bg-xrb-bg-2 border-b border-xrb-border"
                 :style="{ gridTemplateColumns: gridCols }">
                 <button v-if="prop.table !== null" class="text-xs px-1 py-2 text-xrb-text-secondary hover:text-xrb-text-1 cursor-pointer"
-                    @click="emit('toggle-all-hidden')">
+                    @click="emit('toggle-all-rows-hidden')">
                     {{ allHidden ? '○' : '●' }}
                 </button>
                 <div class="text-xs font-medium text-xrb-text-secondary px-3 py-2">#</div>

@@ -1023,6 +1023,16 @@ export class DesmosGraphingCalculator {
 
     // core methods
     // -----------------
+    setExpressionValues(id: string, x: string[], y: string[], varIndex: number): void {
+        this.calculator.setExpression({
+            id,
+            type: 'table',
+            columns: [
+                { latex: `x_{${varIndex}}`, values: x },
+                { latex: `y_{${varIndex}}`, values: y }
+            ]
+        })
+    }
 
     // add new dataset
     add(x: string[], y: string[], color?: string, varIndex: number = 1): void {
@@ -1050,6 +1060,26 @@ export class DesmosGraphingCalculator {
             this.exprv.push(pointId)
         }
 
+        this.exprv.push(tableId)
+        ++this.exprc
+    }
+
+
+    addHidden(x: string[], y: string[]): void {
+        if(!this.calculator)      return
+        if(x.length !== y.length) return
+
+        const tableId = `dataset-${ this.exprc }`
+        
+        this.calculator.setExpression({
+            id:   tableId,
+            type: 'table',
+            columns: [
+                { latex: 'x_1', values: x, hidden: true },
+                { latex: 'y_1', values: y, hidden: true }
+            ]
+        })
+        
         this.exprv.push(tableId)
         ++this.exprc
     }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
     import      { useApi                                              } from '@/composables/api';
     import      { useDocumentViews                                    } from '@/composables/views';
+    import type { Group                                               } from '@/types/group';
     import type { Table                                               } from '@/types/table';
     import      { parseCSV                                            } from '@/utils/parse';
     import      { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
@@ -71,6 +72,7 @@
     const xColumn         = ref<string | null>(null)
     const yColumn         = ref<string | null>(null)
     const aColumn         = ref<string | null>(null)
+    const groups          = ref<Map<string, Group>>(new Map())
     const loadError       = ref<string | null>(null)
     const showBrowser     = ref(false)
     const currentViewId   = ref<string | null>(null)
@@ -98,12 +100,34 @@
     }
 
 
-    function toggleAllHidden() {
+    function toggleAllRowsHidden() {
         if (hiddenRows.value.size === table.value?.rows.length) {
             hiddenRows.value = new Set()
         } else {
             hiddenRows.value = new Set(table.value?.rows.map((_, i) => i))
         }
+    }
+
+
+    function toggleGroupHidden(key: string): void {
+        const entry = groups.value.get(key)
+        
+        if (!entry) return
+        
+        const next = new Map(groups.value)
+        next.set(key, { ...entry, hidden: !entry.hidden })
+        groups.value = next
+    }
+
+
+    function toggleAllGroupsHidden(): void {
+        const allHidden = [...groups.value.values()].every(g => g.hidden)
+        const next      = new Map(groups.value)
+        
+        next.forEach((entry, key) => {
+            next.set(key, { ...entry, hidden: !allHidden })
+        })
+        groups.value = next
     }
 
 
@@ -141,18 +165,41 @@
     function onXColumn(col: string) { xColumn.value = col }
     function onYColumn(col: string) { yColumn.value = col }
     function onAColumn(col: string) {
-        if (table.value) {
-            const idx      = table.value.headers.indexOf(col)
-            const distinct = new Set(table.value.rows.map(row => row[idx])).size
+        if (!col) {
+            aColumn.value = null
+            groups.value  = new Map()
             
-            if (distinct > 50) {
-                loadError.value = `Column "${col}" has ${distinct} distinct values (max 50 for grouping)`
+            return
+        }
+
+        if (table.value) {
+            const idx          = table.value.headers.indexOf(col)
+            const distinctKeys = [...new Set(table.value.rows.map(row => row[idx] ?? '(empty)'))]
+            
+            if (distinctKeys.length > 50) {
+                loadError.value = `Column "${col}" has ${distinctKeys.length} distinct values (max 50 for grouping)`
                 
                 aColumn.value = ""
+                groups.value  = new Map()
                 nextTick(() => { aColumn.value = null })
-                
+
                 return
             }
+
+            const next = new Map<string, Group>()
+
+            distinctKeys.forEach((key, i) => {
+                const hue = Math.round((i / distinctKeys.length) * 360)
+                
+                next.set(key, {
+                    colour:  `hsl(${hue}, 50%, 50%)`,
+                    hidden:  false,
+                    index:   i + 2
+                })
+            })
+
+            groups.value = next
+            
         }
 
         aColumn.value = col
@@ -242,7 +289,7 @@
 
 
     // graph stuff
-    const graph = ref<InstanceType<typeof Graph> | null>(null)
+    const graph  = ref<InstanceType<typeof Graph> | null>(null)
 
 
     function clearFit():                       void { graph.value?.clearFit()               }
@@ -285,11 +332,13 @@
             @toggle-logarithmic="toggleLogarithmic" @toggle-polynomial="togglePolynomial" @toggle-power="togglePower"
             @toggle-sinusoidal="toggleSinusoidal" @save-view="onSaveView" @save-view-as="onSaveViewAs"
             @load-view="onLoadView" @delete-view="onDeleteView" class="col-span-3" />
-        <Leftbar :table="table" :hidden-rows="hiddenRows" @toggle-row-hidden="toggleRowHidden"
-            @toggle-all-hidden="toggleAllHidden" @header="onHeader" class="row-start-2" />
+        <Leftbar :table="table" :hidden-rows="hiddenRows" :a-column="aColumn" :groups="groups"
+            @toggle-row-hidden="toggleRowHidden" @toggle-all-rows-hidden="toggleAllRowsHidden"
+            @toggle-group-hidden="toggleGroupHidden" @toggle-all-groups-hidden="toggleAllGroupsHidden"
+            @header="onHeader" class="row-start-2" />
         <Handle @mousedown="onMouseDown" class="row-start-2" :class="handleClass" />
         <Graph ref="graph" :table="table" :hidden-rows="hiddenRows" :x-column="xColumn" :y-column="yColumn"
-            :a-column="aColumn" @ready="isContentReady = true" class="row-start-2" />
+            :a-column="aColumn" :groups="groups" @ready="isContentReady = true" class="row-start-2" />
 
         <!-- File browser modal -->
         <FileBrowser v-if="showBrowser" @close="showBrowser = false" @select="loadServerFile" />
