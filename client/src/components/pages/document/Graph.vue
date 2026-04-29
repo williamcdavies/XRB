@@ -27,6 +27,7 @@
 
     let dgc: DesmosGraphingCalculator | null = null
     let lastPolyDegree: number               = 2
+    let cachedGroupData                      = new Map<string, { x: string[], y: string[] }>()
 
 
     function clearFit(): void {
@@ -175,7 +176,7 @@
 
 
     // watching
-    watch([() => prop.table, () => prop.hiddenRows, () => prop.xColumn, () => prop.yColumn, () => prop.aColumn, () => prop.groups], () => {
+    watch([() => prop.table, () => prop.hiddenRows, () => prop.xColumn, () => prop.yColumn, () => prop.aColumn], () => {
         if(!prop.table || !dgc)            return
         if(!prop.xColumn || !prop.yColumn) return
 
@@ -203,6 +204,8 @@
                 groupData.get(key)?.x.push(row[xIdx]!)
                 groupData.get(key)?.y.push(row[yIdx]!)
             }
+
+            cachedGroupData = groupData
 
             // combined table for fits (x_1/y_1)
             const allX: string[] = []
@@ -250,6 +253,35 @@
 
             dgc.load(x, y, prop.xColumn, prop.yColumn)
         }
+    }, { deep: true })
+
+
+    watch(() => prop.groups, (newGroups) => {
+        if (!dgc) return
+
+        newGroups.forEach((entry, key) => {
+            const data = cachedGroupData.get(key)
+            
+            if (!data) return
+            
+            dgc!.setExpressionValues(`dataset-${entry.index - 1}`, entry.hidden ? [] : data.x, entry.hidden ? [] : data.y, entry.index)
+        })
+
+        const allX: string[] = []
+        const allY: string[] = []
+       
+        newGroups.forEach((entry, key) => {
+            if (entry.hidden) return
+            
+            const data = cachedGroupData.get(key)
+            
+            if (!data) return
+            
+            allX.push(...data.x)
+            allY.push(...data.y)
+        })
+        
+        dgc.setExpressionValues('dataset-0', allX, allY, 1)
     }, { deep: true })
 </script>
 
