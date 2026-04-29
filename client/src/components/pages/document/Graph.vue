@@ -1,4 +1,5 @@
 <script setup lang="ts">
+    import type { Group                             } from '@/types/group'
     import type { Table                             } from '@/types/table';
     import type { FitState, Viewport                } from '@/types/view';
     import      { DesmosGraphingCalculator, DGC_IDS } from '@/dgclib';
@@ -12,6 +13,7 @@
         xColumn:    string | null
         yColumn:    string | null
         aColumn:    string | null
+        groups:     Map<string, Group>
     }>()
     const emit = defineEmits<{
         (e: 'ready'): void
@@ -173,7 +175,7 @@
 
 
     // watching
-    watch([() => prop.table, () => prop.hiddenRows, () => prop.xColumn, () => prop.yColumn, () => prop.aColumn], () => {
+    watch([() => prop.table, () => prop.hiddenRows, () => prop.xColumn, () => prop.yColumn, () => prop.aColumn, () => prop.groups], () => {
         if(!prop.table || !dgc)            return
         if(!prop.xColumn || !prop.yColumn) return
 
@@ -187,53 +189,52 @@
             
             if(aIdx < 0) return
 
-            // select distinct values from aColumn
-            const distinctKeys = [...new Set(
-                prop.table.rows.map(row => row[aIdx] ?? '(empty)')
-            )]
-
-            // map distinct values to colours
-            const colorMap = new Map<string, string>()
+            // build groups from visible rows only, skipping hidden groups
+            const groupData = new Map<string, { x: string[], y: string[] }>()
             
-            distinctKeys.forEach((key, i) => {
-                colorMap.set(key, `hsl(${Math.round((i / distinctKeys.length) * 360)}, 50%, 50%)`)
-            })
-
-            // build groups from visible rows only
-            const groups = new Map<string, { x: string[], y: string[] }>()
-            
-            distinctKeys.forEach(key => groups.set(key, { x: [], y: [] }))
+            prop.groups.forEach((_, key) => groupData.set(key, { x: [], y: [] }))
 
             for(let i = 0; i < prop.table.rows.length; i++) {
                 if(prop.hiddenRows.has(i)) continue
-
+                
                 const row = prop.table.rows[i]!
                 const key = row[aIdx] ?? '(empty)'
-
-                groups.get(key)!.x.push(row[xIdx]!)
-                groups.get(key)!.y.push(row[yIdx]!)
+                
+                groupData.get(key)?.x.push(row[xIdx]!)
+                groupData.get(key)?.y.push(row[yIdx]!)
             }
 
+            // combined table for fits (x_1/y_1)
             const allX: string[] = []
             const allY: string[] = []
-
-            groups.forEach((data) => { allX.push(...data.x); allY.push(...data.y) })
+            
+            prop.groups.forEach((entry, key) => {
+                if(entry.hidden) return
+                
+                const data = groupData.get(key)!
+                
+                allX.push(...data.x)
+                allY.push(...data.y)
+            })
 
             const viewport = dgc.getViewport()
-
+            
             dgc.clear()
+            dgc.addHidden(allX, allY)
             dgc.setXLabel(prop.xColumn)
             dgc.setYLabel(prop.yColumn)
-            dgc.setViewport(viewport)
-            dgc.add(allX, allY)
 
-            let varIndex = 2
-
-            groups.forEach((data, key) => {
+            prop.groups.forEach((entry, key) => {
+                if(entry.hidden) return
+                
+                const data = groupData.get(key)!
+                
                 if(data.x.length === 0) return
                 
-                dgc!.add(data.x, data.y, colorMap.get(key), varIndex++)
+                dgc!.add(data.x, data.y, entry.colour, entry.index)
             })
+
+            dgc.setViewport(viewport)
         } else {
             const x: string[] = []
             const y: string[] = []
