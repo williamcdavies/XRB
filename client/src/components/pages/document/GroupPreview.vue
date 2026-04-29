@@ -1,7 +1,7 @@
 <script setup lang="ts">
-    import type { Group      } from '@/types/group'
-    import      { VList         } from 'virtua/vue'
-    import      { computed, ref } from 'vue'
+    import type { Group    } from '@/types/group'
+    import      { VList    } from 'virtua/vue'
+    import      { computed } from 'vue'
 
     // Ref: https://vuejs.org/guide/components/events.html
     const prop = defineProps<{
