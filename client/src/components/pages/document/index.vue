@@ -110,7 +110,6 @@
 
 
     function toggleGroupHidden(key: string): void {
-        console.log('toggleGroupHidden called', key)
         const entry = groups.value.get(key)
         
         if (!entry) return
@@ -122,7 +121,6 @@
 
 
     function toggleAllGroupsHidden(): void {
-        console.log('toggleAllGroupsHidden called')
         const allHidden = [...groups.value.values()].every(g => g.hidden)
         const next      = new Map(groups.value)
         
