@@ -68,7 +68,7 @@ onMounted(async () => {
                 </div>
             </li>
 
-            <li @click="emit('open-modal', 'language')"
+            <!-- <li @click="emit('open-modal', 'language')"
                 class="flex list-row h-1/6 hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary rounded-none hover:cursor-pointer">
                 <div class="flex justify-center items-center w-1/6">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -85,7 +85,7 @@ onMounted(async () => {
                         <span v-else>{{ user?.preferred_language ?? '' }}</span>
                     </p>
                 </div>
-            </li>
+            </li> -->
 
             <li @click="emit('open-modal', 'rsync')"
                 class="flex list-row h-1/6 hover:bg-xrb-menu-background-accent text-xrb-text-secondary hover:text-xrb-text-primary rounded-none hover:cursor-pointer">

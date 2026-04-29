@@ -58,7 +58,7 @@
 
 <template>
     <div class="flex-1 flex flex-col min-h-0 min-w-0 overflow-hidden bg-xrb-bg-1 text-xrb-text-1">
-        <div class="flex items-center justify-between px-6 py-4 border-b border-xrb-border bg-xrb-bg-2 shrink-0">
+        <div class="flex items-center justify-between px-4 py-3 border-b border-xrb-border bg-xrb-bg-2 shrink-0">
             <h2 class="text-sm tracking-widest">Home</h2>
         </div>
 
