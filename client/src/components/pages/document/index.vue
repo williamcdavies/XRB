@@ -1,8 +1,8 @@
 <script setup lang="ts">
     import      { useApi                                              } from '@/composables/api';
     import      { useDocumentViews                                    } from '@/composables/views';
-    import type { Table                                               } from '@/types/table';
     import type { Group                                               } from '@/types/group';
+    import type { Table                                               } from '@/types/table';
     import      { parseCSV                                            } from '@/utils/parse';
     import      { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
     import      { useRoute                                            } from 'vue-router';
@@ -100,34 +100,12 @@
     }
 
 
-    function toggleAllHidden() {
+    function toggleAllRowsHidden() {
         if (hiddenRows.value.size === table.value?.rows.length) {
             hiddenRows.value = new Set()
         } else {
             hiddenRows.value = new Set(table.value?.rows.map((_, i) => i))
         }
-    }
-
-
-    function toggleGroup(key: string): void {
-        const value = groups.value.get(key)
-        
-        if (!value) return
-        
-        const next = new Map(groups.value)
-        next.set(key, { ...value, hidden: !value.hidden })
-        groups.value = next
-    }
-
-
-    function updateGroupColor(key: string, colour: string): void {
-        const value = groups.value.get(key)
-        
-        if (!value) return
-        
-        const next = new Map(groups.value)
-        next.set(key, { ...value, colour })
-        groups.value = next
     }
 
 
@@ -332,8 +310,8 @@
             @toggle-logarithmic="toggleLogarithmic" @toggle-polynomial="togglePolynomial" @toggle-power="togglePower"
             @toggle-sinusoidal="toggleSinusoidal" @save-view="onSaveView" @save-view-as="onSaveViewAs"
             @load-view="onLoadView" @delete-view="onDeleteView" class="col-span-3" />
-        <Leftbar :table="table" :hidden-rows="hiddenRows" :groups="groups" @toggle-row-hidden="toggleRowHidden"
-            @toggle-all-hidden="toggleAllHidden" @header="onHeader" class="row-start-2" />
+        <Leftbar :table="table" :hidden-rows="hiddenRows" :a-column="aColumn" :groups="groups" @toggle-row-hidden="toggleRowHidden"
+            @toggle-all-rows-hidden="toggleAllRowsHidden" @header="onHeader" class="row-start-2" />
         <Handle @mousedown="onMouseDown" class="row-start-2" :class="handleClass" />
         <Graph ref="graph" :table="table" :hidden-rows="hiddenRows" :x-column="xColumn" :y-column="yColumn"
             :a-column="aColumn" :groups="groups" @ready="isContentReady = true" class="row-start-2" />
